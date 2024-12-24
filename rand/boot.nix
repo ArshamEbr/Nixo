@@ -23,9 +23,20 @@
        # "nvidia_uvm"
        # "nvidia_drm"
       ];
-
+      loader.timeout = 0;
+      consoleLogLevel = 0;
+      initrd.verbose = false;
       supportedFilesystems = [ "ntfs" "nfs" ];
-      plymouth.enable = true;
+      plymouth = {
+         enable = true;
+         theme = "cross_hud";
+         themePackages = with pkgs; [
+           (adi1090x-plymouth-themes.override {
+             selected_themes = [ "cross_hud" ];
+           })
+         ];
+       };
+
       kernelPackages = pkgs-unstable.linuxPackages_latest;
       kernelModules = [ "uinput" ];
     };
