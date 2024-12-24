@@ -338,6 +338,15 @@
     libcamera
   ];
 
+    programs.nh = {
+      enable = true;
+      flake = "/home/arsham/nixo";
+      clean = {
+      enable = true;
+      dates = "daily";
+      extraArgs = "--keep 3";};
+      };
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.

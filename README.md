@@ -5,6 +5,6 @@ iGPU: Intel Iris XE
 
 dGPU: Nvidia MX350
 
-# Special thanks to Celes Renata for her great help and configs!
+# Special thanks to "Celes Renata" for her great help and configs!
 
 # Originally Made By https://github.com/celesrenata/nix-flakes 

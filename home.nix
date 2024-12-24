@@ -310,6 +310,8 @@ let
     gjs.dev
 
     # AGS and Hyprland dependencies.
+    #hyprland-qtutils
+    libsForQt5.qtutilities
     coreutils
     cliphist
     curl

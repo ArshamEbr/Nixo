@@ -39,7 +39,7 @@
 
   in {
     nixosConfigurations = {
-      rand =
+      Arsham-Nixos =
       let
       pkgs = import inputs.nixpkgs rec {
         inherit system;
