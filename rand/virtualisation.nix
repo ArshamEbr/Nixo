@@ -71,6 +71,8 @@
             "--cap-add=NET_ADMIN"
             "--device=/dev/kvm"
             "--device=/dev/dri/card2"
+            "--device=/dev/vfio/vfio"
+           # "--device=nvidia.com/gpu=all"
             "--stop-timeout=120"
           ];
         };

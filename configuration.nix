@@ -11,6 +11,7 @@
     [ # Include the results of the hardware scan.
       #"${pkgs-unstable}/nixos/modules/programs/alvr.nix"
       ./hardware-configuration.nix
+      ./hyprland
     ];
 
   environment.localBinInPath = true;
@@ -50,8 +51,8 @@
 
   # Enable the GDM Display Manager.
   services.xserver.displayManager.gdm.enable = true;
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "arsham";
+  #services.displayManager.autoLogin.enable = true;
+  #services.displayManager.autoLogin.user = "arsham";
   services.displayManager.defaultSession = "hyprland";
   
   # Enable the X11 windowing system.
