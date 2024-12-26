@@ -14,19 +14,23 @@ programs.hyprlock.settings = {
 "$font_family_clock" = "Rubik Light";
 "$font_material_symbols" = "Material Symbols Rounded";
 
-background = {
-    color = { 
+background = [
+  {
+    color = [ 
     "rgba(130C15FF)"
     "rgba(000000FF)"
-    };
+    ];
     path = "/home/arsham/.cache/ags/user/generated/hypr/lockscreen.png";
     # path = screenshot;
     blur_size = 5;
     blur_passes = 4;
-};
+  }
+];
 
-input-field = {
-    monitor = {
+
+input-field = [
+  {
+    monitor = "";
     size = "250, 50";
     outline_thickness = 2;
     dots_size = "0.1";
@@ -37,13 +41,15 @@ input-field = {
     # fade_on_empty = true;
 
     position = "0, 20";
-    halign = center;
-    valign = center;
-    };
-};
+    halign = "center";
+    valign = "center";
+  }
+];
 
-label = { # Clock
-    monitor = {
+
+label = [
+  { # Clock
+    monitor = "";
     text = "$TIME";
     shadow_passes = 1;
     shadow_boost = "0.5";
@@ -52,12 +58,11 @@ label = { # Clock
     font_family = "$font_family_clock";
 
     position = "0, 300";
-    halign = center;
-    valign = center;
-    };
-};
-label = { # Greeting
-    monitor = {
+    halign = "center";
+    valign = "center";
+  }
+  { # Greeting
+    monitor = "";
     text = "hi $USER !!!";
     shadow_passes = 1;
     shadow_boost = "0.5";
@@ -66,12 +71,11 @@ label = { # Greeting
     font_family = "$font_family";
 
     position = "0, 240";
-    halign = center;
-    valign = center;
-    };
-};
-label = { # lock icon
-    monitor = {
+    halign = "center";
+    valign = "center";
+  }
+  { # lock icon
+    monitor = "";
     text = "lock";
     shadow_passes = 1;
     shadow_boost = "0.5";
@@ -80,12 +84,11 @@ label = { # lock icon
     font_family = "$font_material_symbols";
 
     position = "0, 65";
-    halign = center;
-    valign = bottom;
-    };
-};
-label = { # "locked" text
-    monitor = {
+    halign = "center";
+    valign = "bottom";
+  }
+  { # "locked" text
+    monitor = "";
     text = "locked";
     shadow_passes = 1;
     shadow_boost = "0.5";
@@ -94,14 +97,12 @@ label = { # "locked" text
     font_family = "$font_family";
 
     position = "0, 45";
-    halign = center;
-    valign = bottom;
-    };
-};
-
-label = { # Status
-    monitor = {
-    text = "cmd[update:5000] ${XDG_CONFIG_HOME:-$HOME/.config}/hypr/hyprlock/status.sh";
+    halign = "center";
+    valign = "bottom";
+  }
+  { # Status
+    monitor = "";
+    text = "cmd[update:5000] ~/nixo/hyprland/status.sh";
     shadow_passes = 1;
     shadow_boost = "0.5";
     color = "$text_color";
@@ -109,9 +110,9 @@ label = { # Status
     font_family = "$font_family";
 
     position = "30, -30";
-    halign = left;
-    valign = top;
-    };
-};
+    halign = "left";
+    valign = "top";
+  }
+];
 };
 }

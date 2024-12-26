@@ -353,7 +353,7 @@ let
 
   (with pkgs-unstable; [
     hypridle
-    hyprlock
+   # hyprlock
     python312Packages.debugpy
   ]);
 
