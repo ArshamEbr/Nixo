@@ -7,5 +7,6 @@
     ./keybinds.nix
     ./rules.nix
     ./hypridle.nix
+    ./hyprlock.nix
   ];
 }
