@@ -352,7 +352,7 @@ let
   ++
 
   (with pkgs-unstable; [
-    hypridle
+   # hypridle
    # hyprlock
     python312Packages.debugpy
   ]);
