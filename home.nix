@@ -21,7 +21,10 @@ let
 
   in
   {
-  imports = [ inputs.ags.homeManagerModules.default ];
+  imports = [ 
+    inputs.ags.homeManagerModules.default 
+    ./hyprland
+   ];
 
   programs.ags = {
     enable = true;
@@ -74,9 +77,9 @@ let
   home.file.".local/bin/wofi-calc" = {
     source = wofi-calc + "/wofi-calc.sh";
   };
-  home.file.".config/hypr/hyprland.conf" = {
-    source = pkgs.end-4-dots + "/hypr/hyprland.conf.bak";
-  };
+  #home.file.".config/hypr/hyprland.conf" = {
+  #  source = pkgs.end-4-dots + "/hypr/hyprland.conf.bak";
+  #};
   home.file.".local/bin/sunshine" = {
     source = celes-dots + "/.local/bin/sunshineFixed";
   };

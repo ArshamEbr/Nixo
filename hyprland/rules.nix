@@ -1,4 +1,4 @@
-{config, pkgs, lib, ... }: 
+{config, pkgs, inputs, lib, ... }: 
 {
 
 wayland.windowManager.hyprland.settings = {
@@ -34,7 +34,7 @@ windowrule = [
    
    windowrulev2 = [
      ######### Window rules v2 #########
-     "bordercolor rgba(ECB2FFAA) rgba(ECB2FF77),pinned:1";
+     "bordercolor rgba(ECB2FFAA) rgba(ECB2FF77),pinned:1"
      "tile, class:(dev.warp.Warp)"
      "float, title:^([Pp]icture[-\s]?[Ii]n[-\s]?[Pp]icture)(.*)$"
    

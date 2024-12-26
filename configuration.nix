@@ -11,7 +11,6 @@
     [ # Include the results of the hardware scan.
       #"${pkgs-unstable}/nixos/modules/programs/alvr.nix"
       ./hardware-configuration.nix
-      ./hyprland
     ];
 
   environment.localBinInPath = true;
@@ -361,6 +360,12 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+    ##    nix.settings = {
+    ##  substituters = ["https://hyprland.cachix.org"];
+    ##  trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    ##};
+    ##    wayland.windowManager.hyprland.systemd.variables = ["--all"];
 
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.11"; # Did you read the comment?

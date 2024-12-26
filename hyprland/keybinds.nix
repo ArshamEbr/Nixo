@@ -1,4 +1,4 @@
-{config, pkgs, ... }: 
+{config, pkgs, lib, ... }: 
 {
 
 wayland.windowManager.hyprland.settings = {
@@ -7,11 +7,11 @@ wayland.windowManager.hyprland.settings = {
 
 # $Secondary is a reference to Command or Win, depending on what is plugged into the computer.
 
-"$Primary" = "Super";
-"$Secondary" = "Control";
-"$Tertiary" = "Shift";
-"$Alternate" = "Alt";
-"$MenuButton" = "Menu";
+"$Primary" = "SUPER";
+"$Secondary" = "CONTROL";
+"$Tertiary" = "SHIFT";
+"$Alternate" = "ALT";
+"$MenuButton" = "MENU";
 
 bindl = [
   # Volume
@@ -48,10 +48,10 @@ bindr = [
   "$Primary$Secondary, R, exec, hyprctl reload; pkill ags; pkill activewin.sh; pkill activews.sh; pkill gohypr; pkill bash; pkill ydotool; ~/.local/bin/initialSetup.sh; ags &"
   "$Primary, $Primary_R, exec, ags run-js 'indicator.popup(-1);'"
   "$Primary, $Primary_R, exec, ags run-js 'Notifications.notifications.forEach((notif) => notif.dismiss())'"
-  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow("sideright");'"
-  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow("cheatsheet");'"
-  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow("osk");'"
-  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow("session");'"
+  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('sideright');'"
+  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('cheatsheet');'"
+  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('osk');'"
+  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('session');'"
   "$Primary, $Primary_R, exec, ags run-js 'openMusic$Primarys.value = false'"
   "$Primary, $Primary_R, exec, ags run-js 'openColorScheme.value = false'"
 ];
@@ -104,7 +104,7 @@ bind = [
   "$Primary$Secondary, N, exec, gammastep -O +3000 &"
   "$Primary$Secondary$Alternate, N, exec, gammastep -0 +6500 &"
   # Apps: Settings and config
-  "$Primary$Secondary, I, exec, XDG_CURRENT_DESKTOP="gnome" gnome-control-center"
+  "$Primary$Secondary, I, exec, XDG_CURRENT_DESKTOP='gnome' gnome-control-center"
   "$Primary$Secondary, V, exec, pavucontrol"
   "$Primary$Tertiary, Home, exec, gnome-system-monitor"
   "$Primary$Alternate, Insert, exec, foot -F btop"
@@ -121,7 +121,7 @@ bind = [
   
   # Screenshot, Record, OCR, Color picker, Clipboard history
   "$Secondary$Tertiary, D, exec,~/.local/bin/rubyshot | wl-copy"
-  "$Secondary$Tertiary, 4, exec, grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" - | wl-copy"
+  "$Secondary$Tertiary, 4, exec, grim -g $(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000) - | wl-copy"
   "$Secondary$Tertiary, 5, exec, ~/.config/ags/scripts/record-script.sh"
   "$Secondary$Alternate, 5, exec, ~/.config/ags/scripts/record-script.sh --sound"
   "$Secondary$Tertiary$Alternate, 5, exec, ~/.config/ags/scripts/record-script.sh --fullscreen-sound"
@@ -129,20 +129,20 @@ bind = [
   "$Secondary$Alternate, C, exec, hyprpicker -a"
   "$Primary$Alternate, Space, exec, cliphist list | wofi -Iim --dmenu | cliphist decode | wl-copy && wtype -M ctrl v -M ctrl"
   "$Secondary$Alternate, V, exec, cliphist list | wofi -Iim --dmenu | cliphist decode | wl-copy && wtype -M ctrl v -M ctrl"
-  "$Primary, Menu, exec, tac ~/.local/share/snippets | wofi -Iim --dmenu | sed -z '$ s/\n$//' | wl-copy && wtype -M ctrl v -M ctrl"
-  "$Alternate, Menu, exec, wtype -M logo c -M logo && wl-paste >> ~/.local/share/snippets && sed '/^[[:space:]]*$/d' -i ~/.local/share/snippets && notify-send "Added to snippets!""
-  "$Alternate$Tertiary, Menu, exec, tac ~/.local/share/snippets | wofi -Iim --dmenu | xargs -I '%' ~/.local/bin/regexEscape.sh "'%'"| xargs -I '%' sed '/\(^.*%.*$\)/d' -i ~/.local/share/snippets && notify-send "Deleted from snippets!""
+  ##"$Primary, Menu, exec, tac ~/.local/share/snippets | wofi -Iim --dmenu | sed -z '$ s/\n$//' | wl-copy && wtype -M ctrl v -M ctrl"
+  ##"$Alternate, Menu, exec, wtype -M logo c -M logo && wl-paste >> ~/.local/share/snippets && sed '/^[[:space:]]*$/d' -i ~/.local/share/snippets && notify-send "Added to snippets!""
+  ##"$Alternate$Tertiary, Menu, exec, tac ~/.local/share/snippets | wofi -Iim --dmenu | xargs -I '%' ~/.local/bin/regexEscape.sh "'%'"| xargs -I '%' sed '/\(^.*%.*$\)/d' -i ~/.local/share/snippets && notify-send "Deleted from snippets!""
   
   # Text-to-image
   # Normal
-  "$Primary$Secondary$Tertiary,S,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png""
+  ##"$Primary$Secondary$Tertiary,S,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png""
   # English
-  "$Secondary$Tertiary,T,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" "tmp.png" && tesseract -l eng "tmp.png" - | wl-copy && rm "tmp.png""
+  ##"$Secondary$Tertiary,T,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" "tmp.png" && tesseract -l eng "tmp.png" - | wl-copy && rm "tmp.png""
   # Japanese
-  "$Secondary$Tertiary,J,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" "tmp.png" && tesseract -l jpn "tmp.png" - | wl-copy && rm "tmp.png""
+  ##"$Secondary$Tertiary,J,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" "tmp.png" && tesseract -l jpn "tmp.png" - | wl-copy && rm "tmp.png""
   
   # Media
-  "$Secondary$Tertiary, N, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`"
+  ##"$Secondary$Tertiary, N, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`"
   "$Secondary$Tertiary, B, exec, playerctl previous"
   "$Secondary$Tertiary, P, exec, playerctl play-pause"
   
@@ -168,13 +168,13 @@ bind = [
   "$Secondary$Alternate, Delete, exec, foot -F btop"
   
   # ##################################### Plugins #########################################
-  "$Primary$Secondary, P, exec, hyprctl plugin load "~/.config/hypr/plugins/droidbars.so""
-  "$Primary$Secondary, O, exec, hyprctl plugin unload "~/.config/hypr/plugins/droidbars.so""
+  ##"$Primary$Secondary, P, exec, hyprctl plugin load "~/.config/hypr/plugins/droidbars.so""
+  ##"$Primary$Secondary, O, exec, hyprctl plugin unload "~/.config/hypr/plugins/droidbars.so""
   
   # Testing
   # "$Secondary$Alternate, f12, exec, notify-send "Hyprland version: $(hyprctl version | head -2 | tail -1 | cut -f2 -d ' ')" "owo" -a 'Hyprland keybind'"
-  "$Secondary$Alternate, f12, exec, notify-send "Millis since epoch" "$(date +%s%N | cut -b1-13)" -a 'Hyprland keybind'"
-  "$Secondary$Alternate, Equal, exec, notify-send "Urgent notification" "Ah hell no" -u critical -a 'Hyprland keybind'"
+  ##"$Secondary$Alternate, f12, exec, notify-send "Millis since epoch" "$(date +%s%N | cut -b1-13)" -a 'Hyprland keybind'"
+  ##"$Secondary$Alternate, Equal, exec, notify-send "Urgent notification" "Ah hell no" -u critical -a 'Hyprland keybind'"
   
   # ########################### Keybinds for Hyprland ############################
   # Swap windows
