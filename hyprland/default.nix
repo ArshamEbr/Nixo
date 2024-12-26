@@ -6,5 +6,6 @@
     ./general.nix
     ./keybinds.nix
     ./rules.nix
+    ./hypridle.nix
   ];
 }
