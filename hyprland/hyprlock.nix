@@ -1,4 +1,37 @@
 {config, pkgs, inputs, lib, ... }:
+let
+  statuso = pkgs.writeShellScript "status.sh" ''
+    #!/bin/bash
+
+    ############ Variables ############
+    enable_battery=false
+    battery_charging=false
+
+    ####### Check availability ########
+    for battery in /sys/class/power_supply/*BAT*; do
+      if [[ -f "$battery/uevent" ]]; then
+        enable_battery=true
+        if [[ $(cat "$battery/status" | head -1) == "Charging" ]]; then
+          battery_charging=true
+        fi
+        break
+      fi
+    done
+
+    ############# Output #############
+    if [[ $enable_battery == true ]]; then
+      if [[ $battery_charging == true ]]; then
+        echo -n "(+) "
+      fi
+      echo -n "$(cat "$battery/capacity" | head -1)"%
+      if [[ $battery_charging == false ]]; then
+        echo -n " remaining"
+      fi
+    fi
+
+    echo ""
+  '';
+in
 {
 programs.hyprlock.enable=true;
 programs.hyprlock.settings = {
@@ -102,7 +135,9 @@ label = [
   }
   { # Status
     monitor = "";
-    text = "'cmd[update\:5000] \$\{XDG_CONFIG_HOME\:-\$HOME/nixo\}/hyprland/status.sh'";
+    #text = "'cmd[update\:5000] \$\{XDG_CONFIG_HOME\:-\$HOME/nixo\}/hyprland/status.sh'";
+    #text = "cmd[update:5000] exec = ${statuso}";
+    text = "cmd[update:5000] \"\${XDG_CONFIG_HOME:-$HOME}\"/nixo/hyprland/status.sh";
     shadow_passes = 1;
     shadow_boost = "0.5";
     color = "$text_color";
