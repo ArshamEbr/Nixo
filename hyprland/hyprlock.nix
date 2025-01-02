@@ -135,8 +135,6 @@ label = [
   }
   { # Status
     monitor = "";
-    #text = "'cmd[update\:5000] \$\{XDG_CONFIG_HOME\:-\$HOME/nixo\}/hyprland/status.sh'";
-    #text = "cmd[update:5000] exec = ${statuso}";
     text = "cmd[update:5000] \"\${XDG_CONFIG_HOME:-$HOME}\"/nixo/hyprland/status.sh";
     shadow_passes = 1;
     shadow_boost = "0.5";
