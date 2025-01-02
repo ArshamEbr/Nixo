@@ -163,10 +163,12 @@ let
     chromium
     brave
     telegram-desktop
-    #discord #TODO: blocked
+    discord #TODO: blocked
     vesktop
     darktable
     gimp
+    htop
+    nil
 
     # Extra Launchers.
 

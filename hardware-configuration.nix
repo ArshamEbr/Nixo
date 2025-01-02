@@ -37,6 +37,12 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
+  #fileSystems."/path/to/mount/to" =
+  #  { device = "/path/to/the/device";
+  #    fsType = "ntfs-3g"; 
+  #    options = [ "rw" "uid=theUidOfYourUser"];
+  #  };
+
   swapDevices =
     [ { device = "/dev/disk/by-uuid/b6254818-9b48-48fd-a907-adb729818b7e"; }
     ];

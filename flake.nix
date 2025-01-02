@@ -16,6 +16,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     dream2nix.url = "github:nix-community/dream2nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+   # lanzaboote.url = "github:nix-community/lanzaboote/v0.4.1";
   };
 
   outputs = inputs@{ nixpkgs, nixpkgs-old, nixpkgs-unstable, anyrun, home-manager, dream2nix, nixgl, nix-gl-host, nix-vscode-extensions, nixos-hardware, ... }:
@@ -98,6 +99,18 @@
             };
             home-manager.users.arsham = import ./home.nix;
           }
+
+          #lanzaboote.nixosModules.lanzaboote      
+          #({ pkgs, lib, ... }: {      
+          #  environment.systemPackages = [
+          #    pkgs.sbctl
+          #  ];
+          #  boot.loader.systemd-boot.enable = lib.mkForce false;
+          #  boot.lanzaboote = {
+          #    enable = true;
+          #    pkiBundle = "/var/lib/sbctl";
+          #  };
+          #})
         ];
       };
   };

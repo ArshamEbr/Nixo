@@ -165,7 +165,8 @@ bind = [
   "$Secondary, Comma, exec, ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'"
   "$Secondary, K, exec, ~/.local/bin/agsAction osk"
   "$Primary$Alternate, Delete, exec, ~/.local/bin/agsAction.sh session"
-  "$Secondary$Alternate, Delete, exec, foot -F btop"
+  #"$Secondary$Alternate, Delete, exec, foot -F btop"
+  "$Secondary$Alternate, Delete, exec, [float; size 50% 55%; move 100%-w-10 10] kitty -e btop"
   
   # ##################################### Plugins #########################################
   ##"$Primary$Secondary, P, exec, hyprctl plugin load "~/.config/hypr/plugins/droidbars.so""
