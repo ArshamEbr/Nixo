@@ -45,6 +45,10 @@ exec-once = [
 # Hyprlock
 "hyprlock"
 
+# Disk auto mounter
+"udiskie"
+
+
 ];
 
 exec = [

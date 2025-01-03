@@ -19,11 +19,11 @@ bindl = [
   #clipboard
   ",Print,exec,grim - | wl-copy"
   #media
-  ", XF86AudioNext,           exec, playerctl next"
-  ", XF86AudioPrev,           exec, playerctl previous"
-  ", XF86AudioPlay,           exec, playerctl play-pause"
+  ", XF86AudioNext, exec, playerctl next"
+  ", XF86AudioPrev, exec, playerctl previous"
+  ", XF86AudioPlay, exec, playerctl play-pause"
   #lockscreen
-  # bindl = $Secondary$Tertiary, L, exec, sleep 0.1 && systemctl suspend
+  "$Secondary$Tertiary, L, exec, sleep 0.1 && systemctl suspend"
 
 ];
 
@@ -34,8 +34,8 @@ bindle = [
   # Brightness
   # ", XF86MonBrightnessUp, exec, light -A 5"
   # ", XF86MonBrightnessDown, exec, light -U 5"
-  ", XF86MonBrightnessUp, exec, ags run-js 'brightness.screen_value += 0.05;'"
-  ", XF86MonBrightnessDown, exec, ags run-js 'brightness.screen_value -= 0.05;'"
+  ", XF86MonBrightnessUp, exec, ags run-js 'brightness.screen_value += 0.02;'"
+  ", XF86MonBrightnessDown, exec, ags run-js 'brightness.screen_value -= 0.02;'"
   #ags related
   ", XF86AudioRaiseVolume, exec, ags run-js 'indicator.popup(1);'"
   ", XF86AudioLowerVolume, exec, ags run-js 'indicator.popup(1);'"
@@ -77,32 +77,37 @@ bind = [
   # ####################################### Applications ########################################
   # Apps: just normal apps
   # Music
-  "$Primary$Secondary, M, exec, tidal-hifi"
-  "$Primary$Secondary$Tertiary, M, exec, env -u NIXOS_OZONE_WL cider --use-gl=desktop"
-  "$Primary$Secondary$Alternate, M, exec, spotify"
+  #"$Primary$Secondary, M, exec, tidal-hifi"
+  #"$Primary$Secondary$Tertiary, M, exec, env -u NIXOS_OZONE_WL cider --use-gl=desktop"
+  #"$Primary$Secondary$Alternate, M, exec, spotify"
   # Discord
-  "$Primary$Secondary, O, exec, vesktop"
+  "$Primary, 1, exec, vesktop"
+  "$Alternate, 1, exec, discord"
+  "$Primary, 2, exec, telegram-desktop"
+
+
   # Foot
-  "$Primary$Secondary, H, exec, foot"
-  "$Primary$Secondary$Tertiary, T, exec, foot sleep 0.01 && nmtui"
+  "$Primary, T, exec, foot"
+  "$Alternate, T, exec, kitty"
+  "$Primary$Secondary, T, exec, kitty -e nmtui"
   # Finders
-  "$Primary$Secondary, J, exec, thunar"
-  "$Primary$Secondary$Tertiary, J, exec, nautilus"
+  "$Primary, E, exec, dolphin"
+  "$Alternate, E, exec, thunar"
   # Browsers
-  "$Primary$Secondary, B, exec, brave"
-  "$Primary$Secondary$Tertiary, B, exec, chromium"
+  "$Primary, B, exec, brave"
+  "$Alternate, B, exec, firefox"
   
   # notepad
   "$Primary$Secondary, X, exec, subl"
-  "$Primary$Secondary, C, exec, code"
-  "$Primary$Secondary$Tertiary, C, exec, jetbrains-toolbox"
+  "$Primary, C, exec, code"
+  #"$Primary$Secondary$Tertiary, C, exec, jetbrains-toolbox"
   
   # calculator
-  "$Primary$Secondary, 3, exec, ~/.local/bin/wofi-calc"
+  #"$Primary$Secondary, 3, exec, ~/.local/bin/wofi-calc"
   ",XF86Calculator, exec, ~/.local/bin/wofi-calc"
-  # Flux
-  "$Primary$Secondary, N, exec, gammastep -O +3000 &"
-  "$Primary$Secondary$Alternate, N, exec, gammastep -0 +6500 &"
+  ## Flux
+  ##"$Primary$Secondary, N, exec, gammastep -O +3000 &"
+  ##"$Primary$Secondary$Alternate, N, exec, gammastep -O +6500 &"
   # Apps: Settings and config
   "$Primary$Secondary, I, exec, XDG_CURRENT_DESKTOP='gnome' gnome-control-center"
   "$Primary$Secondary, V, exec, pavucontrol"
@@ -113,7 +118,7 @@ bind = [
   "$Primary$Secondary, Period, exec, pkill fuzzel || ~/.local/bin/fuzzel-emoji"
   "$Alternate, F4, killactive,"
   "$Secondary$Alternate, Space, togglefloating,"
-  "$Secondary$Alternate, Q, exec, hyprctl kill"
+  "$Primary, Q, exec, hyprctl kill"
   "$Primary$Tertiary$Alternate, Delete, exec, pkill wlogout || wlogout -p layer-shell"
   "$Primary$Tertiary$Alternate$Secondary, Delete, exec, systemctl poweroff"
   # "$Tertiary$Alternate,mouse_up, exec, wtype -M ctrl -k Prior"
@@ -121,7 +126,7 @@ bind = [
   
   # Screenshot, Record, OCR, Color picker, Clipboard history
   "$Secondary$Tertiary, D, exec,~/.local/bin/rubyshot | wl-copy"
-  "$Secondary$Tertiary, 4, exec, grim -g $(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000) - | wl-copy"
+  "$Secondary$Tertiary, 4, exec, grim -g \"\$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)\" - | wl-copy"
   "$Secondary$Tertiary, 5, exec, ~/.config/ags/scripts/record-script.sh"
   "$Secondary$Alternate, 5, exec, ~/.config/ags/scripts/record-script.sh --sound"
   "$Secondary$Tertiary$Alternate, 5, exec, ~/.config/ags/scripts/record-script.sh --fullscreen-sound"
@@ -133,13 +138,13 @@ bind = [
   ##"$Alternate, Menu, exec, wtype -M logo c -M logo && wl-paste >> ~/.local/share/snippets && sed '/^[[:space:]]*$/d' -i ~/.local/share/snippets && notify-send "Added to snippets!""
   ##"$Alternate$Tertiary, Menu, exec, tac ~/.local/share/snippets | wofi -Iim --dmenu | xargs -I '%' ~/.local/bin/regexEscape.sh "'%'"| xargs -I '%' sed '/\(^.*%.*$\)/d' -i ~/.local/share/snippets && notify-send "Deleted from snippets!""
   
-  # Text-to-image
+  # Image to text
   # Normal
-  ##"$Primary$Secondary$Tertiary,S,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png""
+  "$Primary$Secondary$Tertiary,S,exec,grim -g \"\$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)\" 'tmp.png' && tesseract 'tmp.png' - | wl-copy && rm 'tmp.png'"
   # English
-  ##"$Secondary$Tertiary,T,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" "tmp.png" && tesseract -l eng "tmp.png" - | wl-copy && rm "tmp.png""
+  ##"$Secondary$Tertiary,T,exec,grim -g \"\$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)\" 'tmp.png' && tesseract -l eng 'tmp.png' - | wl-copy && rm 'tmp.png'"
   # Japanese
-  ##"$Secondary$Tertiary,J,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" "tmp.png" && tesseract -l jpn "tmp.png" - | wl-copy && rm "tmp.png""
+  ##"$Secondary$Tertiary,J,exec,grim -g \"\$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)\" 'tmp.png' && tesseract -l jpn 'tmp.png' - | wl-copy && rm 'tmp.png'"
   
   # Media
   ##"$Secondary$Tertiary, N, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`"
@@ -166,7 +171,7 @@ bind = [
   "$Secondary, K, exec, ~/.local/bin/agsAction osk"
   "$Primary$Alternate, Delete, exec, ~/.local/bin/agsAction.sh session"
   #"$Secondary$Alternate, Delete, exec, foot -F btop"
-  "$Secondary$Alternate, Delete, exec, [float; size 50% 55%; move 100%-w-10 10] kitty -e btop"
+  "$Secondary$Alternate, Delete, exec, [float; size 50% 55%; move 100%-w-10 43] kitty -e btop"
   
   # ##################################### Plugins #########################################
   ##"$Primary$Secondary, P, exec, hyprctl plugin load "~/.config/hypr/plugins/droidbars.so""

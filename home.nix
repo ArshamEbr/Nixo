@@ -169,6 +169,7 @@ let
     gimp
     htop
     nil
+    udiskie
 
     # Extra Launchers.
 

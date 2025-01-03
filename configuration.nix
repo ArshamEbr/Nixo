@@ -200,7 +200,10 @@
     # Editors.
     vim
     nano
-
+    udiskie
+    gvfs
+    jmtpfs
+ 
     # Secure Boot Suppoert
     #sbctl
  
