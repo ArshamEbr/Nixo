@@ -4,11 +4,10 @@ wayland.windowManager.hyprland.enable = true;
 wayland.windowManager.hyprland.settings = {
 
 # MONITOR CONFIG
-monitor=",preferred,auto,1";
 # monitor=,addreserved, 0, 0, 0, 0 # Custom reserved area
 
 # HDMI port: mirror display. To see device name, use `hyprctl monitors`
-# monitor=HDMI-A-1,1920x1080@60,1920x0,1,mirror,eDP-1
+monitor = [ ",preferred,auto,1" "HDMI-A-1,1920x1080@60,1920x0,1,mirror,eDP-1" ];
 
 input = {
     kb_layout = "us,ir";

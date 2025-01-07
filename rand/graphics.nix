@@ -22,7 +22,7 @@
     #> commands and re-run the installation:
     #>
     #> mv $PWD/"DisplayLink USB Graphics Software for Ubuntu6.0-EXE.zip" $PWD/displaylink-600.zip
-    #> nix-prefetch-url file://$PWD/displaylink-600.zip
+    # nix-prefetch-url file://$HOME/pkgfile
     #>
     #> Alternatively, you can use the following command to download the
     #> file directly:

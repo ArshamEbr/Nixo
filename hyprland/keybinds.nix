@@ -171,7 +171,7 @@ bind = [
   "$Secondary, K, exec, ~/.local/bin/agsAction osk"
   "$Primary$Alternate, Delete, exec, ~/.local/bin/agsAction.sh session"
   #"$Secondary$Alternate, Delete, exec, foot -F btop"
-  "$Secondary$Alternate, Delete, exec, [float; size 50% 55%; move 100%-w-10 43] kitty -e btop"
+  "$Primary, M, exec, [float; size 50% 55%; move 100%-w-10 43] kitty -e btop"
   
   # ##################################### Plugins #########################################
   ##"$Primary$Secondary, P, exec, hyprctl plugin load "~/.config/hypr/plugins/droidbars.so""

@@ -11,6 +11,7 @@
       "intel_iommu=on"
       "iommu=pt"
       "vfio-pci.ids=10de:1c94"
+      "svideo=efifb:off"
       #"vfio-pci.ids=8086:9a49"
       ];
 
