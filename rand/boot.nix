@@ -11,18 +11,21 @@
       "intel_iommu=on"
       "iommu=pt"
       "vfio-pci.ids=10de:1c94"
-      "svideo=efifb:off"
+      #"video=vesafb:off,efifb:off"
       #"vfio-pci.ids=8086:9a49"
+      #"module_blacklist=i915"
       ];
 
       initrd.kernelModules = [
         "vfio_pci"
         "vfio"
         "vfio_iommu_type1"
-       # "nvidia"
-       # "nvidia_modeset"
-       # "nvidia_uvm"
-       # "nvidia_drm"
+        #"vfio_virqfd"
+        #"i915"
+        #"nvidia"
+        #"nvidia_modeset"
+        #"nvidia_uvm"
+        #"nvidia_drm"
       ];
       loader.timeout = 0;
       consoleLogLevel = 0;
@@ -39,7 +42,10 @@
        };
 
       kernelPackages = pkgs-unstable.linuxPackages_latest;
-      kernelModules = [ "uinput" ];
+      kernelModules = lib.mkBefore [
+        "i915"
+        "uinput"
+        ];
     };
   };
 }

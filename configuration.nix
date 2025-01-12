@@ -50,8 +50,8 @@
 
   # Enable the GDM Display Manager.
   services.xserver.displayManager.gdm.enable = true;
-  #services.displayManager.autoLogin.enable = true;
-  #services.displayManager.autoLogin.user = "arsham";
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "arsham";
   services.displayManager.defaultSession = "hyprland";
   
   # Enable the X11 windowing system.
@@ -85,7 +85,7 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  services.printing.drivers = [ pkgs.gutenprint ];
+  services.printing.drivers = [ pkgs.gutenprint pkgs.hplipWithPlugin ];
   services.avahi = {
     enable = true;
     nssmdns4 = true;
@@ -203,6 +203,7 @@
     udiskie
     gvfs
     jmtpfs
+    #warp-plus
  
     # Secure Boot Suppoert
     #sbctl

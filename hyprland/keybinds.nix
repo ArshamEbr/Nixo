@@ -80,6 +80,8 @@ bind = [
   #"$Primary$Secondary, M, exec, tidal-hifi"
   #"$Primary$Secondary$Tertiary, M, exec, env -u NIXOS_OZONE_WL cider --use-gl=desktop"
   #"$Primary$Secondary$Alternate, M, exec, spotify"
+  # LookingGlass
+  "$Primary$Alternate, p, exec, looking-glass-client"
   # Discord
   "$Primary, 1, exec, vesktop"
   "$Alternate, 1, exec, discord"
@@ -112,7 +114,7 @@ bind = [
   "$Primary$Secondary, I, exec, XDG_CURRENT_DESKTOP='gnome' gnome-control-center"
   "$Primary$Secondary, V, exec, pavucontrol"
   "$Primary$Tertiary, Home, exec, gnome-system-monitor"
-  "$Primary$Alternate, Insert, exec, foot -F btop"
+  #"$Primary$Alternate, Insert, exec, foot -F btop"
   
   # Actions
   "$Primary$Secondary, Period, exec, pkill fuzzel || ~/.local/bin/fuzzel-emoji"
@@ -170,8 +172,9 @@ bind = [
   "$Secondary, Comma, exec, ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'"
   "$Secondary, K, exec, ~/.local/bin/agsAction osk"
   "$Primary$Alternate, Delete, exec, ~/.local/bin/agsAction.sh session"
-  #"$Secondary$Alternate, Delete, exec, foot -F btop"
-  "$Primary, M, exec, [float; size 50% 55%; move 100%-w-10 43] kitty -e btop"
+  #"$Alternate, M, exec, foot btop"
+  "$Primary, M, exec, [float; size 50% 56%; move 100%-w-10 43] foot -e btop"
+  "$Alternate, M, exec, [float; size 50% 55%; move 100%-w-10 43] kitty -e btop"
   
   # ##################################### Plugins #########################################
   ##"$Primary$Secondary, P, exec, hyprctl plugin load "~/.config/hypr/plugins/droidbars.so""

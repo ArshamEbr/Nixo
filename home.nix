@@ -101,7 +101,7 @@ let
   # VSCode
   programs.vscode = {
     enable = true;
-    package = pkgs-unstable.vscode;
+    package = pkgs.vscode;
     extensions = with pkgs.vscode-extensions; [
       #dracula-theme.theme-dracula
       #vscodevim.vim
@@ -113,10 +113,15 @@ let
       danielsanmedium.dscodegpt
     ];
   };
-  programs.btop.settings = {
-    package = pkgs-unstable.btop;
+  programs.btop = {
+  enable = true;
+  settings = {
+    #package = pkgs-unstable.btop;
     color_theme = "Default";
     theme_background = false;
+    update_ms = 100;
+    rounded_corners = true;
+  };
   };
 
   # Obs.
@@ -141,6 +146,7 @@ let
   (with pkgs; [
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them
+    pkgs-unstable.v2rayn
 
     fastfetch
     nnn # terminal file manager
@@ -170,6 +176,7 @@ let
     htop
     nil
     udiskie
+    looking-glass-client
 
     # Extra Launchers.
 

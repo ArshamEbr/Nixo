@@ -7,7 +7,15 @@
       enable32Bit = true;
       extraPackages = with pkgs; [ vpl-gpu-rt ];
     };
-
+    
+    services.ollama = {
+    enable = false; # Set to true for using it
+    package = pkgs-unstable.ollama;
+    host = "0.0.0.0";
+    port = 11434;
+    acceleration = "cuda";
+    models = "~/models";
+  };
     #error: builder for '/nix/store/yky2kz5n8wl8cmhsrac1li658y27jrvb-displaylink-600.zip.drv' failed with exit code 1;
     #last 21 log lines:
     #>pkgs-unstable.displaylink
@@ -43,12 +51,12 @@
     };
 
     hardware.nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
       modesetting.enable = true;
       powerManagement.enable = true;
       open = false;
       nvidiaSettings = true;
-
+    
          prime = {
 			     offload.enable = true;
 			     offload.enableOffloadCmd = true;
