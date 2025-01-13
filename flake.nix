@@ -84,10 +84,10 @@
         modules = [
           ./configuration.nix
           ./hardware-configuration.nix
-          ./rand/boot.nix
-          ./rand/graphics.nix
-          ./rand/networking.nix
-          ./rand/virtualisation.nix
+          ./arsham/boot.nix
+          ./arsham/graphics.nix
+          ./arsham/networking.nix
+          ./arsham/virtualisation.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
