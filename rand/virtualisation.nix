@@ -81,5 +81,6 @@
     # Enable QEMU.
     virtualisation.libvirtd.enable = true;
     programs.virt-manager.enable = true;
+    #do this too: sudo virsh net-start default
   };
 }
