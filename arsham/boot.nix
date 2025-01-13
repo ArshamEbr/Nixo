@@ -3,29 +3,22 @@
   config = {
     boot = {
       loader = {
-        systemd-boot.enable = true;
+        systemd-boot.enable = true; # HELL YEAH! SYSTEMd_BOOT >:)
         efi.canTouchEfiVariables = true;
       };
 
       kernelParams = [
-      "intel_iommu=on"
-      "iommu=pt"
+     # Mandatory for dgpu passthrough
+      "intel_iommu=on"          
+      "iommu=pt"                
       "vfio-pci.ids=10de:1c94"
-      #"video=vesafb:off,efifb:off"
-      #"vfio-pci.ids=8086:9a49"
-      #"module_blacklist=i915"
       ];
 
       initrd.kernelModules = [
-        "vfio_pci"
+      # yea also these are mandatory for dgpu passthrough 
+        "vfio_pci"          
         "vfio"
         "vfio_iommu_type1"
-        #"vfio_virqfd"
-        #"i915"
-        #"nvidia"
-        #"nvidia_modeset"
-        #"nvidia_uvm"
-        #"nvidia_drm"
       ];
       loader.timeout = 0;
       consoleLogLevel = 0;

@@ -2,12 +2,12 @@
 {
   config = {
     # Networking.
-    networking.hostName = "Arsham-Nixos"; # Define your hostname.
-    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    networking.hostName = "Arsham-Nixos"; # Define your own hostname.
+    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant. F this!
 
-    # Configure network proxy if necessary
-    # networking.proxy.default = "http://user:password@proxy:port/";
-    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+    # Configure network proxy if necessary                              # these wont effect the terminal
+    # networking.proxy.default = "http://user:password@proxy:port/";    # itself so if you're from iran just
+    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain"; # download the pkg manually using the guide inside graphics.nix
 
     # Enable NetworkManager.
     networking.networkmanager.enable = true;

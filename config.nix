@@ -10,7 +10,7 @@
   imports =
     [ # Include the results of the hardware scan.
       #"${pkgs-unstable}/nixos/modules/programs/alvr.nix"
-      ./hardware-configuration.nix
+      ./hardware.nix
     ];
 
   environment.localBinInPath = true;
@@ -21,8 +21,7 @@
   # boot.loader.systemd-boot.enable = true;
   # boot.loader.efi.canTouchEfiVariables = true;
   #boot.kernelPackages = lib.mkForce pkgs.linuxPackages_6_6;
-  boot.plymouth.enable = true;
-  # Use the Grub EFI boot loader.
+  # Use the Grub EFI boot loader? NEVER
 
   # Udev rules.
   hardware.uinput.enable = true;
@@ -31,7 +30,7 @@
 
   #services.automatic-timezoned.enable = true;
   #location.provider = "geoclue2";
-  time.timeZone = "Asia/Tehran";
+  time.timeZone = "Asia/Tehran"; # yea...Iran...sigh.....
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -183,7 +182,7 @@
   users.users.arsham = {
     isNormalUser = true;
     description = "Arsham";
-    extraGroups = [ "networkmanager" "scanner" "lp" "wheel" "input" "uinput" "render" "video" "audio" "docker" "libvirt" "kvm" ];
+    extraGroups = [ "networkmanager" "scanner" "lp" "wheel" "input" "uinput" "render" "video" "audio" "docker" "libvirt" "libvirtd" "kvm" "virsh" ];
     packages = with pkgs; [
       firefox
     #  thunderbird
@@ -205,7 +204,7 @@
     jmtpfs
     #warp-plus
  
-    # Secure Boot Suppoert
+    # Secure Boot Suppoert "just dont use it"
     #sbctl
  
     # Networking Tools.

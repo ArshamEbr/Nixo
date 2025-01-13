@@ -9,36 +9,28 @@
     };
     
     services.ollama = {
-    enable = false; # Set to true for using it
+    enable = false; # Set it to true for using it
     package = pkgs-unstable.ollama;
     host = "0.0.0.0";
     port = 11434;
     acceleration = "cuda";
     models = "~/models";
   };
-    #error: builder for '/nix/store/yky2kz5n8wl8cmhsrac1li658y27jrvb-displaylink-600.zip.drv' failed with exit code 1;
-    #last 21 log lines:
-    #>pkgs-unstable.displaylink
-    #> ***
-    #> In order to install the DisplayLink drivers, you must first
-    #> comply with DisplayLink's EULA and download the binaries and
-    #> sources from here:
-    #>
-    #> https://www.synaptics.com/products/displaylink-graphics/downloads/ubuntu-6.0
-    #>
-    #> Once you have downloaded the file, please use the following
-    #> commands and re-run the installation:
-    #>
-    #> mv $PWD/"DisplayLink USB Graphics Software for Ubuntu6.0-EXE.zip" $PWD/displaylink-600.zip
-    # nix-prefetch-url file://$HOME/pkgfile
-    #>
-    #> Alternatively, you can use the following command to download the
-    #> file directly:
-    #>
-    #> nix-prefetch-url --name displaylink-600.zip https://www.synaptics.com/sites/default/files/exe_files/2024-05/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu6.0-EXE.zip
-    #>
-    #> ***
-    #>
+  /*
+     *HERE* are the Steps to manually downloading a package and pass it to the 
+     nix packages storage :
+     Once you have downloaded the file, please use the following
+     commands and re-run the nixos-rebuild:
+    
+     mv $HOME/Desierd-PKG-Location $PWD/Package-name-in-nix
+    
+     nix-prefetch-url file://$HOME/pkgfile
+    
+     Alternatively, you can use the following command to download the
+     file directly:
+    
+     nix-prefetch-url --name pkg-name https://the-link-of-the-file-to-download
+  */
 
     # Load Intel driver for Xorg and Waylandard
     environment.variables.LIBVA_DRIVER_NAME = "iHD";

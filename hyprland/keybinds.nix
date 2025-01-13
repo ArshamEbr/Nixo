@@ -3,7 +3,7 @@
 
 wayland.windowManager.hyprland.settings = {
 
-# ################### It just works™ keybinds ###################
+# ################### It just works™ keybinds by Celes Renata (Modified a bit by me xD) ###################
 
 # $Secondary is a reference to Command or Win, depending on what is plugged into the computer.
 
@@ -80,21 +80,26 @@ bind = [
   #"$Primary$Secondary, M, exec, tidal-hifi"
   #"$Primary$Secondary$Tertiary, M, exec, env -u NIXOS_OZONE_WL cider --use-gl=desktop"
   #"$Primary$Secondary$Alternate, M, exec, spotify"
+
   # LookingGlass
   "$Primary$Alternate, p, exec, looking-glass-client"
+
   # Discord
   "$Primary, 1, exec, vesktop"
   "$Alternate, 1, exec, discord"
-  "$Primary, 2, exec, telegram-desktop"
 
+  # Telegram
+  "$Primary, 2, exec, telegram-desktop"
 
   # Foot
   "$Primary, T, exec, foot"
   "$Alternate, T, exec, kitty"
   "$Primary$Secondary, T, exec, kitty -e nmtui"
+
   # Finders
   "$Primary, E, exec, dolphin"
   "$Alternate, E, exec, thunar"
+
   # Browsers
   "$Primary, B, exec, brave"
   "$Alternate, B, exec, firefox"
@@ -107,9 +112,11 @@ bind = [
   # calculator
   #"$Primary$Secondary, 3, exec, ~/.local/bin/wofi-calc"
   ",XF86Calculator, exec, ~/.local/bin/wofi-calc"
+
   ## Flux
   ##"$Primary$Secondary, N, exec, gammastep -O +3000 &"
   ##"$Primary$Secondary$Alternate, N, exec, gammastep -O +6500 &"
+
   # Apps: Settings and config
   "$Primary$Secondary, I, exec, XDG_CURRENT_DESKTOP='gnome' gnome-control-center"
   "$Primary$Secondary, V, exec, pavucontrol"
@@ -172,7 +179,6 @@ bind = [
   "$Secondary, Comma, exec, ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'"
   "$Secondary, K, exec, ~/.local/bin/agsAction osk"
   "$Primary$Alternate, Delete, exec, ~/.local/bin/agsAction.sh session"
-  #"$Alternate, M, exec, foot btop"
   "$Primary, M, exec, [float; size 50% 56%; move 100%-w-10 43] foot -e btop"
   "$Alternate, M, exec, [float; size 50% 55%; move 100%-w-10 43] kitty -e btop"
   

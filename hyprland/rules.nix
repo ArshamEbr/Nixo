@@ -3,6 +3,8 @@
 
 wayland.windowManager.hyprland.settings = {
 
+  # Rules Are RULES!
+
 # ######## Window rules ########
 windowrule = [
    # "noblur,.*"
