@@ -82,8 +82,8 @@
                             nixgl.defaultPackage.x86_64-linux
                           ];
         modules = [
-          ./configuration.nix
-          ./hardware-configuration.nix
+          ./config.nix
+          ./hardware.nix
           ./arsham/boot.nix
           ./arsham/graphics.nix
           ./arsham/networking.nix
