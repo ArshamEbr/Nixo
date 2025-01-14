@@ -81,8 +81,9 @@ bind = [
   #"$Primary$Secondary$Tertiary, M, exec, env -u NIXOS_OZONE_WL cider --use-gl=desktop"
   #"$Primary$Secondary$Alternate, M, exec, spotify"
 
-  # LookingGlass
-  "$Primary$Alternate, p, exec, looking-glass-client -F"
+  # LookingGlass and virsh shortcuts for ease of access
+  "$Primary$Alternate, p, exec, virsh -c qemu:///system start Win11 ; looking-glass-client -F"
+  "$Primary$Alternate, o, exec, virsh -c qemu:///system shutdown Win11"
 
   # Discord
   "$Primary, 1, exec, vesktop"

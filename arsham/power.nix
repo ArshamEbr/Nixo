@@ -6,10 +6,10 @@
 
   system76-scheduler.settings.cfsProfiles.enable = true;   # Better scheduling for CPU cycles - thanks System76!!!
   thermald.enable = true;                                  # Enable thermald, the temperature management daemon. (only necessary if on Intel CPUs)
-  power-profiles-daemon.enable = false;                    # Disable GNOMEs power management
+  power-profiles-daemon.enable = false;                    # Disable GNOMEs L power management 
   tlp = {                                                  # Enable TLP (better than gnomes internal power manager)
     enable = true;
-    settings = { # sudo tlp-stat or tlp-stat -s or sudo tlp-stat -p
+    settings = { # sudo tlp-stat
       CPU_BOOST_ON_AC = 1;
       CPU_BOOST_ON_BAT = 0;
       CPU_HWP_DYN_BOOST_ON_AC = 1;
@@ -18,10 +18,10 @@
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
       CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
       CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
-      CPU_SCALING_MIN_FREQ_ON_AC = 400000;  # 400 MHz
-      CPU_SCALING_MAX_FREQ_ON_AC = 4500000; # 4,5 GHz
-      START_CHARGE_THRESH_BAT0 = 75;
-      STOP_CHARGE_THRESH_BAT0 = 81;
+      CPU_SCALING_MIN_FREQ_ON_AC = 400000;  # 400 MHz # 1155g7 intel core i5 11th gen so
+      CPU_SCALING_MAX_FREQ_ON_AC = 4500000; # 4,5 GHz # change it for your hardware limit
+      START_CHARGE_THRESH_BAT0 = 0; # dummy value
+      STOP_CHARGE_THRESH_BAT0 = 1;
     };
   };
 };

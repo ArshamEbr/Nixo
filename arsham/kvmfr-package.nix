@@ -2,9 +2,15 @@
 
 stdenv.mkDerivation rec {
   pname = "kvmfr-${version}-${kernel.version}";
-  version = looking-glass-client.version;
+  version = "e658c2e";
 
-  src = looking-glass-client.src;
+  # src = looking-glass-client.src;
+  src = fetchFromGitHub {
+    owner = "gnif";
+    repo = "LookingGlass";
+    rev = version;
+    sha256 = "sha256-0P53Ez6bN+ZlBqS5maUObayd4g2cFeA60bq0LeD6zZ8=";
+  };
   sourceRoot = "source/module";
   hardeningDisable = [ "pic" "format" ];
   nativeBuildInputs = kernel.moduleBuildDependencies;

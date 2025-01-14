@@ -1,51 +1,31 @@
 { lib, pkgs, config, ... }:
-
 with lib;
 let
-  cfg = config.virtualisation.kvmfr;
-in
-{
-  options.virtualisation.kvmfr = {
-    enable = mkEnableOption "Kvmfr";
-
-    shm = {
-      enable = mkEnableOption "shm";
-
+  cfg = config.virtualisation.looking-glass;
+in {
+  options.virtualisation.looking-glass = {
+    enable = mkEnableOption "enable looking glass";
+    kvmfr = {
+      enable = mkEnableOption "enable kvmfr module for looking-glass";
       size = mkOption {
         type = types.int;
-        default = "128";
-        description = "Size of the shared memory device in megabytes.";
-      };
-      user = mkOption {
-        type = types.str;
-        default = "root";
-        description = "Owner of the shared memory device.";
-      };
-      group = mkOption {
-        type = types.str;
-        default = "root";
-        description = "Group of the shared memory device.";
-      };
-      mode = mkOption {
-        type = types.str;
-        default = "0600";
-        description = "Mode of the shared memory device.";
+        default = "64";
+        description = "Size of the shared memory device in megabytes";
       };
     };
   };
 
-  config = mkIf cfg.enable {
-    boot.extraModulePackages = with config.boot.kernelPackages; [
+  config = lib.mkIf cfg.enable {
+    # kvmfr stuff
+    boot.extraModulePackages = optionals cfg.kvmfr.enable (with config.boot.kernelPackages; [
       (pkgs.callPackage ./kvmfr-package.nix { inherit kernel;})
-    ];
-    boot.initrd.kernelModules = [ "kvmfr" ];
-
-    boot.kernelParams = optionals cfg.shm.enable [
-      "kvmfr.static_size_mb=${toString cfg.shm.size}"
-    ];
-
-    services.udev.extraRules = optionals cfg.shm.enable ''
-      SUBSYSTEM=="kvmfr", OWNER="${cfg.shm.user}", GROUP="${cfg.shm.group}", MODE="${cfg.shm.mode}"
+    ]);
+    boot.initrd.kernelModules = optionals cfg.kvmfr.enable ([ "kvmfr" ]);
+    boot.kernelParams = optionals cfg.kvmfr.enable ([
+      "kvmfr.static_size_mb=${toString cfg.kvmfr.size}"
+    ]);
+    services.udev.extraRules = optionalString cfg.kvmfr.enable ''
+      SUBSYSTEM=="kvmfr", OWNER="stranger", GROUP="qemu-libvirtd", MODE="0666"
     '';
   };
 }

@@ -1,5 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
+ #   imports = [
+ #   ./kvmfr-package.nix
+ #   ./kvmfr-options.nix
+ # ];
   config = {
    # # Enable VMWare Tools.
    # virtualisation.docker = {
@@ -79,20 +83,15 @@
    #   };
    # };
     # Enable QEMU.
-    virtualisation.libvirtd.enable = true;
+    virtualisation.libvirtd.enable = true; #do this too: sudo virsh net-start default
     programs.virt-manager.enable = true;
-    #do this too: sudo virsh net-start default
-  };
-    virtualisation.kvmfr = {
-    enable = true;
 
-    shm = {
-      enable = true;
-
-      size = 128;
-      user = "arsham";
-      group = "libvirtd";
-      mode = "0600";
-    };
-  };
+ #   virtualisation.looking-glass = {
+ #     enable = true;
+ #     kvmfr = {
+ #       enable = true;
+ #       size = 64;
+ #     };
+ #   };
+ };
 }
