@@ -83,4 +83,16 @@
     programs.virt-manager.enable = true;
     #do this too: sudo virsh net-start default
   };
+    virtualisation.kvmfr = {
+    enable = true;
+
+    shm = {
+      enable = true;
+
+      size = 128;
+      user = "arsham";
+      group = "libvirtd";
+      mode = "0600";
+    };
+  };
 }
