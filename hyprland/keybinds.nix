@@ -82,7 +82,7 @@ bind = [
   #"$Primary$Secondary$Alternate, M, exec, spotify"
 
   # LookingGlass
-  "$Primary$Alternate, p, exec, looking-glass-client"
+  "$Primary$Alternate, p, exec, looking-glass-client -F"
 
   # Discord
   "$Primary, 1, exec, vesktop"

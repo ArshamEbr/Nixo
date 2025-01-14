@@ -85,8 +85,10 @@
           ./config.nix
           ./hardware.nix
           ./arsham/boot.nix
+         # ./arsham/games.nix
           ./arsham/graphics.nix
           ./arsham/networking.nix
+          ./arsham/power.nix
           ./arsham/virtualisation.nix
           home-manager.nixosModules.home-manager
           {

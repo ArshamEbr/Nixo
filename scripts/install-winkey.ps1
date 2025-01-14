@@ -1,1 +1,0 @@
-slmgr.vbs /ipk W4FTN-FV483-TY26Q-CXFBV-QPFCF
