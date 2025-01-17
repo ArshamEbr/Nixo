@@ -2,7 +2,7 @@
 {
   config = {
     # Networking.
-    networking.hostName = "Arsham-Nixos"; # Define your own hostname.
+    networking.hostName = "Nixo"; # Define your own hostname.
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant. F this!
 
     # Configure network proxy if necessary                              # these wont effect the terminal

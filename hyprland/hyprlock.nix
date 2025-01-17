@@ -105,7 +105,7 @@ label = [
   }
   { # Status
     monitor = "";
-    text = "cmd[update:5000] \"\${XDG_CONFIG_HOME:-$HOME}\"/nixo/hyprland/status.sh"; # give the file executable permission or it wont work!
+    text = "cmd[update:5000] \"\${XDG_CONFIG_HOME:-$HOME}\"/nixo/hyprland/status.sh"; # give the file "executable" permission or it wont work!
     shadow_passes = 1;
     shadow_boost = "0.5";
     color = "$text_color";

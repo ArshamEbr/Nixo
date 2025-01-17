@@ -147,6 +147,9 @@ let
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them
     pkgs-unstable.v2rayn
+    networkmanager-openvpn
+    openvpn
+    openvpn3
 
     fastfetch
     nnn # terminal file manager

@@ -1,8 +1,41 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
+{ pkgs, pkgs-unstable, config, ... }:
+let
+dpass = pkgs.stdenv.mkDerivation {
+  name = "deattach";
+  phases = [ "installPhase" ];
+  installPhase = ''
+    mkdir -p $out/bin
+    cat > $out/bin/deattacho.sh <<'EOF'
+    #!/run/current-system/sw/bin/bash
+    set -x
 
-{ pkgs, pkgs-unstable, ... }:
+    sudo rmmod nvidia_modeset nvidia_uvm nvidia
+    sudo modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1
+    sudo virsh nodedev-detach pci_0000_01_00_0
+    EOF
+    chmod 755 $out/bin/deattacho.sh
+  '';
+};
+dback = pkgs.stdenv.mkDerivation {
+  name = "reattach";
+  phases = [ "installPhase" ];
+  installPhase = ''
+    mkdir -p $out/bin
+    cat > $out/bin/reattacho.sh <<'EOF'
+    #!/run/current-system/sw/bin/bash
+    set -x
+    
+    sudo virsh nodedev-reattach pci_0000_01_00_0
+    sudo rmmod vfio_pci vfio_pci_core vfio_iommu_type1
+    sudo modprobe -i nvidia_modeset nvidia_uvm nvidia
+    EOF
+    chmod 755 $out/bin/reattacho.sh
+  '';
+};
+in
 {
   # Licences.
   nixpkgs.config.allowUnfree = true;
@@ -196,6 +229,8 @@
 
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    dpass
+    dback
     # Editors.
     vim
     nano
@@ -362,6 +397,24 @@
   services.openssh.enable = true;
 
   zramSwap.enable = true;
+
+    security.wrappers.dpass = {
+    source = "${dpass}/bin/deattacho.sh";
+    capabilities = "cap_sys_admin+p";
+    owner = "root";
+    group = "root";
+  };
+
+    security.wrappers.dback = {
+    source = "${dback}/bin/reattacho.sh";
+    capabilities = "cap_sys_admin+p";
+    owner = "root";
+    group = "root";
+  };
+
+  #  services.openvpn.servers = {
+  #  homeVPN    = { config = '' config /home/arsham/Downloads/Usa.ovpn ''; };
+  #};
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

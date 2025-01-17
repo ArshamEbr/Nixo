@@ -40,7 +40,7 @@
 
   in {
     nixosConfigurations = {
-      Arsham-Nixos =
+      Nixo =
       let
       pkgs = import inputs.nixpkgs rec {
         inherit system;
@@ -85,6 +85,7 @@
           ./config.nix
           ./hardware.nix
           ./arsham/boot.nix
+          ./arsham/comfyui.nix
          # ./arsham/games.nix
           ./arsham/graphics.nix
           ./arsham/networking.nix

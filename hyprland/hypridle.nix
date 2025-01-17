@@ -19,8 +19,7 @@ listener = [
   }
   {
     timeout = 420; # 7mins
-    on-timeout = "$lock_cmd && brightnessctl set 1%";
-    on-resume = "brightnessctl set $(cat ~/.cache/idle-brightness)";
+    on-timeout = "$lock_cmd";
   }
   {
     timeout = 600; # 10mins

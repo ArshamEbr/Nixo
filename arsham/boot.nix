@@ -26,10 +26,10 @@
       supportedFilesystems = [ "ntfs" "nfs" ];
       plymouth = {
          enable = true;
-         theme = "cross_hud";
+         theme = "owl";
          themePackages = with pkgs; [
            (adi1090x-plymouth-themes.override {
-             selected_themes = [ "cross_hud" ];
+             selected_themes = [ "owl" ];
            })
          ];
        };

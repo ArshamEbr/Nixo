@@ -9,12 +9,12 @@
     };
     
     services.ollama = {
-    enable = false; # Set it to true for using it
+    enable = true; # Set it to true for using it
     package = pkgs-unstable.ollama;
     host = "0.0.0.0";
     port = 11434;
     acceleration = "cuda";
-    models = "~/models";
+    models = "/var/lib/ollama/~/models";
   };
   /*
      *HERE* are the Steps to manually downloading a package and pass it to the 
