@@ -85,7 +85,7 @@
           ./config.nix
           ./hardware.nix
           ./arsham/boot.nix
-          ./arsham/comfyui.nix
+         # ./arsham/comfyui.nix
          # ./arsham/games.nix
           ./arsham/graphics.nix
           ./arsham/networking.nix

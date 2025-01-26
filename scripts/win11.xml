@@ -16,7 +16,7 @@
   <os>
     <type arch="x86_64" machine="pc-q35-4.2">hvm</type>
     <loader readonly="yes" type="pflash">/opt/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF_CODE.fd</loader>
-    <nvram>/opt/edk2/Build/OvmfX64/DEBUG_GCC5/FV/Win11_VARS.fd</nvram>
+    <nvram>/opt/edk2/Build/OvmfX64/DEBUG_GCC5/FV/OVMF_VARS.fd</nvram>
   </os>
   <features>
     <acpi/>
@@ -220,7 +220,7 @@
     <memballoon model="none"/>
     <shmem name="looking-glass">
       <model type="ivshmem-plain"/>
-      <size unit="M">32</size>
+      <size unit="M">64</size>
       <address type="pci" domain="0x0000" bus="0x10" slot="0x01" function="0x0"/>
     </shmem>
   </devices>

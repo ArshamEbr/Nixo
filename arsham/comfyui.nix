@@ -1,12 +1,13 @@
-let
-  pkgs = import <nixpkgs> {
-    config = {
-      allowUnfree = true;
-      cudaSupport = true;
-    };
+{ pkgs, pkgs-unstable, config, ... }:
+{
+  # Enable unfree packages and CUDA support
+  nixpkgs.config = {
+    allowUnfree = true;
+    cudaSupport = true;
   };
-in pkgs.mkShell {
-  buildInputs = with pkgs; [
+
+  # Add necessary packages to system-wide environment
+  environment.systemPackages = with pkgs; [
     glib
     python312
     python312Packages.accelerate
@@ -23,13 +24,26 @@ in pkgs.mkShell {
     python312Packages.scipy
     python312Packages.tqdm
     python312Packages.psutil
-  ];
-  packages = [
-    (pkgs.python3.withPackages (python-pkgs: [
-      pkgs.glib
+    (python3.withPackages (python-pkgs: [
       python-pkgs.pandas
       python-pkgs.requests
     ]))
   ];
-  LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${pkgs.glib.out}/lib";
+
+  # Set environment variables for library paths
+  environment.variables.LD_LIBRARY_PATH = "${pkgs.glib}/lib";
+
+   nix = {
+    settings = {
+      substituters = [
+        "https://nix-community.cachix.org"
+        "https://cache.nixos.org/"
+      ];
+      trusted-public-keys = [
+        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+    };
+  };
+
 }

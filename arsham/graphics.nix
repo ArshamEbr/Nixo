@@ -14,7 +14,7 @@
     host = "0.0.0.0";
     port = 11434;
     acceleration = "cuda";
-    models = "/var/lib/ollama/~/models";
+    models = "~/models";
   };
   /*
      *HERE* are the Steps to manually downloading a package and pass it to the 

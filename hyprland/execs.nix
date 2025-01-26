@@ -7,9 +7,13 @@ wayland.windowManager.hyprland.settings = {
 exec-once = [ 
 
 # Bar, wallpaper
-"swww-daemon --format xrgb"
+#"swww-daemon --format xrgb"
+"mpvpaper '*' ~/mitsu.mp4 -o '--loop-file=yes'" # live wallpaper
 "/usr/lib/geoclue-2.0/demos/agent & gammastep"
 "ags &"
+
+# Sound Enhancer
+"easyeffects"
 
 # Input method
 "fcitx5"
@@ -37,10 +41,10 @@ exec-once = [
 "sleep 4 && antimicrox --tray --hidden &"
 
 # Network Manager
-"nm-applet &"
+#"nm-applet &"
 
 # Remote Desktop
-"~/.local/bin/sunshine &"
+#"~/.local/bin/sunshine &"
 
 # Hyprlock
 "hyprlock"

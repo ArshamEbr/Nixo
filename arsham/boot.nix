@@ -34,7 +34,8 @@
          ];
        };
 
-      kernelPackages = pkgs-unstable.linuxPackages_latest;
+     # kernelPackages = pkgs-unstable.linuxPackages_latest; 6.13 kernel not fixed rn in jan 21
+     kernelPackages = pkgs-unstable.linuxPackages_6_12;
       kernelModules = lib.mkBefore [
         "i915"
         "uinput"

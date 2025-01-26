@@ -311,8 +311,10 @@ let
     plasma-browser-integration
     playerctl
     swww
+    mpvpaper
     mpv
     vlc
+    waypaper
 
     # GTK
     webp-pixbuf-loader

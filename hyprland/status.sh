@@ -1,4 +1,4 @@
-#!/nix/store/p6k7xp1lsfmbdd731mlglrdj2d66mr82-bash-5.2p37/bin/bash
+#!/run/current-system/sw/bin/bash
 
 ############ Variables ############
 enable_battery=false

@@ -82,8 +82,8 @@ bind = [
   #"$Primary$Secondary$Alternate, M, exec, spotify"
 
   # LookingGlass and virsh shortcuts for ease of access
-  "$Primary$Alternate, p, exec, virsh -c qemu:///system start Win11 ; looking-glass-client -F"
-  "$Primary$Alternate, o, exec, virsh -c qemu:///system shutdown Win11"
+  "$Primary$Alternate, p, exec, pkill mpvpaper ; virsh -c qemu:///system start Win11 ; looking-glass-client -F ; swww-daemon --format xrgb"
+  "$Primary$Alternate, o, exec, virsh -c qemu:///system shutdown Win11; pkill swww-daemon; pgrep mpvpaper > /dev/null || (mpvpaper '*' ~/mitsu.mp4 -o '--loop-file=yes')"
 
   # Discord
   "$Primary, 1, exec, vesktop"
@@ -170,7 +170,7 @@ bind = [
   
   # ##################################### AGS keybinds #####################################
   
-  "$Primary$Secondary, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh"
+  "$Secondary$Tertiary, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh"
   "$Alternate, Tab, exec, ags -t 'overview'"
   "$Secondary, Space, exec, ags -t 'overview'"
   "$Secondary$Alternate, Slash, exec, ~/.local/bin/agsAction.sh cheatsheet"
