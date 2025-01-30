@@ -5,13 +5,12 @@
  #   ./kvmfr-options.nix
  # ];
   config = {
-   # # Enable VMWare Tools.
-   # virtualisation.docker = {
-   #   enable = true;
-   #   enableOnBoot = false;
-   #   storageDriver = "btrfs";
-   #   daemon.settings.data-root = "/home/docker";
-   # };
+    virtualisation.docker = {
+      enable = true;
+      enableOnBoot = false;
+      storageDriver = "btrfs";
+      daemon.settings.data-root = "/home/docker";
+    };
     #systemd.services = {
     #  gpu-switch = {
     #    enable = true;
@@ -39,44 +38,7 @@
     #  };
     #};
 
-   # virtualisation.oci-containers = {
-   #   backend = "docker";
-   #   containers = {
-   #     windows = {
-   #       hostname = "winvm";
-   #       autoStart = true;
-   #       image = "ghcr.io/dockur/windows:latest";
-   #       volumes = [
-   #         "/mnt/shared:/shared"
-   #         "/home/docker/windows/data:/storage"
-   #         "/etc/nixos/scripts:/oem"
-   #         "/home/arsham/win11.iso:/custom.iso"
-#  #          "/home/arsham/virtio.iso:/virtio.iso"
-   #       ];
-   #       ports = [
-   #         "8006:8006"
-   #         "3389:3389"
-   #       ];
-   #       environment = {
-   #         VERSION = "win11e";
-   #         USERNAME = "Arsham";
-   #         PASSWORD = "1";
-   #         DISK_SIZE = "32G";
-   #         RAM_SIZE = "4G";
-   #         CPU_CORES = "4";
- # #          MANUAL = "Y";
-   #       };
-   #       extraOptions = [
-   #         "--cap-add=NET_ADMIN"
-   #         "--device=/dev/kvm"
-   #         "--device=/dev/dri/card2"
-   #         "--device=/dev/vfio/vfio"
-   #        # "--device=nvidia.com/gpu=all"
-   #         "--stop-timeout=120"
-   #       ];
-   #     };
-   #   };
-   # };
+
     # Enable QEMU
     virtualisation = {
       libvirtd = { 

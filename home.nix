@@ -269,6 +269,14 @@ let
     p4
     subversion
 
+  #  #VbiosFinder Deps
+  #  gnumake
+  #  ruby
+  #  innoextract 
+  #  p7zip 
+  #  upx 
+  #  cmake
+
     # Python
     pyenv.out
     (python312.withPackages(ps: with ps; [
@@ -315,6 +323,7 @@ let
     mpv
     vlc
     waypaper
+    swaybg
 
     # GTK
     webp-pixbuf-loader

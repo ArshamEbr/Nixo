@@ -18,11 +18,11 @@ done
 ############# Output #############
 if [[ $enable_battery == true ]]; then
   if [[ $battery_charging == true ]]; then
-    echo -n "(+) "
+    echo -n "Charging >:) "
   fi
   echo -n "$(cat /sys/class/power_supply/*/capacity | head -1)"%
   if [[ $battery_charging == false ]]; then
-    echo -n " remaining"
+    echo -n " Remaining :("
   fi
 fi
 

@@ -1,8 +1,5 @@
 {config, pkgs, inputs, lib, ... }:
-{
-
- # Fancy AF Lockscreen :)
-
+{ # Fancy AF Lockscreen :)
 programs.hyprlock.enable=true;
 programs.hyprlock.settings = {
 "$text_color" = "rgba(ECDEECFF)";
@@ -13,8 +10,9 @@ programs.hyprlock.settings = {
 #"$entry_background_color" = "rgba(33333311)";
 #"$entry_border_color" = "rgba(3B3B3B55)";
 #"$entry_color" = "rgba(FFFFFFFF)";
-"$font_family" = "Rubik Light";
-"$font_family_clock" = "Rubik Light";
+#"$font_family" = "Rubik Light";
+"$font_family" = "Audiowide";
+"$font_family_clock" = "Saira Stencil One";
 "$font_material_symbols" = "Material Symbols Rounded";
 
 background = [
@@ -23,7 +21,7 @@ background = [
     "rgba(130C15FF)"
     "rgba(000000FF)"
     ];
-    path = "/home/arsham/.cache/ags/user/generated/hypr/lockscreen.png";
+    path = "/home/arsham/Pictures/mitsu.png";
     # path = screenshot;
     blur_size = 5;
     blur_passes = 4;
@@ -57,7 +55,7 @@ label = [
     shadow_passes = 1;
     shadow_boost = "0.5";
     color = "$text_color";
-    font_size = 65;
+    font_size = 120;
     font_family = "$font_family_clock";
 
     position = "0, 300";
@@ -73,7 +71,7 @@ label = [
     font_size = 20;
     font_family = "$font_family";
 
-    position = "0, 240";
+    position = "0, 200";
     halign = "center";
     valign = "center";
   }
@@ -116,6 +114,19 @@ label = [
     halign = "left";
     valign = "top";
   }
+#  { # Battery Icon
+#    monitor = "";
+#    text = "battery_horiz_000";
+#    shadow_passes = 1;
+#    shadow_boost = "0.5";
+#    color = "$text_color";
+#    font_size = 60;
+#    font_family = "$font_material_symbols";
+#
+#    position = "15, 5";
+#    halign = "left";
+#    valign = "top";
+#  }
 ];
 };
 }

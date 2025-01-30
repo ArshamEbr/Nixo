@@ -5,7 +5,7 @@
     hardware.graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs; [ vpl-gpu-rt ];
+      extraPackages = with pkgs; [ vpl-gpu-rt intel-media-driver ];
     };
     
     services.ollama = {

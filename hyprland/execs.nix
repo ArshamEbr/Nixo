@@ -13,7 +13,7 @@ exec-once = [
 "ags &"
 
 # Sound Enhancer
-"easyeffects"
+"easyeffects --gapplication-service &"
 
 # Input method
 "fcitx5"

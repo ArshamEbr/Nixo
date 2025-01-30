@@ -48,10 +48,10 @@ in
 
   environment.localBinInPath = true;
   # Enable Flakes.
-#  nix.settings.
-
-      nix = {
+  nix = {
     settings = {
+      max-jobs = "auto";  # Uses all available CPU cores
+      cores = 4; 
       experimental-features = [ "nix-command" "flakes" ];
       substituters = [
         "https://nix-community.cachix.org"
@@ -104,7 +104,7 @@ in
   services.xserver.enable = true;
 
   # Enable the Enlightenment Desktop Environment.
-  services.desktopManager.plasma6.enable = true;
+ # services.desktopManager.plasma6.enable = true;
 
   programs.hyprland = {
     # Install the packages from nixpkgs
@@ -142,12 +142,14 @@ in
   #hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   
+  hardware.pulseaudio.enable = false;  # Disable PulseAudio
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
     wireplumber.enable = true;
+    jack.enable = true;
   };
 
   # services.jack = {
@@ -180,6 +182,7 @@ in
     lexend
     material-symbols
     bibata-cursors
+    google-fonts
   ];
 
   # Extra Groups
@@ -252,9 +255,6 @@ in
     gvfs
     jmtpfs
     #warp-plus
- 
-    # Secure Boot Suppoert "just dont use it"
-    #sbctl
  
     # Networking Tools.
     wget
@@ -360,6 +360,8 @@ in
     xfce.thunar
     wayland-scanner
     waypipe
+    libva
+    libva-utils
 
     # GTK
     gtk3
@@ -386,13 +388,12 @@ in
     wine64
     qemu
 
-    # Mac Sound.
+    # Sound
     libspatialaudio
     pulseaudio
     pipewire
-    #t2AppleAudioDSP
 
-    # Mac Camera.
+    # Camera
     libcamera
   ];
 
@@ -401,30 +402,28 @@ in
       flake = "/home/arsham/nixo";
       clean = {
       enable = true;
-      dates = "daily";
+      dates = "weekly";
       extraArgs = "--keep 3";};
       };
-
-  # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
   zramSwap.enable = true;
 
-    security.wrappers.dpass = {
-    source = "${dpass}/bin/deattacho.sh";
-    capabilities = "cap_sys_admin+p";
-    owner = "root";
-    group = "root";
-  };
-
-    security.wrappers.dback = {
-    source = "${dback}/bin/reattacho.sh";
-    capabilities = "cap_sys_admin+p";
-    owner = "root";
-    group = "root";
-  };
+ #   security.wrappers.dpass = {
+ #   source = "${dpass}/bin/deattacho.sh";
+ #   capabilities = "cap_sys_admin+p";
+ #   owner = "root";
+ #   group = "root";
+ # };
+ #
+ #   security.wrappers.dback = {
+ #   source = "${dback}/bin/reattacho.sh";
+ #   capabilities = "cap_sys_admin+p";
+ #   owner = "root";
+ #   group = "root";
+ # };
 
   #  services.openvpn.servers = {
   #  homeVPN    = { config = '' config /home/arsham/Downloads/Usa.ovpn ''; };

@@ -3,7 +3,7 @@
   services.hyprpaper.enable = true;
 
   services.hyprpaper.settings = {
-  ipc = "on";
+  ipc = "off";
   splash = true;
   splash_offset = 2.0;
 
@@ -13,5 +13,5 @@
   wallpaper = [
     ", /home/arsham/Backgrounds/Aurora.jpg"
   ];
-  }
+  };
 }

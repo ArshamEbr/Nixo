@@ -2,6 +2,9 @@
 {
   config = {
     boot = {
+      
+      extraModprobeConfig = "options snd_hda_intel model=alcplugfix";
+
       loader = {
         systemd-boot.enable = true; # HELL YEAH! SYSTEMd_BOOT >:)
         efi.canTouchEfiVariables = true;
@@ -12,6 +15,7 @@
       "intel_iommu=on"          
       "iommu=pt"                
       "vfio-pci.ids=10de:1c94"
+      "vfio-pci.enable_msi=1"
       ];
 
       initrd.kernelModules = [
