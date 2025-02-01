@@ -7,11 +7,8 @@
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
-
-  boot.initrd.availableKernelModules = [ "xhci_pci" "vmd" "ahci" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  
+  boot.kernelModules = [ ];
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/ee3239e2-5831-4e2f-ba84-07159e16f70b";

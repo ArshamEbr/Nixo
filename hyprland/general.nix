@@ -27,8 +27,7 @@ input = {
 };
 
 binds = {
-    # focus_window_on_workspace_c# For Auto-run stuff see execs.confhange = true;
-    scroll_event_delay = 0;
+    scroll_event_delay = 0; # focus_window_on_workspace_c# For Auto-run stuff see execs.confhange = true;
 };
 
 gestures = {

@@ -25,6 +25,7 @@ exec-once = [
 "dbus-update-activation-environment --all"
 "sleep 1 && dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # Some fix idk
 "hyprpm reload"
+"polkit-kde-authentication-agent-1"
 
 # Clipboard: history
 # "wl-paste --watch cliphist store &"
@@ -38,7 +39,7 @@ exec-once = [
 "touchegg"
 
 # Bluetooth
-"sleep 4 && antimicrox --tray --hidden &"
+# "sleep 4 && antimicrox --tray --hidden &" for joysticks
 
 # Network Manager
 #"nm-applet &"
@@ -48,10 +49,6 @@ exec-once = [
 
 # Hyprlock
 "hyprlock"
-
-# Disk auto mounter
-"udiskie"
-
 
 ];
 

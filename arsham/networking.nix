@@ -1,40 +1,57 @@
 { ... }:
 {
   config = {
+    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant F this!
+
+    /*
+     *HERE* are the Steps to manually downloading a package and pass it to the 
+     nix packages storage :
+     Once you have downloaded the file, please use the following
+     commands and re-run the nixos-rebuild:
+    
+     mv $HOME/Desierd-PKG-Location $PWD/Package-name-in-nix
+    
+     nix-prefetch-url file://$HOME/pkgfile
+    
+     Alternatively, you can use the following command to download the
+     file directly:
+    
+     nix-prefetch-url --name pkg-name https://the-link-of-the-file-to-download
+    */
+
+
     # Networking.
-    networking.hostName = "Nixo"; # Define your own hostname.
-    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant. F this!
+    networking = {
+      # Configure network proxy if necessary                              # these wont effect the terminal
+      # networking.proxy.default = "http://user:password@proxy:port/";    # itself so if you're from iran just
+      # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain"; # download the pkg manually using the guide above!
+      hostName = "Nixo"; # Define your own hostname.
+      networkmanager.enable = true; # Enable NetworkManager.
+      firewall = {
+        enable = true;
+        allowedTCPPorts = [ 3216 3658 3659 8082 24800 47984 47989 47990 48010 ];
 
-    # Configure network proxy if necessary                              # these wont effect the terminal
-    # networking.proxy.default = "http://user:password@proxy:port/";    # itself so if you're from iran just
-    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain"; # download the pkg manually using the guide inside graphics.nix
+        allowedTCPPortRanges = [
+          { from = 31800; to = 31899; }
+          { from = 27015; to = 27030; }
+          { from = 27036; to = 27037; }
+        ];
 
-    # Enable NetworkManager.
-    networking.networkmanager.enable = true;
+        allowedUDPPorts = [ 
+          3216 
+          27036 
+          48010 
+        ];
 
-    # Enable Bluetooth
-    hardware.bluetooth.enable = true;
-    hardware.bluetooth.powerOnBoot = true;
-    services.blueman.enable = true;
-    hardware.enableAllFirmware = true;
-
-    networking.firewall = {
-      enable = true;
-      allowedTCPPorts = [ 3216 3658 3659 8082 24800 47984 47989 47990 48010 ];
-      allowedTCPPortRanges = [
-        { from = 31800; to = 31899; }
-        { from = 27015; to = 27030; }
-        { from = 27036; to = 27037; }
-      ];
-      allowedUDPPorts = [ 3216 27036 48010 ];
-      allowedUDPPortRanges = [
-        { from = 24800; to = 24810; }
-        { from = 47998; to = 48000; }
-        { from = 8000; to = 8010; }
-        { from = 9942; to = 9944; }
-        { from = 3658; to = 3659; }
-        { from = 27000; to = 27031; }
-      ];
-    };
+        allowedUDPPortRanges = [
+          { from = 24800; to = 24810; }
+          { from = 47998; to = 48000; }
+          { from = 8000; to = 8010; }
+          { from = 9942; to = 9944; }
+          { from = 3658; to = 3659; }
+          { from = 27000; to = 27031; }
+        ];
+      };
+    };  
   };
 }
