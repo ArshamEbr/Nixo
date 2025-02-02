@@ -19,7 +19,6 @@
      nix-prefetch-url --name pkg-name https://the-link-of-the-file-to-download
     */
 
-
     # Networking.
     networking = {
       # Configure network proxy if necessary                              # these wont effect the terminal

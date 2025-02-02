@@ -39,7 +39,7 @@ exec-once = [
 "touchegg"
 
 # Bluetooth
-# "sleep 4 && antimicrox --tray --hidden &" for joysticks
+# "sleep 4 && antimicrox --tray --hidden &" # for joysticks
 
 # Network Manager
 #"nm-applet &"

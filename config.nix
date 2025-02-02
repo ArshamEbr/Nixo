@@ -143,20 +143,20 @@ in
       alsa.support32Bit = true;
       pulse.enable = true;
       wireplumber.enable = true;
-      jack.enable = false;
+      jack.enable = true;
     };
 
-    jack = {
-      jackd.enable = true;
-      alsa.enable = false; # support ALSA only programs via ALSA JACK PCM plugin
-      loopback = { # support ALSA only programs via loopback device (supports programs like Steam)
-        enable = true;
-        # buffering parameters for dmix device to work with ALSA only semi-professional sound programs
-        #dmixConfig = ''
-        #  period_size 2048
-        #'';
-      };
-    };
+   # jack = {
+   #   jackd.enable = true;
+   #   alsa.enable = false; # support ALSA only programs via ALSA JACK PCM plugin
+   #   loopback = { # support ALSA only programs via loopback device (supports programs like Steam)
+   #     enable = true;
+   #     # buffering parameters for dmix device to work with ALSA only semi-professional sound programs
+   #     #dmixConfig = ''
+   #     #  period_size 2048
+   #     #'';
+   #   };
+   # };
 
   };
 

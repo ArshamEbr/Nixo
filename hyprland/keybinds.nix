@@ -3,7 +3,7 @@
 
 wayland.windowManager.hyprland.settings = {
 
-# ################### It just works™ keybinds by Celes Renata (Modified a bit by me xD) ###################
+# ################### It just works™ keybinds by Celes Renata (Modified a little by ArshamEbr xD) ###################
 
 # $Secondary is a reference to Command or Win, depending on what is plugged into the computer.
 
@@ -161,7 +161,7 @@ bind = [
   "$Secondary$Tertiary, B, exec, playerctl previous"
   "$Secondary$Tertiary, P, exec, playerctl play-pause"
   
-  #Lock screen  |  blur: --effect-blur=20x202
+  #Lock screen
   "$Primary$Secondary, L, exec, hyprlock"
   
   
@@ -172,7 +172,7 @@ bind = [
   
   "$Secondary$Tertiary, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh"
   "$Alternate, Tab, exec, ags -t 'overview'"
-  "$Secondary, Space, exec, ags -t 'overview'"
+  "$Primary, A, exec, ags -t 'overview'"
   "$Secondary$Alternate, Slash, exec, ~/.local/bin/agsAction.sh cheatsheet"
   "$Secondary, B, exec, ags -t 'sideleft'"
   "$Secondary, N, exec, ags -t 'sideright'"

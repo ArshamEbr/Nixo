@@ -257,7 +257,7 @@ let
       ipcalc  # it is a calculator for the IPv4/v6 addresses
       nmap
   
-      # Games.
+      # Games
       antimicrox
   
       # misc
