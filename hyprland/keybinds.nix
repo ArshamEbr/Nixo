@@ -82,9 +82,15 @@ bind = [
   #"$Primary$Secondary$Alternate, M, exec, spotify"
 
   # LookingGlass and virsh shortcuts for ease of access
-  "$Primary$Alternate, p, exec, pkill mpvpaper; swaybg -i /home/arsham/Wallpapers/mitsu.png & disown; virsh -c qemu:///system start Win11 ; looking-glass-client -F"
+  "$Primary$Alternate, p, exec, deattacho.sh && pkill mpvpaper; swaybg -i /home/arsham/Wallpapers/mitsu.png & disown; virsh -c qemu:///system start Win11 ; looking-glass-client -F"
   "$Primary$Alternate, o, exec, pkill swaybg; virsh -c qemu:///system shutdown Win11; pgrep mpvpaper > /dev/null || (mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes')"
 
+  # Battery Modes
+  "$Primary$Alternate, 0, exec, battery_toggle.sh"
+
+  # dGPU Status
+  "$Primary$Alternate, 9, exec, check_gpu_status.sh"
+  
   # Discord
   "$Primary, 1, exec, vesktop"
   "$Alternate, 1, exec, discord"
@@ -97,8 +103,8 @@ bind = [
   "$Alternate, T, exec, kitty"
   "$Primary$Secondary, T, exec, kitty -e nmtui"
 
-  # Finders
-  "$Primary, E, exec, dolphin"
+  # File Explorers
+  "$Primary, E, exec, nautilus"
   "$Alternate, E, exec, thunar"
 
   # Browsers
