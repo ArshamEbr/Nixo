@@ -106,6 +106,7 @@ in
     touchegg.enable = true; # Gestures
     udisks2.enable = true;
     blueman.enable = true; # Bluetooth 
+    gvfs.enable = true;
 
   # openvpn.servers = {
   #   homeVPN    = { config = '' config /home/arsham/Downloads/Usa.ovpn ''; };
@@ -124,6 +125,14 @@ in
         layout = "us";
         variant = "";
       };
+    };
+
+    udev = {
+      enable = true;
+      packages = [ 
+        pkgs.libmtp 
+        pkgs.libinput 
+      ];
     };
 
     printing = {
@@ -248,9 +257,12 @@ in
       nano
 
       # Some auto mount stuff
-     # udiskie
-     # gvfs
-     # jmtpfs
+      # udiskie
+      gvfs
+      jmtpfs
+      android-udev-rules  # Auto-detection of Android devices
+      libmtp
+      glib
  
       # Networking Tools.
       wget
@@ -259,6 +271,7 @@ in
       nmap
       pssh
       tmate
+      nix-prefetch-git
 
       # Audio.
       ladspaPlugins
