@@ -8,7 +8,7 @@ exec-once = [
 
 # Bar, wallpaper
 #"swww-daemon --format xrgb"
-"mpvpaper '*' ~/mitsu.mp4 -o '--loop-file=yes'" # live wallpaper
+"mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes'" # live wallpaper
 "/usr/lib/geoclue-2.0/demos/agent & gammastep"
 "ags &"
 

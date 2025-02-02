@@ -82,8 +82,8 @@ bind = [
   #"$Primary$Secondary$Alternate, M, exec, spotify"
 
   # LookingGlass and virsh shortcuts for ease of access
-  "$Primary$Alternate, p, exec, pkill mpvpaper; swaybg -i /home/arsham/Pictures/mitsu.png & disown; virsh -c qemu:///system start Win11 ; looking-glass-client -F"
-  "$Primary$Alternate, o, exec, pkill swaybg; virsh -c qemu:///system shutdown Win11; pgrep mpvpaper > /dev/null || (mpvpaper '*' ~/mitsu.mp4 -o '--loop-file=yes')"
+  "$Primary$Alternate, p, exec, pkill mpvpaper; swaybg -i /home/arsham/Wallpapers/mitsu.png & disown; virsh -c qemu:///system start Win11 ; looking-glass-client -F"
+  "$Primary$Alternate, o, exec, pkill swaybg; virsh -c qemu:///system shutdown Win11; pgrep mpvpaper > /dev/null || (mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes')"
 
   # Discord
   "$Primary, 1, exec, vesktop"

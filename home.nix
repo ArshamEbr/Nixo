@@ -6,6 +6,12 @@ let
     rev = "a24961dd618ca10cfa50851aedff2a7e1affdeb0";
     sha256 = "sha256-QQVeINXRjRmU9eOX1OUTzHu0amz4ZFCJK8n8jYo+YPM=";
   };
+  arsham-nixo = pkgs.fetchFromGitHub {
+    owner = "ArshamEbr";
+    repo = "Nixo";
+    rev = "86cdd2150b65be7bc050dc5ab99412e1ae3a6533";
+    sha256 = "1j2flfl3jfh3igm94qdfqyaw7l49awxa2nbxwsw7qdbrsmx1n8q8";
+  };
   wofi-calc = pkgs.fetchFromGitHub {
     owner = "Zeioth";
     repo = "wofi-calc";
@@ -161,8 +167,8 @@ let
         executable = true;  # make all files executable
       };
 
-      "Backgrounds" = {
-        source = celes-dots + "/Backgrounds";
+      "Wallpapers" = {
+        source = arsham-nixo + "/resources/wallpapers";
         recursive = true;
       };
 
@@ -191,11 +197,7 @@ let
       ".local/bin/wofi-calc" = {
         source = wofi-calc + "/wofi-calc.sh";
       };
-  
-      #".config/hypr/hyprland.conf" = {
-      #  source = pkgs.end-4-dots + "/hypr/hyprland.conf.bak";
-      #};
-  
+    
       ".local/bin/sunshine" = {
         source = celes-dots + "/.local/bin/sunshineFixed";
       };
