@@ -84,6 +84,7 @@
         modules = [
           ./config.nix
           ./hardware.nix
+          ./arsham/bash.nix
           ./arsham/boot.nix
          # ./arsham/comfyui.nix
          # ./arsham/games.nix
