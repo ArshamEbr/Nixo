@@ -82,8 +82,8 @@ bind = [
   #"$Primary$Secondary$Alternate, M, exec, spotify"
 
   # LookingGlass and virsh shortcuts for ease of access
-  "$Primary$Alternate, p, exec, deattacho.sh && pkill mpvpaper; swaybg -i /home/arsham/Wallpapers/mitsu.png & disown; virsh -c qemu:///system start Win11 ; looking-glass-client -F"
-  "$Primary$Alternate, o, exec, pkill swaybg; virsh -c qemu:///system shutdown Win11; pgrep mpvpaper > /dev/null || (mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes')"
+  "$Primary$Alternate, p, exec, dgpu_windows_vm_start.sh"
+  "$Primary$Alternate, o, exec, dgpu_windows_vm_shutdown.sh"
 
   # Battery Modes
   "$Primary$Alternate, 0, exec, battery_toggle.sh"
