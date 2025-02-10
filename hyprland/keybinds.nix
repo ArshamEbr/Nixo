@@ -177,17 +177,14 @@ bind = [
   # ##################################### AGS keybinds #####################################
   
   "$Secondary$Tertiary, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh"
-  "$Alternate, Tab, exec, ags -t 'overview'"
   "$Primary, A, exec, ags -t 'overview'"
   "$Secondary$Alternate, Slash, exec, ~/.local/bin/agsAction.sh cheatsheet"
   "$Secondary, B, exec, ags -t 'sideleft'"
   "$Secondary, N, exec, ags -t 'sideright'"
-  "$Secondary, M, exec, ags run-js 'openMusic$Primarys.value = (!Mpris.getPlayer() ? false : !openMusic$Primarys.value);'"
+ # "$Secondary, M, exec, ags run-js 'openMusic$Primarys.value = (!Mpris.getPlayer() ? false : !openMusic$Primarys.value);'"
   "$Secondary, Comma, exec, ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'"
-  "$Secondary, K, exec, ~/.local/bin/agsAction osk"
-  "$Primary$Alternate, Delete, exec, ~/.local/bin/agsAction.sh session"
-  "$Primary, M, exec, [float; size 50% 56%; move 100%-w-10 43] foot -e btop"
-  "$Alternate, M, exec, [float; size 50% 55%; move 100%-w-10 43] kitty -e btop"
+ # "$Secondary, K, exec, ~/.local/bin/agsAction.sh osk"
+  "$Primary$Alternate, Q, exec, ~/.local/bin/agsAction.sh session"
   
   # ##################################### Plugins #########################################
   ##"$Primary$Secondary, P, exec, hyprctl plugin load "~/.config/hypr/plugins/droidbars.so""
