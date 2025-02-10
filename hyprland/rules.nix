@@ -8,7 +8,11 @@ wayland.windowManager.hyprland.settings = {
 # ######## Window rules ########
 windowrule = [
    # "noblur,.*"
-   # "opacity 0.89 override 0.89 override, .*" # Applies transparency to EVERY WINDOW
+   #"opacity 0.89 override 0.89 override, .*" # Applies transparency to EVERY WINDOW
+   "opacity 0.92 0.92, code"
+   "opacity 0.92 0.92, zen"
+   "opacity 0.92 0.92, brave"
+  # "opacity 0.92 0.92, amberol"
    "float, ^(blueberry.py)$"
    "float, ^(steam)$"
    "float, ^(guifetch)$ # FlafyDev/guifetch"
@@ -45,7 +49,6 @@ windowrule = [
    
      # No shadow for tiled windows
      "noshadow,floating:0"
-   
    ];
    
    # ######## Layer rules ########
