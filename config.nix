@@ -1,9 +1,6 @@
 { pkgs, pkgs-unstable, config, ... }:
 {
-  imports =
-    [
-      ./hardware.nix # Include the results of the hardware scan.
-    ];
+  imports = [./hardware.nix]; # Include the results of the hardware scan.
 
   nix = {
     optimise.automatic = true; # Garbage Collector
@@ -137,7 +134,7 @@
 
   programs = { 
 
-    hyprland = { # Best Windows Manager
+    hyprland = { # Best Window Manager
       enable = true;
       package = pkgs-unstable.hyprland;
       xwayland.enable = true; # Whether to enable Xwayland
@@ -158,8 +155,7 @@
 
   };
  
-  # Enable Fonts.
-  fonts.packages = with pkgs-unstable; [
+  fonts.packages = with pkgs-unstable; [ # Enable Fonts.
     nerd-fonts.space-mono
     noto-fonts
     noto-fonts-cjk-sans
@@ -176,12 +172,13 @@
     bibata-cursors
     google-fonts
   ];
-
-  # Extra Groups
-  users.groups.mlocate = {};
-  users.groups.plocate = {};
-  users.groups.libvirt = {};
-  users.groups.kvm = {};
+  
+  users.groups = { # Extra Groups
+    mlocate = {};
+    plocate = {};
+    libvirt = {};
+    kvm = {};
+  };
 
   security.sudo.configFile = ''
     root   ALL=(ALL:ALL) SETENV: ALL
@@ -317,8 +314,6 @@
       xwayland
       brightnessctl
       ydotool
-      swww
-      hyprpaper
       fcitx5
       wlsunset
       wtype
