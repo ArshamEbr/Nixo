@@ -165,6 +165,22 @@
         "type": "github"
       }
     },
+    "morewaita": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736335410,
+        "narHash": "sha256-gdU4GcNrxMktsMbxRkzd3NdD7oYSAhSo29lBMWp+HQ4=",
+        "owner": "somepaulo",
+        "repo": "MoreWaita",
+        "rev": "29ddd25363bf1c4be306f3bf1ea1507b443d8dee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "somepaulo",
+        "repo": "MoreWaita",
+        "type": "github"
+      }
+    },
     "nix-gl-host": {
       "inputs": {
         "nixpkgs": "nixpkgs_4"
@@ -427,13 +443,15 @@
         "anyrun": "anyrun",
         "dream2nix": "dream2nix",
         "home-manager": "home-manager",
+        "morewaita": "morewaita",
         "nix-gl-host": "nix-gl-host",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixgl": "nixgl",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_7",
         "nixpkgs-old": "nixpkgs-old",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "zen-browser": "zen-browser"
       }
     },
     "slimlock": {
@@ -485,6 +503,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1738728325,
+        "narHash": "sha256-ogMOMVHDXykqP1qCjh7K3TyHzIy5lmohvofYAbn+IT8=",
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
+        "rev": "38264719b0a20323f3d16a94db5d4cb2860681a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }

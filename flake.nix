@@ -16,7 +16,10 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     dream2nix.url = "github:nix-community/dream2nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-   # lanzaboote.url = "github:nix-community/lanzaboote/v0.4.1"; # Secure boot that i won't use
+    zen-browser.url = "github:youwen5/zen-browser-flake";
+    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+    morewaita.url = "github:somepaulo/MoreWaita"; 
+    morewaita.flake = false;
   };
 
   outputs = inputs@{ nixpkgs, nixpkgs-old, nixpkgs-unstable, anyrun, home-manager, dream2nix, nixgl, nix-gl-host, nix-vscode-extensions, nixos-hardware, ... }:
@@ -37,7 +40,6 @@
         allowBroken = true;
       };
     };
-
   in {
     nixosConfigurations = {
       Nixo =
@@ -103,19 +105,6 @@
             };
             home-manager.users.arsham = import ./home.nix;
           }
-          
-          # SecureBoot Related sruff (Never use it on a GPU passthrough situation)
-          #lanzaboote.nixosModules.lanzaboote      
-          #({ pkgs, lib, ... }: {      
-          #  environment.systemPackages = [
-          #    pkgs.sbctl
-          #  ];
-          #  boot.loader.systemd-boot.enable = lib.mkForce false;
-          #  boot.lanzaboote = {
-          #    enable = true;
-          #    pkiBundle = "/var/lib/sbctl";
-          #  };
-          #})
         ];
       };
   };

@@ -39,8 +39,27 @@ let
       tray = "auto";
     };
  
+  amberol = { # Cool-ish music player
+      enable = true;
+      enableRecoloring = true;
+    };
+ 
   };
 
+  gtk = { # Theme stuff
+    enable = true;
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
+    };
+
+    iconTheme = {
+      name = "MoreWaita";
+      package = pkgs.morewaita-icon-theme.overrideAttrs {
+        src = inputs.morewaita;
+      };
+    };
+  };
 
   programs = {
 
@@ -237,6 +256,7 @@ let
       fzf # A command-line fuzzy finder
   
       # programs
+      inputs.zen-browser.packages.${pkgs.system}.default
       firefox
       brave
       telegram-desktop
@@ -437,6 +457,7 @@ let
       adw-gtk3
       libsForQt5.qt5ct
       gradience
+catppuccin-gtk
   
       # Screenshot and Recorder
       swappy
