@@ -3,7 +3,7 @@ CPU: Intel Core i5 11th gen 1155g7 (doesn't suppoet either sr-iov nor gvt-g... L
 
 iGPU: Intel Iris XE
 
-dGPU: Nvidia MX350 "hehe PASSTHROUGH to my windows 11 vm xD"
+dGPU: Nvidia MX350 "hehe PASSTHROUGH to my windows 11 vm xD" with dynamic switch!
 
 # Special thanks to "Celes Renata" for her great help and configs!
 
