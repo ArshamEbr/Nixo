@@ -19,6 +19,7 @@
     # Load Intel driver for Xorg and Waylandard
     environment.variables.LIBVA_DRIVER_NAME = "iHD";
     services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+    
     security.wrappers.sunshine = {
       owner = "root";
       group = "root";
