@@ -93,11 +93,16 @@ bind = [
   "$Primary$Alternate, 9, exec, check_gpu_status.sh"
   
   # Discord
-  "$Primary, 1, exec, vesktop"
-  "$Alternate, 1, exec, discord"
+  "$Primary, 1, exec, vesktop --disable-gpu"
+  "$Alternate, 1, exec, discord --disable-gpu"
 
   # Telegram
-  "$Primary, 2, exec, telegram-desktop"
+  "$Primary, 2, exec, telegram-desktop --disable-gpu"
+
+  # System Monitors
+  "$Primary, M, exec, [float; size 50% 56%; move 100%-w-10 43] foot -e btop"
+  "$Alternate, M, exec, [float; size 50% 55%; move 100%-w-10 43] kitty -e btop"
+  "$Primary$Alternate, M, exec, missioncenter"
 
   # Foot
   "$Primary, T, exec, foot"
@@ -109,12 +114,12 @@ bind = [
   "$Alternate, E, exec, thunar"
 
   # Browsers
-  "$Primary, B, exec, brave"
-  "$Alternate, B, exec, firefox"
+  "$Primary, B, exec, brave --disable-gpu"
+  "$Alternate, B, exec, zen"
   
   # notepad
   "$Primary$Secondary, X, exec, subl"
-  "$Primary, C, exec, code"
+  "$Primary, C, exec, code --disable-gpu"
   #"$Primary$Secondary$Tertiary, C, exec, jetbrains-toolbox"
   
   # calculator
