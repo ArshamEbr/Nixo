@@ -3,12 +3,12 @@
 
 wayland.windowManager.hyprland.settings = {
 
-
 exec-once = [ 
 
-# Bar, wallpaper
-#"swww-daemon --format xrgb"
-"mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes'" # live wallpaper
+# Live wallpaper
+"mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes'"
+
+# Random stuff
 "/usr/lib/geoclue-2.0/demos/agent & gammastep"
 "ags &"
 
@@ -49,6 +49,12 @@ exec-once = [
 
 # Hyprlock
 "hyprlock"
+
+# Rebind the dGPU
+"sleep 7 && reattach_safe.sh"
+
+# Startup Sound
+"paplay ~/nixo/resources/sfx/startup.mp3 & disown"
 
 ];
 
