@@ -79,18 +79,20 @@ bind = [
   # Music
   #"$Primary$Secondary, M, exec, tidal-hifi"
   #"$Primary$Secondary$Tertiary, M, exec, env -u NIXOS_OZONE_WL cider --use-gl=desktop"
-  #"$Primary$Secondary$Alternate, M, exec, spotify"
+  #"$Primary$Secondary$Alternate, M, exec, spotify" 
   "$Primary, V, exec, amberol"
 
   # LookingGlass and virsh shortcuts for ease of access
   "$Primary$Alternate, p, exec, dgpu_windows_vm_start.sh"
   "$Primary$Alternate, o, exec, dgpu_windows_vm_shutdown.sh"
+  "$Primary$Alternate, i, exec, iaudio_dgpu_windows_vm_start.sh"
 
-  # Battery Modes
+  # Power Modes
   "$Primary$Alternate, 0, exec, battery_toggle.sh"
+  "$Primary$Alternate, 9, exec, tlp_mode.sh"
 
   # dGPU Status
-  "$Primary$Alternate, 9, exec, check_gpu_status.sh"
+  "$Primary$Alternate, 8, exec, check_gpu_status.sh"
   
   # Discord
   "$Primary, 1, exec, vesktop --disable-gpu"
