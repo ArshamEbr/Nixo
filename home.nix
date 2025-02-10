@@ -38,8 +38,8 @@ let
       notify = true;
       tray = "auto";
     };
- 
-  amberol = { # Cool-ish music player
+
+    amberol = { # Cool-ish music player
       enable = true;
       enableRecoloring = true;
     };
@@ -75,7 +75,7 @@ let
         accountsservice
       ];
     };
-
+    
     # Modular Programs
 
     vscode = { # VSCode
@@ -162,9 +162,9 @@ let
 
   home = {
 
-    username = "arsham";           # TODO please change the username to your own
-    homeDirectory = "/home/arsham";# TODO please change the home directory to your own
-    stateVersion = "24.11";
+    username = "arsham";             # TODO please change the username to your own
+    homeDirectory = "/home/arsham";  # TODO please change the home directory to your own
+    stateVersion = "24.11";  
 
     sessionVariables = {
       LD_LIBRARY_PATH = "/run/opengl-driver/lib";
@@ -337,6 +337,7 @@ let
       pciutils # lspci
       usbutils # lsusb
       wofi-calc
+      mission-center
   
       # Development
       git
@@ -457,7 +458,7 @@ let
       adw-gtk3
       libsForQt5.qt5ct
       gradience
-catppuccin-gtk
+      catppuccin-gtk
   
       # Screenshot and Recorder
       swappy
