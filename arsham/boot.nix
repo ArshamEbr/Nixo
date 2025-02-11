@@ -4,7 +4,7 @@
 
     boot = {
 
-      extraModulePackages = [ ];
+      extraModulePackages = [ pkgs.linuxKernel.packages.linux_6_12.kvmfr ];
       extraModprobeConfig = "options snd_hda_intel model=alcplugfix";
       consoleLogLevel = 0;
       supportedFilesystems = [ "ntfs" "nfs" ];
@@ -23,6 +23,7 @@
         "iommu=pt"                
         "vfio-pci.ids=10de:1c94"
         "vfio-pci.enable_msi=1"
+        "kvmfr.static_size_mb=64"
       ];
 
       initrd = {
@@ -33,6 +34,7 @@
           "vfio_pci"          
           "vfio"
           "vfio_iommu_type1"
+          "kvmfr"
         ];
       };
 

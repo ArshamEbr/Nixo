@@ -96,6 +96,9 @@
         pkgs.libmtp 
         pkgs.libinput 
       ];
+      extraRules = ''
+        SUBSYSTEM=="kvmfr", OWNER="arsham", GROUP="qemu-libvirtd", MODE="0666"
+      '';
     };
 
     printing = {

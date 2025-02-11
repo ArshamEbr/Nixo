@@ -94,6 +94,8 @@
           ./arsham/networking.nix
           ./arsham/power.nix
           ./arsham/virtualisation.nix
+         # ./arsham/kvmfr-options.nix
+         # ./arsham/kvmfr-package.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
