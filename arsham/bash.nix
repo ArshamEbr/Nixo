@@ -347,6 +347,142 @@ let
     '';
   };
 
+    fancy_wallpaper_switcher = pkgs.writeShellScriptBin "wallch" ''
+    #!/run/current-system/sw/bin/bash
+
+    # Configuration file
+    CONFIG_FILE="$HOME/.config/swww-control.conf"
+
+    # Default settings
+    WALLPAPER_DIR="$HOME/Pictures"
+    INTERVAL=300  # 5 minutes
+    TRANSITION="grow"
+    TRANSITION_STEP=100
+    TRANSITION_FPS=120
+    TRANSITION_ANGLE=30
+    TRANSITION_DURATION=1
+
+    # Load previous config if exists
+    [[ -f "$CONFIG_FILE" ]] && source "$CONFIG_FILE"
+
+    # Function to save config
+    save_config() {
+        cat > "$CONFIG_FILE" <<EOF
+    WALLPAPER_DIR="$WALLPAPER_DIR"
+    INTERVAL=$INTERVAL
+    TRANSITION="$TRANSITION"
+    TRANSITION_STEP=$TRANSITION_STEP
+    TRANSITION_FPS=$TRANSITION_FPS
+    TRANSITION_ANGLE=$TRANSITION_ANGLE
+    TRANSITION_DURATION=$TRANSITION_DURATION
+    EOF
+    }
+
+    # Function to get cursor position (Hyprland)
+    get_cursor_position() {
+        # Get screen size
+        screen_info=$(hyprctl monitors -j | jq '.[0]')
+        screensizex=$(echo "$screen_info" | jq '.width')
+        screensizey=$(echo "$screen_info" | jq '.height')
+
+        # Get cursor position
+        cursorposx=$(hyprctl cursorpos -j | jq '.x' 2>/dev/null)
+        cursorposy=$(hyprctl cursorpos -j | jq '.y' 2>/dev/null)
+
+        # If getting cursor position fails, default to center
+        [[ -z "$cursorposx" ]] && cursorposx=$((screensizex / 2))
+        [[ -z "$cursorposy" ]] && cursorposy=$((screensizey / 2))
+
+        # Invert Y-axis for swww transition
+        cursorposy_inverted=$((screensizey - cursorposy))
+    }
+
+    # Function to change wallpaper with smooth transition
+    change_wallpaper() {
+        pgrep swww || swww init
+        get_cursor_position  # Get cursor position before changing
+
+        WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" -o -iname "*.gif" \) | shuf -n1)
+
+        if [[ -n "$WALLPAPER" ]]; then
+            swww img "$WALLPAPER" --transition-step "$TRANSITION_STEP" --transition-fps "$TRANSITION_FPS" \
+                --transition-type "$TRANSITION" --transition-angle "$TRANSITION_ANGLE" --transition-duration "$TRANSITION_DURATION" \
+                --transition-pos "$cursorposx, $cursorposy_inverted"
+            echo "Wallpaper changed to: $WALLPAPER"
+        else
+            echo "No wallpapers found in $WALLPAPER_DIR!"
+        fi
+    }
+
+    # Function to start wallpaper cycling
+    start_wallpaper_cycle() {
+        stop_wallpaper_cycle
+        echo "Starting wallpaper cycle with interval $INTERVAL seconds..."
+        nohup bash -c "
+            pgrep swww || swww init
+            while true; do
+                $0 --chgw
+                sleep \"$INTERVAL\"
+            done
+        " > /dev/null 2>&1 & echo $! > "$HOME/.cache/swww-cycle.pid"
+    }
+
+    # Function to stop wallpaper cycling
+    stop_wallpaper_cycle() {
+        if [[ -f "$HOME/.cache/swww-cycle.pid" ]]; then
+            kill "$(cat "$HOME/.cache/swww-cycle.pid")" 2>/dev/null && rm "$HOME/.cache/swww-cycle.pid"
+            echo "Wallpaper cycle stopped."
+        else
+            echo "No active wallpaper cycle found."
+        fi
+    }
+
+    # Function to check status
+    check_status() {
+        if [[ -f "$HOME/.cache/swww-cycle.pid" ]] && ps -p "$(cat "$HOME/.cache/swww-cycle.pid")" > /dev/null 2>&1; then
+            echo "Wallpaper cycle is running (PID: $(cat "$HOME/.cache/swww-cycle.pid"))."
+        else
+            echo "Wallpaper cycle is not running."
+        fi
+    }
+
+    # Command handling
+    case "$1" in
+        --chgw)
+            change_wallpaper
+            ;;
+        --setdir)
+            [[ -d "$2" ]] && WALLPAPER_DIR="$2" && save_config && echo "Wallpaper directory set to: $WALLPAPER_DIR"
+            ;;
+        --setinterval)
+            [[ "$2" =~ ^[0-9]+$ ]] && INTERVAL="$2" && save_config && echo "Interval set to: $INTERVAL seconds"
+            ;;
+        --start)
+            start_wallpaper_cycle
+            ;;
+        --stop)
+            stop_wallpaper_cycle
+            ;;
+        --status)
+            check_status
+            ;;
+        --help|-h)
+            echo "Usage: $0 [options]"
+            echo "Options:"
+            echo "  --chgw               Change wallpaper immediately with effects"
+            echo "  --setdir <dir>       Set wallpaper directory"
+            echo "  --setinterval <sec>  Set interval for cycling wallpapers"
+            echo "  --start              Start wallpaper cycling"
+            echo "  --stop               Stop wallpaper cycling"
+            echo "  --status             Check if wallpaper cycling is running"
+            echo "  --help               Show this help message"
+            ;;
+        *)
+            echo "Invalid command! Use --help for usage."
+            ;;
+    esac
+  '';
+
 in
 
   {
@@ -399,5 +535,6 @@ in
          battery_percentage
          check_gpu_status
          tlp_mode
+         fancy_wallpaper_switcher
      ];
   }
