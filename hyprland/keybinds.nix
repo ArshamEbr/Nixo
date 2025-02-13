@@ -83,16 +83,16 @@ bind = [
   "$Primary, V, exec, amberol"
 
   # LookingGlass and virsh shortcuts for ease of access
-  "$Primary$Alternate, p, exec, dgpu_windows_vm_start.sh"
-  "$Primary$Alternate, o, exec, dgpu_windows_vm_shutdown.sh"
-  "$Primary$Alternate, i, exec, iaudio_dgpu_windows_vm_start.sh"
+  "$Primary$Alternate, p, exec, dgpu_windows_vm_start"
+  "$Primary$Alternate, o, exec, dgpu_windows_vm_shutdown"
+  "$Primary$Alternate, i, exec, iaudio_dgpu_windows_vm_start"
 
   # Power Modes
-  "$Primary$Alternate, 0, exec, battery_toggle.sh"
-  "$Primary$Alternate, 9, exec, tlp_mode.sh"
+  "$Primary$Alternate, 0, exec, battery_toggle"
+  "$Primary$Alternate, 9, exec, tlp_mode"
 
   # dGPU Status
-  "$Primary$Alternate, 8, exec, check_gpu_status.sh"
+  "$Primary$Alternate, 8, exec, check_gpu_status"
   
   # Discord
   "$Primary, 1, exec, vesktop --disable-gpu"

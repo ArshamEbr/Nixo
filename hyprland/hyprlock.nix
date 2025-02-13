@@ -103,7 +103,7 @@ label = [
   }
   { # Status
     monitor = "";
-    text = "cmd[update:5000] battery_percent.sh";
+    text = "cmd[update:5000] battery_percent";
     shadow_passes = 1;
     shadow_boost = "0.5";
     color = "$text_color";

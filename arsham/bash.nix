@@ -6,7 +6,7 @@ let
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
-      cat > $out/bin/check_gpu_status.sh <<'EOF'
+      cat > $out/bin/check_gpu_status <<'EOF'
       #!/run/current-system/sw/bin/bash
       set -x
       vfio_status=$(lspci -nnk -d 10de:1c94 | grep -i 'Kernel driver in use' | grep -i 'vfio-pci')
@@ -24,7 +24,7 @@ let
         fi
       fi
       EOF
-      chmod 755 $out/bin/check_gpu_status.sh
+      chmod 755 $out/bin/check_gpu_status
     '';
   };
   
@@ -33,7 +33,7 @@ let
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
-      cat > $out/bin/battery_toggle.sh <<'EOF'
+      cat > $out/bin/battery_toggle <<'EOF'
       #!/run/current-system/sw/bin/bash
       set -x
       # Check current conservation_mode state
@@ -48,7 +48,7 @@ let
         notify-send "Battery Conservation Mode ON" --icon=$HOME/nixo/resources/icons/conserve_on.png
       fi
       EOF
-      chmod 755 $out/bin/battery_toggle.sh
+      chmod 755 $out/bin/battery_toggle
     '';
   };
   
@@ -57,7 +57,7 @@ let
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
-      cat > $out/bin/battery_percent.sh <<'EOF'
+      cat > $out/bin/battery_percent <<'EOF'
       #!/run/current-system/sw/bin/bash
       set -x
       #!/run/current-system/sw/bin/bash
@@ -88,7 +88,7 @@ let
       fi
       echo ""
       EOF
-      chmod 755 $out/bin/battery_percent.sh
+      chmod 755 $out/bin/battery_percent
     '';
   };
   
@@ -97,7 +97,7 @@ let
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
-      cat > $out/bin/dettach_safe.sh <<'EOF'
+      cat > $out/bin/dettach_safe <<'EOF'
       #!/run/current-system/sw/bin/bash
       set -x
       driver=$(lspci -nnk -d 10de:1c94 | grep "Kernel driver in use" | awk -F': ' '{print $2}')
@@ -122,7 +122,7 @@ let
       paplay ~/nixo/resources/sfx/detach.mp3 & disown
       exit
       EOF
-          chmod 755 $out/bin/dettach_safe.sh
+          chmod 755 $out/bin/dettach_safe
     '';
   };
   
@@ -131,7 +131,7 @@ let
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
-      cat > $out/bin/reattach_safe.sh <<'EOF'
+      cat > $out/bin/reattach_safe <<'EOF'
       #!/run/current-system/sw/bin/bash
       set -x
       driver=$(lspci -nnk -d 10de:1c94 | grep "Kernel driver in use" | awk -F': ' '{print $2}') 
@@ -148,7 +148,7 @@ let
       sudo systemctl restart ollama
       exit
       EOF
-      chmod 755 $out/bin/reattach_safe.sh
+      chmod 755 $out/bin/reattach_safe
     '';
   };
   
@@ -157,10 +157,10 @@ let
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
-      cat > $out/bin/dgpu_windows_vm_start.sh <<'EOF'
+      cat > $out/bin/dgpu_windows_vm_start <<'EOF'
       #!/run/current-system/sw/bin/bash
       set -x
-      dettach_safe.sh
+      dettach_safe
       exit_code=$?
       if [ $exit_code -ne 0 ]; then
           notify-send "Windows Boot aborted: dGPU is under use!" --icon=$HOME/nixo/resources/icons/error.png
@@ -175,7 +175,7 @@ let
       paplay ~/nixo/resources/sfx/windows_on.mp3 & disown
       exit
       EOF
-      chmod 755 $out/bin/dgpu_windows_vm_start.sh
+      chmod 755 $out/bin/dgpu_windows_vm_start
     '';
   };
   
@@ -184,7 +184,7 @@ let
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
-      cat > $out/bin/dgpu_windows_vm_shutdown.sh <<'EOF'
+      cat > $out/bin/dgpu_windows_vm_shutdown <<'EOF'
       #!/run/current-system/sw/bin/bash
       set -x
       pkill swaybg
@@ -211,11 +211,11 @@ let
       pkill -f looking-glass-client 
       notify-send "Windows VM is completely shutdown!" --icon=$HOME/nixo/resources/icons/shutdown.png
       paplay ~/nixo/resources/sfx/windows_off.mp3 & disown
-      reattach_safe.sh & disown
-      iaudio_reattach.sh & disown
+      reattach_safe & disown
+      iaudio_reattach & disown
       exit
       EOF
-      chmod 755 $out/bin/dgpu_windows_vm_shutdown.sh
+      chmod 755 $out/bin/dgpu_windows_vm_shutdown
     '';
   };
 
@@ -224,7 +224,7 @@ let
   phases = [ "installPhase" ];
   installPhase = ''
     mkdir -p $out/bin
-    cat > $out/bin/tlp_mode.sh <<'EOF'
+    cat > $out/bin/tlp_mode <<'EOF'
     #!/run/current-system/sw/bin/bash
     set -x
     current_mode=$(tlp-stat -s | grep "Mode" | awk '{print $3}')
@@ -243,7 +243,7 @@ let
     paplay $sound_file & disown
     notify-send "Power Mode Switched!" "Now in $mode_name mode" --icon=$icon
     EOF
-    chmod 755 $out/bin/tlp_mode.sh
+    chmod 755 $out/bin/tlp_mode
   '';
   };
 
@@ -252,7 +252,7 @@ let
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
-      cat > $out/bin/iaudio_reattach.sh <<'EOF'
+      cat > $out/bin/iaudio_reattach <<'EOF'
       #!/run/current-system/sw/bin/bash 
       set -x
       driver=$(lspci -nnk -d 8086:a0c8 | grep "Kernel driver in use" | awk -F': ' '{print $2}')
@@ -277,7 +277,7 @@ let
       fi
       exit
       EOF
-      chmod 755 $out/bin/iaudio_reattach.sh
+      chmod 755 $out/bin/iaudio_reattach
     '';
   };
    
@@ -286,7 +286,7 @@ let
    phases = [ "installPhase" ];
    installPhase = ''
      mkdir -p $out/bin
-     cat > $out/bin/iaudio_deattach.sh <<'EOF'
+     cat > $out/bin/iaudio_deattach <<'EOF'
      #!/run/current-system/sw/bin/bash
      set -x
      driver=$(lspci -nnk -d 8086:a0c8 | grep "Kernel driver in use" | awk -F': ' '{print $2}') 
@@ -310,7 +310,7 @@ let
      fi
      exit
      EOF
-     chmod 755 $out/bin/iaudio_deattach.sh
+     chmod 755 $out/bin/iaudio_deattach
    '';
   };
 
@@ -319,12 +319,12 @@ let
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
-      cat > $out/bin/iaudio_dgpu_windows_vm_start.sh <<'EOF'
+      cat > $out/bin/iaudio_dgpu_windows_vm_start <<'EOF'
       #!/run/current-system/sw/bin/bash
       set -x
-      dettach_safe.sh
+      dettach_safe
       exit_code_dgpu=$?
-      iaudio_deattach.sh
+      iaudio_deattach
       exit_code_iaudio=$? 
       if [ $exit_code_dgpu=$? -ne 0 ]; then
           notify-send "Windows Boot aborted: dGPU is under use!" --icon=$HOME/nixo/resources/icons/error.png
@@ -339,11 +339,11 @@ let
       pkill mpvpaper
       swaybg -i /home/arsham/Wallpapers/mitsu.png & disown
       virsh -c qemu:///system start Win11_iAudio
-      looking-glass-client -F & disown
+      looking-glass-client -f /dev/kvmfr0 -F & disown
       notify-send "Full Windows VM is Booting UP!" --icon=$HOME/nixo/resources/icons/windows.png
       exit
       EOF
-      chmod 755 $out/bin/iaudio_dgpu_windows_vm_start.sh
+      chmod 755 $out/bin/iaudio_dgpu_windows_vm_start
     '';
   };
 
