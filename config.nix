@@ -3,7 +3,7 @@
   imports = [./hardware.nix]; # Include the results of the hardware scan.
 
   nix = {
-    optimise.automatic = true; # Garbage Collector
+  #  optimise.automatic = true; # Garbage Collector
     settings = {
       max-jobs = "auto";  # Uses all available CPU cores
       cores = 4; 
