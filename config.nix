@@ -31,7 +31,7 @@
 
     bluetooth = { # Enable Bluetooth
       enable = true;
-      powerOnBoot = true;
+      powerOnBoot = false;
     };
 
   };
