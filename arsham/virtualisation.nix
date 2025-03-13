@@ -10,7 +10,7 @@
         storageDriver = "btrfs";
         package = pkgs.docker_26;
         daemon.settings.data-root = "/home/docker";
-       # enableNvidia = true;
+        # enableNvidia = true;
       };
 
       libvirtd = { 
@@ -19,14 +19,14 @@
         onShutdown = "shutdown"; # Stop all running VMs on shutdown.
         qemu = {
           verbatimConfig = ''
-          cgroup_device_acl = [
-            "/dev/null",
-            "/dev/full",
-            "/dev/zero",
-            "/dev/random",
-            "/dev/urandom",
-            "/dev/ptmx",
-            "/dev/kvm",
+            cgroup_device_acl = [
+              "/dev/null",
+              "/dev/full",
+              "/dev/zero",
+              "/dev/random",
+              "/dev/urandom",
+              "/dev/ptmx",
+              "/dev/kvm",
               "/dev/kvmfr0",
               "/dev/vfio/vfio",
               "/dev/fuse",
@@ -34,9 +34,9 @@
               "/dev/vhost-net",
               "/dev/shm/virtiofsd.sock.pid",
               "/dev/shm/virtiofsd.sock"
-          ]
-        '';
-      };
+            ]
+          '';
+        };
       };
 
     };
@@ -107,5 +107,5 @@
    #     #wantedBy = [ "docker-windows.service" ];  # TODO: ???? Does this worK? # dunno LOL
    #   };
    # };
- };
+  };
 }
