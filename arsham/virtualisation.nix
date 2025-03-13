@@ -107,45 +107,5 @@
    #     #wantedBy = [ "docker-windows.service" ];  # TODO: ???? Does this worK? # dunno LOL
    #   };
    # };
-
-   # virtualisation.looking-glass = {
-   #   enable = true;
-   #   kvmfr = {
-   #     enable = true;
-   #     size = 64;
-   #   };
-   # };
-   # systemd.services.libvirtd = {
-   #  # scripts use binaries from these packages
-   #  # NOTE: All these hooks are run with root privileges... Be careful!
-   #  path =
-   #    let
-   #      env = pkgs.buildEnv {
-   #        name = "qemu-hook-env";
-   #        paths = with pkgs; [
-   #          libvirt
-   #          procps
-   #          utillinux
-   #          doas
-   #          config.boot.kernelPackages.cpupower
-   #          zfs
-   #          ripgrep
-   #          killall
-   #        ];
-   #      };
-   #    in
-   #    [ env ];
-   #
-   # preStart = ''
-   #   mkdir -p /var/lib/libvirt/hooks
-   #   mkdir -p /var/lib/libvirt/hooks/qemu.d/Win11/prepare/begin
-   #   mkdir -p /var/lib/libvirt/hooks/qemu.d/Win11/release/end
-   #   mkdir -p /var/lib/libvirt/hooks/qemu.d/Win11/started/begin
-   #
-   #   ln -sf ${qemuHook} /var/lib/libvirt/hooks/qemu
-   #   ln -sf ${./start.sh} /var/lib/libvirt/hooks/qemu.d/Win11/prepare/begin/start.sh
-   #   ln -sf ${./revert.sh} /var/lib/libvirt/hooks/qemu.d/Win11/release/end/revert.sh
-   # '';
-   #};
  };
 }
