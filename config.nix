@@ -360,8 +360,6 @@
       foot
 
       # Emulation
-      wine
-      wine64
       qemu
   
       # Camera
