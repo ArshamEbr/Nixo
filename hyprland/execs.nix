@@ -55,7 +55,7 @@ exec-once = [
 "hyprlock"
 
 # Rebind the dGPU
-"sleep 7 && reattach_safe.sh"
+"sleep 7 && reattach_safe"
 
 # Startup Sound
 "paplay ~/nixo/resources/sfx/startup.mp3 & disown"
