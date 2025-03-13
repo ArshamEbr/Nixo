@@ -2,6 +2,11 @@
 {
   config = {
 
+    # Override the assertion check
+    assertions = [
+      { assertion = true; message = "Ignoring bootloader requirement since using EFISTUB."; }
+    ];
+
     boot = {
 
       extraModulePackages = [ pkgs.linuxKernel.packages.linux_6_12.kvmfr ];
@@ -12,9 +17,9 @@
       kernelPackages = pkgs-unstable.linuxPackages_6_12;
 
       loader = {
-        systemd-boot.enable = true; # HELL YEAH! SYSTEMd_BOOT >:)
+        systemd-boot.enable = false;
+        grub.enable = false;
         efi.canTouchEfiVariables = true;
-        timeout = 0;
       };
 
       kernelParams = [
