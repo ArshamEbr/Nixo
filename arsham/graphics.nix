@@ -1,10 +1,16 @@
 { config, pkgs, pkgs-unstable, ... }:
 {
   config = {
-    hardware.graphics = { # Enable OpenGL
+    hardware.graphics = {
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs; [ vpl-gpu-rt intel-media-driver ];
+      extraPackages = with pkgs; [ 
+        vpl-gpu-rt 
+        intel-media-driver 
+        intel-compute-runtime 
+        vaapiIntel
+        libvdpau-va-gl
+        ];
     };
     
     services.ollama = {
@@ -16,8 +22,11 @@
       models = "~/models";
     };
 
-    # Load Intel driver for Xorg and Waylandard
-    environment.variables.LIBVA_DRIVER_NAME = "iHD";
+    environment.variables = {
+      VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
+      LIBVA_DRIVER_NAME = "iHD";
+    };
+    
     services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
     
     security.wrappers.sunshine = {
