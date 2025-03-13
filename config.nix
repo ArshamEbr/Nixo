@@ -119,6 +119,10 @@
   };
 
   programs = { 
+
+    # Optional: Use ccache to speed up future rebuilds
+    ccache.enable = true;
+    
   bash.loginShellInit = ''
     if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
       read -t 3 -p "Start Hyprland? (Will auto-launch in 3 seconds) [Y/n] " answer
