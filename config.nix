@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, config, ... }:
+{ pkgs, pkgs-unstable, config, lib, ... }:
 {
   imports = [./hardware.nix]; # Include the results of the hardware scan.
 
