@@ -75,13 +75,14 @@ decoration = {
         xray = true;
         special = false;
         new_optimizations = true;
-        size = 2;
+        size = 6;
         passes = 4;
         brightness = 1;
         noise = 0.01;
         contrast = 1;
         popups = true;
         popups_ignorealpha = 0.6;
+        ignore_opacity = "on";
     };
     # Shadow
     shadow = {
