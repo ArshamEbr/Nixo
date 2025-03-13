@@ -365,6 +365,26 @@
   
       # Camera
       libcamera
+      
+      # Shared Dir
+      virtiofsd /*
+       Doing the Steps below is mandatory for sharing the dir with windows vm after installing the virtiofsd in linux :
+       use the "which virtiofsd" command inside terminal and copy the output in 
+       here : "<binary path="OUTPUT_HERE"/>"
+       Then add the Filesystem in virt-manager from add hardware section and 
+       copy the text above in xml section of that for example:
+       #################################################################################
+       <filesystem type="mount" accessmode="passthrough">
+         <driver type="virtiofs"/>
+         <binary path="/etc/profiles/per-user/arsham/bin/virtiofsd"/> #THIS RIGHT HERE!
+         <source dir="/home/arsham/"/>
+         <target dir="Home"/>
+         <address type="pci" domain="0x0000" bus="0x03" slot="0x00" function="0x0"/>
+       </filesystem>
+       ##############################################################################
+       Download and install latest WinFSP inside your windows vm
+       also dont forget to set the VirtIO-FS Service to start automaticly inside services
+      */
     ];
   };
 
