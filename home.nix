@@ -124,18 +124,58 @@ let
       };
     };
 
-    alacritty = { # alacritty - a cross-platform, GPU-accelerated terminal emulator
-      enable = true;
-      settings = { # custom settings
-        scrolling.multiplier = 5;
-        selection.save_to_clipboard = true;
-        env.TERM = "xterm-256color";
-        font = {
-          size = 12;
-          draw_bold_text_with_bright_colors = true;
-        };
-      };
-    };
+  #  alacritty = { # alacritty - a cross-platform, GPU-accelerated terminal emulator
+  #    enable = true;
+  #    settings = { # custom settings
+  #      scrolling.history = 10000;
+  #      terminal.shell.program = "fish";
+  #      scrolling.multiplier = 5;
+  #      selection.save_to_clipboard = true;
+  #      env.TERM = "xterm-256color";
+  #      colors = {
+  #        primary = {
+  #          background = "#0F131C";
+  #          foreground = "#DFE2EF";
+  #        };
+  #        normal = {
+  #          black = "#0F131C";
+  #          red = "#FFB4AB";
+  #          green = "#005CBA";
+  #          yellow = "#D7E3FF";
+  #          blue = "#D7E3FF";
+  #          magenta = "#E0E2FF";
+  #          cyan = "#AAC7FF";
+  #          white = "#C1C6D6";
+  #        };
+  #        bright = {
+  #          black = "#0F131C";
+  #          red = "#FFB4AB";
+  #          green = "#005CBA";
+  #          yellow = "#D7E3FF";
+  #          blue = "#D7E3FF";
+  #          magenta = "#E0E2FF";
+  #          cyan = "#AAC7FF";
+  #          white = "#C1C6D6";
+  #        };
+  #      };
+  #      cursor = {
+  #        style = "Beam";
+  #        thickness = 1;
+  #      };
+  #      window = {
+  #        opacity = 0.2; # Adjust transparency (0.0 - fully transparent, 1.0 - opaque)
+  #        padding = { x = 10; y = 10; }; # Adds padding around the terminal
+  #        dynamic_padding = true;
+  #      };
+  #      font = {
+  #        normal = {
+  #          family = "SpaceMono Nerd Font";
+  #          style = "Regular";
+  #        };
+  #        size = 11;
+  #      };
+  #    };
+  #  };
 
     bash = {
       enable = true;
