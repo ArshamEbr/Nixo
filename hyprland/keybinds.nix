@@ -79,7 +79,7 @@ bind = [
   # Music
   #"$Primary$Secondary, M, exec, tidal-hifi"
   #"$Primary$Secondary$Tertiary, M, exec, env -u NIXOS_OZONE_WL cider --use-gl=desktop"
-  #"$Primary$Secondary$Alternate, M, exec, spotify" 
+  #"$Primary$Secondary$Alternate, M, exec, spotify"
 
   # Wallch keybinds
   "$Primary$Secondary, K, exec, wallch --chgw"
