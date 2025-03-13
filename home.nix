@@ -184,9 +184,6 @@ let
         export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin:"
       ''; # TODO add your custom bashrc here
       shellAliases = { # set some aliases, feel free to add more or remove some
-        k = "kubectl";
-        urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
-        urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
       };
       sessionVariables = {
         EDITOR = "nano";
@@ -208,6 +205,8 @@ let
 
     sessionVariables = {
       LD_LIBRARY_PATH = "/run/opengl-driver/lib";
+      VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
+      LIBVA_DRIVER_NAME = "iHD";
     };
 
     pointerCursor = {
