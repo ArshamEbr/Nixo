@@ -74,24 +74,7 @@
     udisks2.enable = true;
     blueman.enable = true; # Bluetooth 
     gvfs.enable = true;
-
-  # openvpn.servers = {
-  #   homeVPN    = { config = '' config /home/arsham/Downloads/Usa.ovpn ''; };
-  # };
-
-    displayManager = { # Auto login feature to use hyprlock instead
-      autoLogin.enable = true;
-      autoLogin.user = "arsham";
-      defaultSession = "hyprland";
-    };
-
-    xserver = {
-      enable = true;  # Enable the X11 windowing system
-      displayManager.gdm.enable = true; # Enable the GDM Display Manager
-        xkb = { # Configure keymap in X11
-        layout = "us";
-        variant = "";
-      };
+    fstrim.enable = true;
     };
 
     udev = {
