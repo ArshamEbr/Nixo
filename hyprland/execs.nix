@@ -58,7 +58,7 @@ exec-once = [
 "sleep 7 && reattach_safe"
 
 # Startup Sound
-"paplay ~/nixo/resources/sfx/startup.mp3 & disown"
+"notifx1 startup & disown"
 
 ];
 
