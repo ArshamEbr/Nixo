@@ -22,7 +22,8 @@
         enable = true; # do this too: sudo virsh net-start default
         onBoot = "ignore"; # Don't start any VMs automatically on boot.
         onShutdown = "shutdown"; # Stop all running VMs on shutdown.
-        qemu.verbatimConfig = ''
+        qemu = {
+          verbatimConfig = ''
           cgroup_device_acl = [
             "/dev/null",
             "/dev/full",
@@ -31,10 +32,16 @@
             "/dev/urandom",
             "/dev/ptmx",
             "/dev/kvm",
-            "/dev/kvmfr0"
-            "/dev/fuse"
+              "/dev/kvmfr0",
+              "/dev/vfio/vfio",
+              "/dev/fuse",
+              "/dev/vhost-vsock",
+              "/dev/vhost-net",
+              "/dev/shm/virtiofsd.sock.pid",
+              "/dev/shm/virtiofsd.sock"
           ]
         '';
+      };
       };
 
     };
