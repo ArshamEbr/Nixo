@@ -110,19 +110,11 @@
       pulse.enable = true;
       wireplumber.enable = true;
       jack.enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
     };
-
-   # jack = {
-   #   jackd.enable = true;
-   #   alsa.enable = false; # support ALSA only programs via ALSA JACK PCM plugin
-   #   loopback = { # support ALSA only programs via loopback device (supports programs like Steam)
-   #     enable = true;
-   #     # buffering parameters for dmix device to work with ALSA only semi-professional sound programs
-   #     #dmixConfig = ''
-   #     #  period_size 2048
-   #     #'';
-   #   };
-   # };
 
   };
 
@@ -270,6 +262,12 @@
       sunshine
       android-tools
       remmina
+      libnotify
+
+      # EFI and UKI related
+      efibootmgr
+      binutils
+      systemdUkify
 
       # Shells.
       fish # My fav
