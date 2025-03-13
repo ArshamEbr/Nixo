@@ -65,8 +65,8 @@
 
     #automatic-timezoned.enable = true;
     openssh.enable = true; # Openssh daemon
-    dbus.enable = true; # Related to kde polkit     
-    geoclue2.enable = true; # Enable Location 
+    dbus.enable = true;   
+   # geoclue2.enable = true; # Enable Location 
     acpid.enable = true; # Enable acpid
     gnome.gnome-keyring.enable = true; # Gnome Keyring
     libinput.enable = true; # Enable touchpad support (enabled default in most desktopManager)
