@@ -21,8 +21,7 @@ background = [
     "rgba(130C15FF)"
     "rgba(000000FF)"
     ];
-    path = "/home/arsham/Pictures/mitsu.png";
-    # path = screenshot;
+    path = "$HOME/nixo/resources/wallpapers/wolf.jpg";
     blur_size = 5;
     blur_passes = 4;
   }
