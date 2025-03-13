@@ -133,6 +133,8 @@
           ./arsham/graphics.nix
           ./arsham/networking.nix
           ./arsham/power.nix
+          ./arsham/sfx.nix
+          ./arsham/warn.nix
           ./arsham/virtualisation.nix
          # ./arsham/kvmfr-options.nix
          # ./arsham/kvmfr-package.nix

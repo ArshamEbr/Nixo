@@ -3,11 +3,75 @@
 with lib;
 
 let
-  cfg = config.services.overheat-warning;
+  overheat-alert-script = pkgs.writeScriptBin "overheat-alert" ''
+    #!/run/current-system/sw/bin/bash
+    set -x
+
+    TEMP_THRESHOLD=${toString config.services.overheat-alert.temperatureThreshold}
+
+    CPU_TEMP=$(${pkgs.lm_sensors}/bin/sensors | ${pkgs.gawk}/bin/awk '/Package id 0:/ {print $4}' | ${pkgs.gnused}/bin/sed 's/+//;s/°C//')
+
+    if (( $(echo "$CPU_TEMP > $TEMP_THRESHOLD" | ${pkgs.bc}/bin/bc -l) )); then
+      echo "CPU temperature is $CPU_TEMP°C (above threshold: $TEMP_THRESHOLD°C)"
+      ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.libnotify}/bin/notify-send "CPU Overheating Warning!" "CPU temperature is $CPU_TEMP°C" --icon=dialog-warning
+      ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 cpu_overload
+      ${pkgs.tlp}/bin/tlp bat
+    else
+      echo "CPU temperature is $CPU_TEMP°C (below threshold: $TEMP_THRESHOLD°C)"
+    fi
+  '';
+
+  low-ram-warning-script = pkgs.writeScriptBin "low-ram-warning" ''
+    #!/run/current-system/sw/bin/bash
+    set -x
+
+    RAM_THRESHOLD=${toString config.services.low-ram-warning.ramThreshold}
+
+    FREE_RAM=$(${pkgs.procps}/bin/free -m | ${pkgs.gawk}/bin/awk '/Mem:/ { print $7 }')
+
+    if (( FREE_RAM < RAM_THRESHOLD )); then
+      echo "Low RAM Warning: Only $FREE_RAM MB left (Threshold: $RAM_THRESHOLD MB)"
+      ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.libnotify}/bin/notify-send "Low RAM Warning!" "Only $FREE_RAM MB available!" --icon=dialog-warning
+      ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 low_ram
+    else
+      echo "RAM is sufficient: $FREE_RAM MB available"
+    fi
+  '';
+
+  battery-events-script = pkgs.writeShellScriptBin "bat-percentage-check" ''
+    #!/run/current-system/sw/bin/bash
+
+    last_played_percentage=0  
+    while true; do
+        battery_percentage=$(cat /sys/class/power_supply/BAT0/capacity)
+        if (( battery_percentage % 5 == 0 )) && (( battery_percentage != last_played_percentage )); then
+            case $battery_percentage in
+                10) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 10 ;;
+                20) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 20 ;;
+                25) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 25 ;;
+                40) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 40 ;;
+                50) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 50 ;;
+                60) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 60 ;;
+                75) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 75 ;;         
+                80) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 80 ;;
+                90) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 90 ;;
+                100) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 100 ;;
+
+                65) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash battery_toggle off ;;
+                85) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash battery_toggle on ;;
+
+            esac
+            last_played_percentage=$battery_percentage
+        fi
+        sleep 30
+    done
+    
+  '';
+
 in
 {
   options = {
-    services.overheat-warning = {
+    services.overheat-alert = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -19,48 +83,75 @@ in
         default = 80;
         description = "CPU temperature threshold (in Celsius) to trigger the warning.";
       };
+    };
 
-      soundPath = mkOption {
-        type = types.str;
-        default = "/path/to/your/overheat-warning-sound.ogg";
-        description = "Path to the sound file to play when the CPU overheats.";
+    services.low-ram-warning = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Enable the low RAM warning service.";
+      };
+
+      ramThreshold = mkOption {
+        type = types.int;
+        default = 1024; # Default: 500 MB
+        description = "Available RAM threshold (in MB) to trigger the warning.";
       };
     };
-  };
 
-  config = mkIf cfg.enable {
-    environment.systemPackages = [
-      (pkgs.stdenv.mkDerivation {
-        name = "overheat-warning";
-        phases = [ "installPhase" ];
-        installPhase = ''
-          mkdir -p $out/bin
-          cat > $out/bin/overheat-warning <<'EOF'
-          #!/run/current-system/sw/bin/bash
-          set -x
-
-          TEMP_THRESHOLD=${toString cfg.temperatureThreshold}
-
-          CPU_TEMP=$(sensors | grep 'Package id 0:' | awk '{print $4}' | sed 's/+//;s/°C//')
-
-          if (( $(echo "$CPU_TEMP > $TEMP_THRESHOLD" | bc -l) )); then
-            notifx1 cpu_overload
-            notify-send "CPU Overheating Warning!" "CPU temperature is $CPU_TEMP°C" --icon=dialog-warning
-            sudo tlp bat
-          fi
-          EOF
-          chmod 755 $out/bin/overheat-warning
-        '';
-      })
-    ];
-
-    systemd.services.overheat-warning = {
-      description = "CPU Overheating Warning Service";
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do ${config.environment.systemPackages.overheat-warning}/bin/overheat-warning; sleep 60; done'";
-        Restart = "always";
+    services.battery-events = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Enable the battery events service.";
       };
     };
+
   };
+
+  config = mkMerge [
+                    
+    (mkIf config.services.overheat-alert.enable {
+      environment.systemPackages = [ overheat-alert-script ];
+      
+      systemd.services.overheat-alert = {
+        description = "CPU Overheating Warning Service";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do ${overheat-alert-script}/bin/overheat-alert; sleep 30; done'";
+          Environment = "XDG_RUNTIME_DIR=/run/user/1000";
+          Restart = "always";
+        };
+      };
+    })
+    
+    (mkIf config.services.low-ram-warning.enable {
+      environment.systemPackages = [ low-ram-warning-script ];
+    
+      systemd.services.low-ram-warning = {
+        description = "Low RAM Warning Service";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do ${low-ram-warning-script}/bin/low-ram-warning; sleep 30; done'";
+          Environment = "XDG_RUNTIME_DIR=/run/user/1000";
+          Restart = "always";
+        };
+      };
+    })
+    
+    (mkIf config.services.battery-events.enable {
+      environment.systemPackages = [ battery-events-script ];
+    
+      systemd.services.battery-events = {
+        description = "Play sound based on battery percentage";
+        serviceConfig = {
+          ExecStart = "${pkgs.bash}/bin/bash -c 'while true; do ${battery-events-script}/bin/bat-percentage-check; sleep 30; done'";
+          Environment = "XDG_RUNTIME_DIR=/run/user/1000";
+          Restart = "always";
+        };
+      wantedBy = [ "default.target" ];
+    };
+    })
+
+  ];
 }
