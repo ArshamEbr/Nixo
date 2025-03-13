@@ -43,6 +43,10 @@
 
   programs.virt-manager.enable = true;
 
+  systemd.tmpfiles.rules = [
+    "f /dev/shm/looking-glass 0660 arsham qemu-libvirtd -"
+  ];
+
    # hardware.nvidia-container-toolkit.enable = true;
    # hardware.nvidia-container-toolkit.mount-nvidia-executables = true;
    # virtualisation.containerd = {
