@@ -267,6 +267,14 @@ let
     ++
 
     (with pkgs; [
+# Minecraft
+      prismlauncher
+
+      # Arduino
+      arduino-ide
+      
+      # Ventoy
+      ventoy-full
 
       networkmanager-openvpn
       openvpn
@@ -302,6 +310,8 @@ let
       htop
       nil
       looking-glass-client
+    #  krita
+      anydesk
   
       # networking tools
       mtr # A network diagnostic tool
@@ -355,6 +365,11 @@ let
       usbutils # lsusb
       wofi-calc
       mission-center
+      parabolic
+      clipgrab
+      ardour
+      audacity
+      gparted
   
       # Development
       git
@@ -405,6 +420,8 @@ let
         hatchling
         pycairo
         xkeysnail
+        speechrecognition
+        pyaudio
       ]))
   
       # Player and Audio
@@ -417,6 +434,8 @@ let
       vlc
       waypaper
       swaybg
+      swww
+      yt-dlp
   
       # GTK
       webp-pixbuf-loader
@@ -437,7 +456,7 @@ let
       gnome-keyring
       gnome-control-center
       gnome-bluetooth
-      gnome-shell
+    #  gnome-shell
       nautilus
       nodejs_20
       yaru-theme
@@ -462,7 +481,7 @@ let
       wlogout
       wl-clipboard
       hyprpicker
-      gammastep
+    #  gammastep
       libnotify
       bc
       xdg-user-dirs
@@ -494,7 +513,7 @@ let
 
   };
 
-  xresources.properties = { # set cursor size and dpi for 4k monitor
+  xresources.properties = { # set cursor size and dpi for your monitor
     "Xcursor.size" = 24;
     "Xft.dpi" = 172;
   };
