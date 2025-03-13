@@ -1,10 +1,5 @@
 { pkgs, config, ... }:
 {
- # imports = [
- #   ./kvmfr-package.nix
- #   ./kvmfr-options.nix
- # ];
-
   config = {
 
     virtualisation = {
