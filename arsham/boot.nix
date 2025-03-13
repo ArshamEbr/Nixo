@@ -23,7 +23,7 @@
       };
 
       kernelParams = [
-        # Mandatory for dgpu passthrough
+        "fastboot"
         "intel_iommu=on"          
         "iommu=pt"                
         "vfio-pci.ids=10de:1c94"
@@ -34,6 +34,9 @@
       initrd = {
         availableKernelModules = [ "xhci_pci" "vmd" "ahci" "usb_storage" "sd_mod" ];
         verbose = false;
+        compressor = "zstd";
+        compressorArgs = [ "-T0" ];
+        systemd.enable = true;
         kernelModules = [
           # yea also these are mandatory for dgpu passthrough 
           "vfio_pci"          
