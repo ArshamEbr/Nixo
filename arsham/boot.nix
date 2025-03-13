@@ -9,7 +9,7 @@
 
     boot = {
 
-      extraModulePackages = [ pkgs.linuxKernel.packages.linux_6_12.kvmfr ];
+      extraModulePackages = [ pkgs.linuxKernel.packages.linux_6_12.kvmfr pkgs.linuxKernel.packages.linux_6_12.acpi_call ];
       extraModprobeConfig = "options snd_hda_intel model=alcplugfix";
       consoleLogLevel = 0;
       supportedFilesystems = [ "ntfs" "nfs" ];
@@ -41,7 +41,6 @@
         compressorArgs = [ "-T0" ];
         systemd.enable = true;
         kernelModules = [
-          # yea also these are mandatory for dgpu passthrough 
           "vfio_pci"          
           "vfio"
           "vfio_iommu_type1"
