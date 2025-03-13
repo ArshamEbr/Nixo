@@ -5,8 +5,12 @@ wayland.windowManager.hyprland.settings = {
 
 exec-once = [ 
 
-# Live wallpaper
-"mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes'"
+# Live wallpaper (mpvpaper)
+#"mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes'"
+
+# Static and gif wallpaper (swww)
+"swww-daemon --format xrgb"
+#"swww img $HOME/nixo/resources/wallpapers/wolf.jpg --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1"
 
 # Random stuff
 "/usr/lib/geoclue-2.0/demos/agent & gammastep"
