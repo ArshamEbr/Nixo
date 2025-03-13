@@ -23,6 +23,9 @@
       };
 
       kernelParams = [
+        "quiet"
+        "initcall_debug=n"
+        "systemd.show_status=0"
         "fastboot"
         "intel_iommu=on"          
         "iommu=pt"                
@@ -48,10 +51,10 @@
 
       plymouth = {
         enable = true;
-        theme = "owl";
+        theme = "rog_2";
         themePackages = with pkgs; [
           (adi1090x-plymouth-themes.override {
-             selected_themes = [ "owl" ];
+            selected_themes = [ "rog_2" ];
           })
         ];
       };
