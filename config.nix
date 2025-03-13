@@ -205,9 +205,8 @@
 
     # $ nix search wget
     systemPackages = with pkgs; [
-      # Minecraft
-      libnotify
-      prismlauncher
+      # FTDI
+      libftdi1
 
       # Editors
       vim
