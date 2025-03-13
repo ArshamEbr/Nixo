@@ -82,6 +82,10 @@ bind = [
   #"$Primary$Secondary$Alternate, M, exec, spotify" 
   "$Primary, V, exec, amberol"
 
+  # Wallch keybinds
+  "$Primary$Secondary, K, exec, wallch --chgw"
+ # "$Primary$Secondary, L, exec, wallch --start"
+
   # LookingGlass and virsh shortcuts for ease of access
   "$Primary$Alternate, p, exec, dgpu_windows_vm_start"
   "$Primary$Alternate, o, exec, dgpu_windows_vm_shutdown"
