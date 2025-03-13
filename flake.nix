@@ -1,28 +1,47 @@
 {
-  description = "NixOS configuration";
+  description = "Nixo >:)";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-old.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
     anyrun.url = "github:Kirottu/anyrun";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    #anyrun.inputs.nixpkgs.follows = "nixpkgs";
     nix-gl-host.url = "github:numtide/nix-gl-host";
     nixgl.url = "github:nix-community/nixGL";
-    #ags.url = "github:Aylur/ags/main";
     ags.url = "github:gorsbart/ags";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     dream2nix.url = "github:nix-community/dream2nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    zen-browser.url = "github:youwen5/zen-browser-flake";
-    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
-    morewaita.url = "github:somepaulo/MoreWaita"; 
-    morewaita.flake = false;
+    
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zen-browser = {
+      url = "github:youwen5/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    morewaita = {
+      url = "github:somepaulo/MoreWaita"; 
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-old, nixpkgs-unstable, anyrun, home-manager, dream2nix, nixgl, nix-gl-host, nix-vscode-extensions, nixos-hardware, ... }:
+  outputs = inputs@{ 
+    nixpkgs,
+    nixpkgs-old,
+    nixpkgs-unstable,
+    anyrun,
+    home-manager,
+    dream2nix,
+    nixgl,
+    nix-gl-host,
+    nix-vscode-extensions,
+    nixos-hardware,
+    ...
+  }:
   let
     system = "x86_64-linux";
     lib = nixpkgs.lib;
@@ -64,6 +83,27 @@
           (import ./overlays/materialyoucolor.nix)
           (import ./overlays/end-4-dots.nix)
           (import ./overlays/wofi-calc.nix)
+
+        #  (self: super: {
+        #    electron = super.electron.overrideAttrs (old: {
+        #      NIX_CFLAGS_COMPILE = old.NIX_CFLAGS_COMPILE or "" + " -march=native -O2 ";
+        #    });
+        #  })
+
+        #  (self: super: {
+        #    electron = super.electron.overrideAttrs (old: {
+        #      NIX_CFLAGS_COMPILE = old.NIX_CFLAGS_COMPILE or "" + " -march=native -O2 ";
+        #    });
+        #  })
+
+        #  (self: super: {
+        #      gcc = super.gcc.overrideAttrs (old: {
+        #        NIX_CFLAGS_COMPILE = old.NIX_CFLAGS_COMPILE or "" + " -march=native -O2 ";
+        #      });
+        #      llvm = super.llvm.overrideAttrs (old: {
+        #        NIX_CFLAGS_COMPILE = old.NIX_CFLAGS_COMPILE or "" + " -march=native -O2 ";
+        #      });
+        #  })
         ];
       };
       pkgs-unstable = import inputs.nixpkgs-unstable {
