@@ -225,10 +225,10 @@ let
         executable = true;  # make all files executable
       };
 
-      "Wallpapers" = {
-        source = arsham-nixo + "/resources/wallpapers";
-        recursive = true;
-      };
+  #    "Wallpapers" = {
+  #      source = arsham-nixo + "/resources/wallpapers";
+  #      recursive = true;
+  #    };
 
       "winapps/pkg" = {
         source = winapps;
@@ -242,10 +242,6 @@ let
     
       ".local/bin/initialSetup.sh" = {
         source = pkgs.end-4-dots + "/.local/bin/initialSetup.sh";
-      };
-  
-      ".local/bin/agsAction.sh" = {
-        source = celes-dots + "/.local/bin/agsAction.sh";
       };
   
       ".local/bin/regexEscape.sh" = {
