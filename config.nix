@@ -57,6 +57,10 @@
     };
   };
 
+  systemd.services = {
+    NetworkManager-wait-online.enable = false;
+  };
+
   services = {
 
     #automatic-timezoned.enable = true;
