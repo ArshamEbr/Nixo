@@ -75,6 +75,10 @@
     blueman.enable = true; # Bluetooth 
     gvfs.enable = true;
     fstrim.enable = true;
+
+    getty = {
+      autologinUser = "arsham"; # tty auto login to use hyprlock
+    #  autologinOnce = true;
     };
 
     udev = {
@@ -123,6 +127,19 @@
   };
 
   programs = { 
+  bash.loginShellInit = ''
+    if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+      read -t 3 -p "Start Hyprland? (Will auto-launch in 3 seconds) [Y/n] " answer
+      case $answer in
+        [Yy]*|"") 
+          exec dbus-run-session Hyprland
+          ;;
+        [Nn]*) 
+          echo "Hyprland launch cancelled"
+          ;;
+      esac
+    fi
+  '';
 
     hyprland = { # Best Window Manager
       enable = true;
