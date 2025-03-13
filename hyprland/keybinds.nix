@@ -80,7 +80,6 @@ bind = [
   #"$Primary$Secondary, M, exec, tidal-hifi"
   #"$Primary$Secondary$Tertiary, M, exec, env -u NIXOS_OZONE_WL cider --use-gl=desktop"
   #"$Primary$Secondary$Alternate, M, exec, spotify" 
-  "$Primary, V, exec, amberol"
 
   # Wallch keybinds
   "$Primary$Secondary, K, exec, wallch --chgw"
@@ -99,11 +98,11 @@ bind = [
   "$Primary$Alternate, 8, exec, check_gpu_status"
   
   # Discord
-  "$Primary, 1, exec, vesktop --disable-gpu"
-  "$Alternate, 1, exec, discord --disable-gpu"
+  "$Primary, 1, exec, vesktop"
+  "$Alternate, 1, exec, discord"
 
   # Telegram
-  "$Primary, 2, exec, telegram-desktop --disable-gpu"
+  "$Primary, 2, exec, telegram-desktop"
 
   # System Monitors
   "$Primary, M, exec, [float; size 50% 56%; move 100%-w-10 43] foot -e btop"
@@ -120,12 +119,12 @@ bind = [
   "$Alternate, E, exec, thunar"
 
   # Browsers
-  "$Primary, B, exec, brave --disable-gpu"
+  "$Primary, B, exec, brave"
   "$Alternate, B, exec, zen"
   
   # notepad
   "$Primary$Secondary, X, exec, subl"
-  "$Primary, C, exec, code --disable-gpu"
+  "$Primary, C, exec, code"
   #"$Primary$Secondary$Tertiary, C, exec, jetbrains-toolbox"
   
   # calculator
