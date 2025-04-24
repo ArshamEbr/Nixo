@@ -1,6 +1,14 @@
 {
   imports = [
-  #  ./hyprland
+    ./hyprland
+    ./wayfire
     ./foot
+    ./waybar
+    ./btop
+    ./rofi
+    ./vscode
+    ./starship
+    ./obs
+    ./mako
   ];
 }
