@@ -11,5 +11,6 @@
     ./warn.nix
     ./virtualisation.nix
     ./uki.nix
+    ./homie.nix
   ];
 }
