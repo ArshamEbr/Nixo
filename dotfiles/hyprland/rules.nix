@@ -5,11 +5,11 @@
       files = {
       ".config/hypr/rules.conf".text = ''
         ######### Window rules ########
-      # windowrule = noblur,.*
-      # windowrule = opacity 0.89 override 0.89 override, .* # Applies transparency to EVERY WINDOW
-        windowrule = float, ^(blueberry.py)$
-        windowrule = float, ^(steam)$
-        windowrule = float, ^(guifetch)$ # FlafyDev/guifetch
+      #  windowrule = noblur,.*
+      #  windowrule = opacity 0.89 override 0.89 override, .* # Applies transparency to EVERY WINDOW
+      #  windowrule = float, ^(blueberry.py)$
+      #  windowrule = float, ^(steam)$
+      #  windowrule = float, ^(guifetch)$ # FlafyDev/guifetch
 
         windowrule = center, title:^(Open File)(.*)$
         windowrule = center, title:^(Select a File)(.*)$
@@ -29,7 +29,7 @@
         windowrule = float,title:^(File Upload)(.*)$
 
         # Tearing
-        windowrule = immediate,.*.exe
+      #  windowrule = immediate,.*.exe
 
         ######### Window rules v2 #########
         windowrulev2 = bordercolor rgba(ECB2FFAA) rgba(ECB2FF77),pinned:1

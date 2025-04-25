@@ -6,7 +6,7 @@
       ".config/hypr/general.conf".text = ''
       # Monitors Configuration
       monitor = ,preferred,auto,1
-      monitor = HDMI-A-1,1920x1080@60,1920x0,1,mirror,eDP-1 # Mirror
+      monitor = HDMI-A-1,1920x1080@60,1920x0,1,mirror,eDP-1 # Duplicate
     #  monitor = HDMI-A-1,1920x1080@60,1920x0,1 # Extand
 
       input {
@@ -115,7 +115,7 @@
         bezier = easeOutCirc, 0, 0.55, 0.45, 1
         bezier = easeOutExpo, 0.16, 1, 0.3, 1
         bezier = softAcDecel, 0.26, 0.26, 0.15, 1
-        bezier = md2, 0.4, 0, 0.2, 1 # use with .2s duration
+        bezier = md2, 0.4, 0, 0.2, 1
 
         # Animation configs
         animation = windows, 1, 3, md3_decel, popin 60%

@@ -103,6 +103,6 @@
 
     programs.hyprlock = {
       enable = true;
-      package = pkgs-unstable.hyprlock;
+      package = pkgs.hyprlock;
     };
   }
