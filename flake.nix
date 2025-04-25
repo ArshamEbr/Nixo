@@ -8,25 +8,14 @@
     anyrun.url = "github:Kirottu/anyrun";
     nix-gl-host.url = "github:numtide/nix-gl-host";
     nixgl.url = "github:nix-community/nixGL";
-  #  ags.url = "github:gorsbart/ags";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     dream2nix.url = "github:nix-community/dream2nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    
-  #  home-manager = {
-  #    url = "github:nix-community/home-manager/release-24.11";
-  #    inputs.nixpkgs.follows = "nixpkgs";
-  #  };
 
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-  #  morewaita = {
-  #    url = "github:somepaulo/MoreWaita"; 
-  #    flake = false;
-  #  };
   };
 
   outputs = inputs@{ 
@@ -34,7 +23,6 @@
     nixpkgs-old,
     nixpkgs-unstable,
     anyrun,
-  #  home-manager,
     dream2nix,
     nixgl,
     nix-gl-host,
@@ -136,18 +124,6 @@
           ./hardware.nix
           ./arsham
           ./dotfiles
-        #  home-manager.nixosModules.home-manager # DITCHED HOME_MANAGER!
-        #  {
-        #    home-manager.useGlobalPkgs = true;
-        #    home-manager.useUserPackages = true;
-        #    home-manager.extraSpecialArgs = { 
-        #      inherit inputs;
-        #      inherit pkgs-unstable;
-        #      inherit pkgs-old;
-        #      inherit user;
-        #    };
-        #    home-manager.users.arsham = import ./home.nix;
-        #  }
         ];
       };
   };
