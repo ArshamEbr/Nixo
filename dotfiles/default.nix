@@ -12,5 +12,6 @@
     ./mako
     ./udiskie
     ./gtk3
+    ./uwsm
   ];
 }
