@@ -23,7 +23,7 @@
 #    https_proxy = "socks5h://localhost:7891";
 #    https_proxy = "http://localhost:7890"; # or use http prctocol instead of socks5
 #  };
-
+  
   zramSwap.enable = true;
   nixpkgs.config.allowUnfree = true; # Licences
 
