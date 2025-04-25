@@ -1,4 +1,4 @@
-{ inputs, pkgs, pkgs-old, pkgs-unstable, ... }: 
+{ inputs, pkgs, pkgs-old, pkgs-unstable, user, ... }: 
 let
   celes-dots = pkgs.fetchFromGitHub {
     owner = "celesrenata";
@@ -29,21 +29,69 @@ let
   imports = [ 
     inputs.ags.homeManagerModules.default 
     ./hyprland
-   ];
+  ];
 
   services = {
- 
+
     udiskie = {
       enable = true;
       notify = true;
       tray = "auto";
     };
 
-    amberol = { # Cool-ish music player
+    mpd = {
       enable = true;
-      enableRecoloring = true;
+      musicDirectory = "~/Music";
+      extraConfig = ''
+        audio_output {
+            type            "pulse"
+            name            "MPD PulseAudio"
+        }
+  
+        mixer_type "software"
+        bind_to_address "localhost"
+      '';
     };
- 
+
+    mpd-mpris.enable = true;
+
+    mako = {
+      enable = false;
+      backgroundColor = "#1e1e2e"; # Dark background with a hint of elegance
+      textColor = "#cdd6f4"; # Soft light text for readability
+      borderColor = "#89b4fa"; # Cool blue border for a clean look
+      borderSize = 2;
+      borderRadius = 17; # Slightly larger radius for rounded edges
+      font = "JetBrainsMono Nerd Font 12"; # Stylish and readable font
+      padding = "15"; # Slightly larger padding for more space around the text
+      margin = "30";
+      anchor = "top-right";
+      width = 390;
+      height = 100;
+      maxIconSize = 50;
+      defaultTimeout = 7000;
+      ignoreTimeout = false;
+      layer = "overlay";
+      icons = true;
+      markup = true;
+      extraConfig = ''
+        [urgency=low]
+        default-timeout=1000
+        background-color=#1e1e2e
+        border-color=#89b4fa
+    
+        [category=volume]
+        default-timeout=1000
+        background-color=#1e1e2e
+        border-color=#89b4fa
+    
+        [category=brightness]
+        default-timeout=1000
+        background-color=#1e1e2e
+        border-color=#89b4fa
+      '';
+    };
+    
   };
 
   gtk = { # Theme stuff
@@ -65,8 +113,258 @@ let
 
     home-manager.enable = true;
 
+    waybar = {
+        enable = false;
+        package = pkgs.waybar;
+        settings = {
+          mainBar = {
+            layer = "top";
+            position = "top";
+            height = 0;
+            spacing = 0;
+            
+            modules-left = [ "custom/launcher" "hyprland/workspaces" "custom/mpd" ];
+            modules-center = [ "temperature" "cpu" "clock" "memory" "disk" ];
+            modules-right = [ "tray" "network" "custom/network" "pulseaudio" "backlight" "custom/power" "battery" ];
+            
+            "hyprland/workspaces" = {
+              format = "{name}";
+              active-only = false;
+              on-click = "activate";
+            };
+    
+            temperature = {
+              tooltip = false;
+              interval = 3;
+              format = " {temperatureC}°C";
+              critical-threshold = 80;
+              format-critical = " {temperatureC}°C";
+              hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
+              on-click = "foot -e btop";
+            };
+            
+            "custom/launcher" = {
+              format = " ";
+              on-click = "rofi -show drun";
+              tooltip = false;
+            };
+    
+            clock = {
+              format = "{:%H:%M}";
+              tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+            };
+    
+            cpu = {
+              format = " {usage}%";
+              interval = 3;
+            };
+    
+            memory = {
+              format = "  {}%";
+              interval = 3;
+            };
+    
+            battery = {
+              states = {
+                warning = 30;
+                critical = 15;
+              };
+              format = "{icon} {capacity}%";
+              format-charging = "󰂄 {capacity}%";
+              format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+            };
+    
+            network = {
+              format-wifi = "{essid} {signalStrength}%";
+              format-ethernet = "󰈀 Connected";
+              format-disconnected = "󰖪 Disconnected";
+              tooltip-format = "{ifname} via {gwaddr}";
+              on-click = "kitty -e nmtui";
+            };
+  
+            "custom/network" = {
+              "exec" = "way_network";
+              "interval" = 1;
+              "return-type" = "text";
+            };
+      
+            pulseaudio = {
+              format = "{icon}  {volume}%";
+              format-muted = "  Muted";
+              format-icons = {
+                default = [ "" "" "" ];
+              };
+              on-click = "pavucontrol";
+            };
+    
+            tray = {
+              spacing = 12;
+            };
+  
+            disk = {
+              path = "/";
+              format = " {percentage_used}%";
+            };
+  
+            backlight = {
+              device = "intel_backlight";
+              format = "{icon} {percent}%";
+              format-icons = ["🌑" "🌘" "🌗" "🌖" "🌕"];
+            };
+  
+            "custom/mpd" = {
+              format = "󰝚 {}";
+              exec = ''
+                sanitize_output() {
+                  decoded=$(printf '%b' "''${1//%/\\x}" 2>/dev/null || echo "$1")
+                  echo "$decoded" | 
+                    iconv -cf utf-8 -t utf-8//TRANSLIT 2>/dev/null |
+                    tr -cd '\11\12\15\40-\176' |  # Keep basic printable ASCII
+                    sed -e 's/\\u[0-9a-fA-F]\{1,4\}//g' \
+                        -e 's/[[:cntrl:]]//g' \
+                        -e 's/^[[:space:]]*//' \
+                        -e 's/[[:space:]]*$//'
+                }
+                players=$(playerctl -l 2>/dev/null)
+                meta=""
+                for player in $players; do
+                  current=$(playerctl -p "$player" metadata --format '{{artist}} - {{title}}' 2>/dev/null)
+                  [ -z "$current" ] || [ "$current" = " - " ] && 
+                    current=$(playerctl -p "$player" metadata --format '{{title}}' 2>/dev/null)
+                  if [ -z "$current" ]; then
+                    url=$(playerctl -p "$player" metadata xesam:url 2>/dev/null)
+                    if [ -n "$url" ]; then
+                      filename=$(basename "''${url%%\?*}")
+                      current=$(sanitize_output "$filename")
+                      current="''${current%.*}"
+                    fi
+                  fi
+                  [ -z "$meta" ] && [ -n "$current" ] && meta="$current"
+                done
+                if [ -z "$meta" ]; then
+                  if [ -n "$players" ]; then
+                    meta="Media player paused"
+                  else
+                    meta="No media player"
+                  fi
+                fi
+                echo -n "$meta" | head -c 70 | tr -d '\n\r\0'
+              '';
+              return-type = "string";
+              interval = 3;
+              on-click = "playerctl play-pause";
+            };
+   
+            "custom/power" = {
+              exec = '' echo "󰓅" '';
+              on-click = "tlp_mode";
+              return-type = "text";
+              interval = "once";
+              format = "{}";
+              tooltip = false;
+            };
+          };
+        };
+        style = ''
+          * {
+            border: none;
+            border-radius: 8px;
+            font-family: "JetBrainsMono Nerd Font";
+            font-size: 14px;
+            min-height: 0;
+          }
+          
+          window#waybar {
+            background: rgba(40, 40, 40, 0.602);
+            color: #cdd6f4;
+            border-radius: 0px;
+            margin: 0px 0px 0 0px;
+          }
+          
+          #custom-mpd {
+            color:rgba(145, 229, 255, 0.961);
+            font-weight: bold;
+            padding: 0 10px;
+          }
+          
+          #workspaces button,
+          #clock, 
+          #battery, 
+          #cpu, 
+          #memory, 
+          #network, 
+          #pulseaudio,
+          #custom-launcher,
+          #temperature,
+          #mpd,
+          #backlight,
+          #disk,
+          #gamemode,
+          #custom-power,
+          #custom-mpd,
+          #custom-network,
+          #tray {
+            background: transparent;
+            margin: 0px 3px;
+            padding: 0 6px;
+          }
+          
+          /* Active workspace */
+          #workspaces button.active {
+            background: rgba(117, 147, 196, 0.602);
+            color:rgb(151, 188, 249);
+          }
+          
+          /* Hover effects */
+          #workspaces button:hover,
+          #clock:hover,
+          #battery:hover,
+          #cpu:hover,
+          #memory:hover,
+          #network:hover,
+          #pulseaudio:hover,
+          #custom-launcher:hover,
+          #temperature:hover,
+          #mpd:hover,
+          #backlight:hover,
+          #disk:hover,
+          #gamemode:hover,
+          #custom-power:hover,
+          #custom-mpd:hover,
+          #custom-network:hover,
+          #tray:hover {
+            background: rgba(49, 50, 68, 0.602); /* Darker on hover */
+          }
+          
+          #temperature {
+            color:rgb(0, 234, 255);
+          }
+          
+          #temperature.critical {
+            color:rgb(255, 19, 19);
+            animation: blink 1s infinite;
+          }
+          
+          @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+          }
+      '';
+    };
+    
+    rofi = {
+      enable = false;
+      theme = "solarized";
+      extraConfig = {
+        modi = "drun,run,window";
+        show-icons = true;
+        font = "SpaceMono Nerd Font 11";
+      };
+    };
+
     ags = {
-      enable = true;
+      enable = false;
       configDir = null;
       extraPackages = with pkgs; [
         gtksourceview
@@ -75,16 +373,11 @@ let
         accountsservice
       ];
     };
-    
-    # Modular Programs
 
     vscode = { # VSCode
-      enable = true;
+      enable = false;
       package = pkgs.vscode;
       extensions = with pkgs.vscode-extensions; [
-        #dracula-theme.theme-dracula
-        #vscodevim.vim
-        #yzhang.markdown-all-in-one
         ms-python.python
         oderwat.indent-rainbow
         eamodio.gitlens
@@ -94,9 +387,8 @@ let
     };
 
     btop = {
-      enable = true;
+      enable = false;
       settings = {
-        #package = pkgs-unstable.btop;
         color_theme = "Default";
         theme_background = false;
         update_ms = 100;
@@ -105,7 +397,7 @@ let
     };
 
     obs-studio = { # OBS
-      enable = true;
+      enable = false;
       package = pkgs-unstable.obs-studio;
       plugins = with pkgs-unstable.obs-studio-plugins; [
         wlrobs
@@ -115,7 +407,7 @@ let
     };
 
     starship = { # starship - an customizable prompt for any shell
-      enable = true;
+      enable = false;
       settings = { # custom settings
         add_newline = false;
         aws.disabled = true;
@@ -123,59 +415,6 @@ let
         line_break.disabled = true;
       };
     };
-
-  #  alacritty = { # alacritty - a cross-platform, GPU-accelerated terminal emulator
-  #    enable = true;
-  #    settings = { # custom settings
-  #      scrolling.history = 10000;
-  #      terminal.shell.program = "fish";
-  #      scrolling.multiplier = 5;
-  #      selection.save_to_clipboard = true;
-  #      env.TERM = "xterm-256color";
-  #      colors = {
-  #        primary = {
-  #          background = "#0F131C";
-  #          foreground = "#DFE2EF";
-  #        };
-  #        normal = {
-  #          black = "#0F131C";
-  #          red = "#FFB4AB";
-  #          green = "#005CBA";
-  #          yellow = "#D7E3FF";
-  #          blue = "#D7E3FF";
-  #          magenta = "#E0E2FF";
-  #          cyan = "#AAC7FF";
-  #          white = "#C1C6D6";
-  #        };
-  #        bright = {
-  #          black = "#0F131C";
-  #          red = "#FFB4AB";
-  #          green = "#005CBA";
-  #          yellow = "#D7E3FF";
-  #          blue = "#D7E3FF";
-  #          magenta = "#E0E2FF";
-  #          cyan = "#AAC7FF";
-  #          white = "#C1C6D6";
-  #        };
-  #      };
-  #      cursor = {
-  #        style = "Beam";
-  #        thickness = 1;
-  #      };
-  #      window = {
-  #        opacity = 0.2; # Adjust transparency (0.0 - fully transparent, 1.0 - opaque)
-  #        padding = { x = 10; y = 10; }; # Adds padding around the terminal
-  #        dynamic_padding = true;
-  #      };
-  #      font = {
-  #        normal = {
-  #          family = "SpaceMono Nerd Font";
-  #          style = "Regular";
-  #        };
-  #        size = 11;
-  #      };
-  #    };
-  #  };
 
     bash = {
       enable = true;
@@ -197,10 +436,12 @@ let
 
   # link all files in `./scripts` to `~/.config/i3/scripts`
 
+  fonts.fontconfig.enable = true;
+
   home = {
 
-    username = "arsham";             # TODO please change the username to your own
-    homeDirectory = "/home/arsham";  # TODO please change the home directory to your own
+    username = "${user.name}";
+    homeDirectory = "/home/${user.name}";
     stateVersion = "24.11";  
 
     sessionVariables = {
@@ -224,11 +465,6 @@ let
         recursive = true;   # link recursively
         executable = true;  # make all files executable
       };
-
-  #    "Wallpapers" = {
-  #      source = arsham-nixo + "/resources/wallpapers";
-  #      recursive = true;
-  #    };
 
       "winapps/pkg" = {
         source = winapps;
@@ -267,7 +503,29 @@ let
     ++
 
     (with pkgs; [
-# Minecraft
+      blender
+      # VNC
+      tigervnc
+      # Camera
+      webcamoid
+
+      # Fonts
+      nerdfonts
+      
+    #  stm32cubemx
+      ncmpcpp
+      mpdris2
+      ghex
+      baobab
+      
+      peazip
+      kdePackages.ark
+      #
+      apktool
+      # Androind EMU
+      waydroid
+      
+      # Minecraft
       prismlauncher
 
       # Arduino
@@ -422,6 +680,8 @@ let
         xkeysnail
         speechrecognition
         pyaudio
+        tkinter
+        google
       ]))
   
       # Player and Audio
@@ -456,7 +716,9 @@ let
       gnome-keyring
       gnome-control-center
       gnome-bluetooth
-    #  gnome-shell
+      file-roller
+
+      # Gnome-shell
       nautilus
       nodejs_20
       yaru-theme
@@ -488,7 +750,6 @@ let
   
       # Shells and Terminals
       starship
-      foot
   
       # Themes
       adw-gtk3
