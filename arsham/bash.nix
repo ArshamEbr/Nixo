@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, user, ... }:
 let
 
   dGPU_VFIO = pkgs.stdenv.mkDerivation {
@@ -68,9 +68,9 @@ let
   
       # Detach the dGPU
       sudo systemctl stop ollama
-      sudo rmmod nvidia_modeset nvidia_uvm nvidia
-      sudo modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1
-      sudo virsh nodedev-detach pci_0000_01_00_0
+      sudo ${pkgs.kmod}/bin/rmmod nvidia_modeset nvidia_uvm nvidia
+      sudo ${pkgs.kmod}/bin/modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1
+      sudo ${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_01_00_0
       notify-send "NVIDIA dGPU is Detached" --icon=$HOME/nixo/resources/icons/nvidia.png
       paplay ~/nixo/resources/sfx/detach.mp3 & disown
       exit
@@ -90,9 +90,9 @@ let
         paplay ~/nixo/resources/sfx/notif.mp3 & disown
         exit 0
       fi
-      sudo rmmod vfio_pci vfio_pci_core vfio_iommu_type1
-      sudo virsh nodedev-reattach pci_0000_01_00_0
-      sudo modprobe -i nvidia_modeset nvidia_uvm nvidia
+      sudo ${pkgs.kmod}/bin/rmmod vfio_pci vfio_pci_core vfio_iommu_type1
+      sudo ${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_0
+      sudo ${pkgs.kmod}/bin/modprobe -i nvidia_modeset nvidia_uvm nvidia
       notify-send "NVIDIA dGPU is Reattached" --icon=$HOME/nixo/resources/icons/nvidia.png
       paplay ~/nixo/resources/sfx/attach.mp3 & disown
       sudo systemctl restart ollama
@@ -118,14 +118,14 @@ let
   
       # Function to turn conservation mode on
       conserve_on() {
-        sudo tlp setcharge 0 1
+        sudo ${pkgs.tlp}/bin/tlp setcharge 0 1
         notifx1 conserve_on & disown
         notify-send "Battery Conservation Mode ON" --icon=$HOME/nixo/resources/icons/conserve_on.png
       }
   
       # Function to turn conservation mode off
       conserve_off() {
-        sudo tlp setcharge 0 0
+        sudo ${pkgs.tlp}/bin/tlp setcharge 0 0
         notifx1 conserve_off & disown
         notify-send "Battery Conservation Mode OFF" --icon=$HOME/nixo/resources/icons/conserve_off.png
       }
@@ -154,7 +154,7 @@ let
       ############################
       #!/run/current-system/sw/bin/bash
       set -x
-      current_mode=$(tlp-stat -s | grep "Mode" | awk '{print $3}')
+      current_mode=$(${pkgs.tlp}/bin/tlp-stat -s | grep "Mode" | awk '{print $3}')
       if [[ "$current_mode" == "battery" ]]; then
           new_mode="ac"
           mode_name="Maximum Performance"
@@ -168,7 +168,7 @@ let
           icon=$HOME/nixo/resources/icons/power_saving.png
           swww img $HOME/nixo/resources/wallpapers/wolf.jpg --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1
       fi
-      sudo tlp "$new_mode"
+      sudo ${pkgs.tlp}/bin/tlp "$new_mode"
       notify-send "Power Mode Switched!" "Now in $mode_name mode" --icon=$icon
       ENDX2
       chmod 755 $out/bin/tlp_mode
@@ -234,7 +234,7 @@ let
       fi
       pkill mpvpaper
       swww img $HOME/nixo/resources/wallpapers/wolf.jpg --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1 & disown
-      virsh -c qemu:///system start Win11
+      ${pkgs.libvirt}/bin/virsh -c qemu:///system start Win11
       looking-glass-client -F & disown
       notify-send "Windows VM is Booting UP!" --icon=$HOME/nixo/resources/icons/windows.png
       paplay ~/nixo/resources/sfx/windows_on.mp3 & disown
@@ -254,14 +254,14 @@ let
 
       # pgrep mpvpaper > /dev/null || mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes' & disown
       swww img $HOME/nixo/resources/wallpapers/mitsu.png --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1 & disown
-      virsh -c qemu:///system shutdown Win11 
-      virsh -c qemu:///system shutdown Win11_iAudio
+      ${pkgs.libvirt}/bin/virsh -c qemu:///system shutdown Win11 
+      ${pkgs.libvirt}/bin/virsh -c qemu:///system shutdown Win11_iAudio
       notify-send "Shutdown initiated for Windows VM" --icon=$HOME/nixo/resources/icons/close.png
       max_wait=10
       waited=0
       while true; do
-          state_win11=$(virsh -c qemu:///system domstate Win11 2>/dev/null)
-          state_audio_win11=$(virsh -c qemu:///system domstate Win11_iAudio 2>/dev/null)     
+          state_win11=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate Win11 2>/dev/null)
+          state_audio_win11=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate Win11_iAudio 2>/dev/null)     
           if [[ "$state_win11" == "shut off" && "$state_audio_win11" == "shut off" ]]; then
               break
           fi    
@@ -299,7 +299,7 @@ let
       DEVICES=("pci_0000_00_1f_0" "pci_0000_00_1f_3" "pci_0000_00_1f_4" "pci_0000_00_1f_5")   
       failed=false
       for dev in "''${DEVICES[@]}"; do
-        if ! sudo virsh nodedev-reattach "$dev"; then
+        if ! sudo ${pkgs.libvirt}/bin/virsh nodedev-reattach "$dev"; then
           notify-send "Failed to reattach $dev" --icon=dialog-warning
           failed=true
         fi
@@ -331,7 +331,7 @@ let
       DEVICES=("pci_0000_00_1f_0" "pci_0000_00_1f_3" "pci_0000_00_1f_4" "pci_0000_00_1f_5")
       failed=false
       for dev in "''${DEVICES[@]}"; do
-        if ! sudo virsh nodedev-detach "$dev"; then
+        if ! sudo ${pkgs.libvirt}/bin/virsh nodedev-detach "$dev"; then
           failed=true
         fi
       done
@@ -371,9 +371,8 @@ let
           paplay ~/nixo/resources/sfx/error.mp3 & disown
           exit 1
       fi
-      pkill mpvpaper
       swww img $HOME/nixo/resources/wallpapers/wolf.jpg --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1 & disown
-      virsh -c qemu:///system start Win11_iAudio
+      ${pkgs.libvirt}/bin/virsh -c qemu:///system start Win11_iAudio
       looking-glass-client -f /dev/kvmfr0 -F & disown
       notify-send "Full Windows VM is Booting UP!" --icon=$HOME/nixo/resources/icons/windows.png
       exit
@@ -522,16 +521,16 @@ let
     #!/run/current-system/sw/bin/bash
     
     notifx1 nix_build_start & disown
-    sudo tlp ac
+    sudo ${pkgs.tlp}/bin/tlp ac
     output=$(${pkgs.nh}/bin/nh os switch "$@" 2>&1 | tee /dev/tty)
 
     if echo "$output" | grep -qi "error"; then
       notifx1 nix_build_failed & disown
-      sudo tlp bat
+      sudo ${pkgs.tlp}/bin/tlp bat
       notify-send "NixOS Rebuild FAILED!" --icon=$HOME/nixo/resources/icons/report.png
     else
       notifx1 nix_build_ok & disown
-      sudo tlp bat
+      sudo ${pkgs.tlp}/bin/tlp bat
       notify-send "NixOS Rebuild SUCESS!" --icon=$HOME/nixo/resources/icons/check.png
     fi
   '';
@@ -544,41 +543,84 @@ let
       done
   '';
 
+  rofi-go = pkgs.writeScriptBin "power-menu-rofi" ''
+    #!/run/current-system/sw/bin/bash
+
+    chosen=$(printf " Shutdown\n Reboot\n Suspend\n Lock\n Logout" | rofi -dmenu -i -p "Power" -theme ~/.config/rofi/powermenu.rasi)
+    
+    case "$chosen" in
+        " Shutdown") systemctl poweroff ;;
+        " Reboot") systemctl reboot ;;
+        " Suspend") systemctl suspend ;;
+        " Lock") hyprlock ;;  # Replace with your lock command
+        " Logout") hyprctl dispatch exit ;;
+    esac
+  '';
+
+  way-net-go = pkgs.writeScriptBin "way_network" ''
+    #!/run/current-system/sw/bin/bash
+    # Change to your network interface
+    INTERFACE="wlp2s0"
+    
+    # Get total bytes since boot/interface-up
+    RX_TOTAL=$(cat /sys/class/net/$INTERFACE/statistics/rx_bytes)
+    TX_TOTAL=$(cat /sys/class/net/$INTERFACE/statistics/tx_bytes)
+    
+    # Convert to MB or GB
+    rx_total_mb=$((RX_TOTAL / 1024 / 1024))
+    tx_total_mb=$((TX_TOTAL / 1024 / 1024))
+
+    total_dw=$((rx_total_mb + tx_total_mb))
+    
+    # For speed measurement
+    RX_PREV=$RX_TOTAL
+    TX_PREV=$TX_TOTAL
+    sleep 1
+    RX_NEXT=$(cat /sys/class/net/$INTERFACE/statistics/rx_bytes)
+    TX_NEXT=$(cat /sys/class/net/$INTERFACE/statistics/tx_bytes)
+    
+    # Speed in KB/s
+    RX_RATE=$(( (RX_NEXT - RX_PREV) / 1024 ))
+    TX_RATE=$(( (TX_NEXT - TX_PREV) / 1024 ))
+
+    echo -n " $RX_RATE KB/s |  $TX_RATE KB/s | $total_dw MB ↑↓"
+  '';
+
+
 in
 
   {
     security.sudo.extraRules = [
-
-      { users = [ "arsham" ];
+      { users = [ "${user.name}" ];
         commands = [
         
-          {command = "/run/current-system/sw/bin/tlp setcharge 0 0";                                   options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/tlp setcharge 0 1";                                   options = [ "NOPASSWD" ];}
+          {command = "${pkgs.tlp}/bin/tlp setcharge 0 0";                                    options = [ "NOPASSWD" ];}
+          {command = "${pkgs.tlp}/bin/tlp setcharge 0 1";                                    options = [ "NOPASSWD" ];}
           
-          {command = "/run/current-system/sw/bin/tlp bat";                                             options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/tlp ac";                                              options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/tlp-stat -s";                                         options = [ "NOPASSWD" ];}
+          {command = "${pkgs.tlp}/bin/tlp bat";                                              options = [ "NOPASSWD" ];}
+          {command = "${pkgs.tlp}/bin/tlp ac";                                               options = [ "NOPASSWD" ];}
+          {command = "${pkgs.tlp}/bin/tlp-stat -s";                                          options = [ "NOPASSWD" ];}
           
-          {command = "/run/current-system/sw/bin/rmmod nvidia_modeset nvidia_uvm nvidia";              options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1"; options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/virsh nodedev-detach pci_0000_01_00_0";               options = [ "NOPASSWD" ];}
+          {command = "${pkgs.kmod}/bin/rmmod nvidia_modeset nvidia_uvm nvidia";              options = [ "NOPASSWD" ];}
+          {command = "${pkgs.kmod}/bin/modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1"; options = [ "NOPASSWD" ];}
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_01_00_0";            options = [ "NOPASSWD" ];}
             
-          {command = "/run/current-system/sw/bin/virsh nodedev-reattach pci_0000_01_00_0";             options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/rmmod vfio_pci vfio_pci_core vfio_iommu_type1";       options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/modprobe -i nvidia_modeset nvidia_uvm nvidia";        options = [ "NOPASSWD" ];}
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_0";          options = [ "NOPASSWD" ];}
+          {command = "${pkgs.kmod}/bin/rmmod vfio_pci vfio_pci_core vfio_iommu_type1";       options = [ "NOPASSWD" ];}
+          {command = "${pkgs.kmod}/bin/modprobe -i nvidia_modeset nvidia_uvm nvidia";        options = [ "NOPASSWD" ];}
           
-          {command = "/etc/profiles/per-user/arsham/bin/systemctl stop ollama";                        options = [ "NOPASSWD" ];}
-          {command = "/etc/profiles/per-user/arsham/bin/systemctl restart ollama";                     options = [ "NOPASSWD" ];}
-  
-          {command = "/run/current-system/sw/bin/virsh nodedev-detach pci_0000_00_1f_0";               options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/virsh nodedev-detach pci_0000_00_1f_3";               options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/virsh nodedev-detach pci_0000_00_1f_4";               options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/virsh nodedev-detach pci_0000_00_1f_5";               options = [ "NOPASSWD" ];}
+          {command = "/etc/profiles/per-user/${user.name}/bin/systemctl stop ollama";        options = [ "NOPASSWD" ];}
+          {command = "/etc/profiles/per-user/${user.name}/bin/systemctl restart ollama";     options = [ "NOPASSWD" ];}
           
-          {command = "/run/current-system/sw/bin/virsh nodedev-reattach pci_0000_00_1f_0";             options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/virsh nodedev-reattach pci_0000_00_1f_3";             options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/virsh nodedev-reattach pci_0000_00_1f_4";             options = [ "NOPASSWD" ];}
-          {command = "/run/current-system/sw/bin/virsh nodedev-reattach pci_0000_00_1f_5";             options = [ "NOPASSWD" ];}
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_0";            options = [ "NOPASSWD" ];}
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_3";            options = [ "NOPASSWD" ];}
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_4";            options = [ "NOPASSWD" ];}
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_5";            options = [ "NOPASSWD" ];}
+          
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_0";          options = [ "NOPASSWD" ];}
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_3";          options = [ "NOPASSWD" ];}
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_4";          options = [ "NOPASSWD" ];}
+          {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_5";          options = [ "NOPASSWD" ];}
         
         ]; 
       }
@@ -591,5 +633,7 @@ in
         fancy_wallpaper_switcher
         nh-go
         ags-go
+        rofi-go
+        way-net-go
     ];
   }
