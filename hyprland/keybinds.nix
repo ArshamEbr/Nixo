@@ -15,7 +15,9 @@ wayland.windowManager.hyprland.settings = {
 
 bindl = [
   # Volume
-  ",XF86AudioMute, exec, pactl set-sink-mute @DEFAULT_SINK@ toggle"
+#  ",XF86AudioMute, exec, pactl set-sink-mute @DEFAULT_SINK@ toggle"
+  ", XF86AudioMute, exec, sh -c \"wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && notify-send -h string:x-canonical-private-synchronous:volume-sync -u low -i $(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print ($2==0) ? \"audio-volume-muted-symbolic\" : \"audio-volume-high-symbolic\"}') '󰝚 Volume' -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2*100)}') -t 1000\""
+
   #clipboard
   ",Print,exec,grim - | wl-copy"
   #media
@@ -27,33 +29,43 @@ bindl = [
 
 ];
 
+# bindle = [
+#   # Volume
+#   ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+#   ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+#   # Brightness
+#   # ", XF86MonBrightnessUp, exec, light -A 5"
+#   # ", XF86MonBrightnessDown, exec, light -U 5"
+#   ", XF86MonBrightnessUp, exec, ags run-js 'brightness.screen_value += 0.02;'"
+#   ", XF86MonBrightnessDown, exec, ags run-js 'brightness.screen_value -= 0.02;'"
+#   #ags related
+#   ", XF86AudioRaiseVolume, exec, ags run-js 'indicator.popup(1);'"
+#   ", XF86AudioLowerVolume, exec, ags run-js 'indicator.popup(1);'"
+#   ", XF86MonBrightnessUp, exec, ags run-js 'indicator.popup(1);'"
+#   ", XF86MonBrightnessDown, exec, ags run-js 'indicator.popup(1);'"
+# ];
+
 bindle = [
-  # Volume
-  ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-  ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-  # Brightness
-  # ", XF86MonBrightnessUp, exec, light -A 5"
-  # ", XF86MonBrightnessDown, exec, light -U 5"
-  ", XF86MonBrightnessUp, exec, ags run-js 'brightness.screen_value += 0.02;'"
-  ", XF86MonBrightnessDown, exec, ags run-js 'brightness.screen_value -= 0.02;'"
-  #ags related
-  ", XF86AudioRaiseVolume, exec, ags run-js 'indicator.popup(1);'"
-  ", XF86AudioLowerVolume, exec, ags run-js 'indicator.popup(1);'"
-  ", XF86MonBrightnessUp, exec, ags run-js 'indicator.popup(1);'"
-  ", XF86MonBrightnessDown, exec, ags run-js 'indicator.popup(1);'"
+  ", XF86AudioRaiseVolume, exec, sh -c \"wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+ && notify-send -h string:x-canonical-private-synchronous:volume-sync -u low -i audio-volume-high-symbolic '󰝚 Volume' -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2*100)}') -t 1000\""
+  ", XF86AudioLowerVolume, exec, sh -c \"wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && notify-send -h string:x-canonical-private-synchronous:volume-sync -u low -i audio-volume-low-symbolic '󰝚 Volume' -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2*100)}') -t 1000\""
+  ", XF86MonBrightnessUp, exec, bash -c 'brightnessctl set 5%+ && notify-send -h string:x-canonical-private-synchronous:brightness-sync -u low -i display-brightness-high-symbolic \"󰃠 Brightness\" -h int:value:$(( $(brightnessctl get) * 100 / $(brightnessctl max) )) -t 1000'"
+  ", XF86MonBrightnessDown, exec, bash -c 'brightnessctl set 5%- && notify-send -h string:x-canonical-private-synchronous:brightness-sync -u low -i display-brightness-low-symbolic \"󰃠 Brightness\" -h int:value:$(( $(brightnessctl get) * 100 / $(brightnessctl max) )) -t 1000'"
 ];
 
 bindr = [
-  #ags related
-  "$Primary$Secondary, R, exec, hyprctl reload; pkill ags; pkill activewin.sh; pkill activews.sh; pkill gohypr; pkill bash; pkill ydotool; ~/.local/bin/initialSetup.sh; ags &"
-  "$Primary, $Primary_R, exec, ags run-js 'indicator.popup(-1);'"
-  "$Primary, $Primary_R, exec, ags run-js 'Notifications.notifications.forEach((notif) => notif.dismiss())'"
-  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('sideright');'"
-  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('cheatsheet');'"
-  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('osk');'"
-  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('session');'"
-  "$Primary, $Primary_R, exec, ags run-js 'openMusic$Primarys.value = false'"
-  "$Primary, $Primary_R, exec, ags run-js 'openColorScheme.value = false'"
+
+  "$Primary$Secondary, R, exec, hyprctl reload; pkill waybar; pkill activewin.sh; pkill activews.sh; pkill gohypr; pkill bash; pkill ydotool; waybar &"
+
+#  #ags related
+#  "$Primary$Secondary, R, exec, hyprctl reload; pkill ags; pkill activewin.sh; pkill activews.sh; pkill gohypr; pkill bash; pkill ydotool; ~/.local/bin/initialSetup.sh; ags &"
+#  "$Primary, $Primary_R, exec, ags run-js 'indicator.popup(-1);'"
+#  "$Primary, $Primary_R, exec, ags run-js 'Notifications.notifications.forEach((notif) => notif.dismiss())'"
+#  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('sideright');'"
+#  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('cheatsheet');'"
+#  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('osk');'"
+#  "$Primary, $Primary_R, exec, ags run-js 'App.closeWindow('session');'"
+#  "$Primary, $Primary_R, exec, ags run-js 'openMusic$Primarys.value = false'"
+#  "$Primary, $Primary_R, exec, ags run-js 'openColorScheme.value = false'"
 ];
 
 binde = [
@@ -80,6 +92,9 @@ bind = [
   #"$Primary$Secondary, M, exec, tidal-hifi"
   #"$Primary$Secondary$Tertiary, M, exec, env -u NIXOS_OZONE_WL cider --use-gl=desktop"
   #"$Primary$Secondary$Alternate, M, exec, spotify"
+
+  "$Primary, A, exec, rofi -show drun"
+  "$Primary$Alternate, Q, exec, power-menu-rofi"
 
   # Wallch keybinds
   "$Primary$Secondary, K, exec, wallch --chgw"
@@ -188,14 +203,14 @@ bind = [
   # ##################################### AGS keybinds #####################################
   
   "$Secondary$Tertiary, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh"
-  "$Primary, A, exec, ags -t 'overview'"
-  "$Secondary$Alternate, Slash, exec, agsAction cheatsheet"
-  "$Secondary, B, exec, ags -t 'sideleft'"
-  "$Secondary, N, exec, ags -t 'sideright'"
- # "$Secondary, M, exec, ags run-js 'openMusic$Primarys.value = (!Mpris.getPlayer() ? false : !openMusic$Primarys.value);'"
-  "$Secondary, Comma, exec, ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'"
- # "$Secondary, K, exec, agsAction osk"
-  "$Primary$Alternate, Q, exec, agsAction session"
+#  "$Primary, A, exec, ags -t 'overview'"
+#  "$Secondary$Alternate, Slash, exec, agsAction cheatsheet"
+#  "$Secondary, B, exec, ags -t 'sideleft'"
+#  "$Secondary, N, exec, ags -t 'sideright'"
+# # "$Secondary, M, exec, ags run-js 'openMusic$Primarys.value = (!Mpris.getPlayer() ? false : !openMusic$Primarys.value);'"
+#  "$Secondary, Comma, exec, ags run-js 'openColorScheme.value = true; Utils.timeout(2000, () => openColorScheme.value = false);'"
+# # "$Secondary, K, exec, agsAction osk"
+#  "$Primary$Alternate, Q, exec, agsAction session"
   
   # ##################################### Plugins #########################################
   ##"$Primary$Secondary, P, exec, hyprctl plugin load "~/.config/hypr/plugins/droidbars.so""

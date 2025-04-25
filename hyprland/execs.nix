@@ -14,7 +14,8 @@ exec-once = [
 
 # Random stuff
 "/usr/lib/geoclue-2.0/demos/agent & gammastep"
-"ags &"
+# "ags &"
+"waybar &"
 
 # Sound Enhancer
 "easyeffects --gapplication-service &"
@@ -46,7 +47,7 @@ exec-once = [
 # "sleep 4 && antimicrox --tray --hidden &" # for joysticks
 
 # Network Manager
-#"nm-applet &"
+"nm-applet &"
 
 # Remote Desktop
 #"~/.local/bin/sunshine &"

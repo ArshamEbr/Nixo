@@ -8,6 +8,7 @@ wayland.windowManager.hyprland.settings = {
 
 # HDMI port: mirror display. To see device name, use `hyprctl monitors`
 monitor = [ ",preferred,auto,1" "HDMI-A-1,1920x1080@60,1920x0,1,mirror,eDP-1" ];
+#monitor = [ ",preferred,auto,1" "HDMI-A-1,1920x1080@60,1920x0,1" ];
 
 input = {
     kb_layout = "us,ir";
