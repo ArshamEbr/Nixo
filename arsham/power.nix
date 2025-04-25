@@ -7,7 +7,7 @@
     thermald.enable = true;                                    # Enable thermald, the temperature management daemon. (only necessary if on Intel CPUs)
     tlp = {                                                    # Enable TLP (better than gnomes internal power manager)
       enable = true;
-      settings = { # sudo tlp-stat
+      settings = { # sudo tlp-stat #TODO change these based on your system!
         SCHED_POWERSAVE_ON_AC = 0;
         SCHED_POWERSAVE_ON_BAT = 1;
         CPU_MIN_PERF_ON_AC = 0;
@@ -22,8 +22,10 @@
         CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
         CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
         CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
-        CPU_SCALING_MIN_FREQ_ON_AC = 400000;  # 400 MHz # 1155g7 intel core i5 11th gen so
-        CPU_SCALING_MAX_FREQ_ON_AC = 4500000; # 4,5 GHz # change it for your hardware limit
+        CPU_SCALING_MIN_FREQ_ON_AC = 600000;  # 400 MHz # 1155g7 intel core i5 11th gen so
+        CPU_SCALING_MAX_FREQ_ON_AC = 4500000; # 4,5 GHz # change it for your hardware limit TODO change freq to yours
+        CPU_SCALING_MIN_FREQ_ON_BAT = 400000;
+        CPU_SCALING_MAX_FREQ_ON_BAT = 2000000;
         START_CHARGE_THRESH_BAT0 = 0; # dummy value                                             sudo tlp setcharge 0 1 -> Conservation on
         STOP_CHARGE_THRESH_BAT0 = 0; # set it to 1 for conservation mode or 0 for full charge.  sudo tlp setcharge 0 0 -> Conservation off
         RUNTIME_PM_ON_AC = "auto";
