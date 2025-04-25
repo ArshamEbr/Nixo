@@ -1,4 +1,4 @@
-{ pkgs, config, lib, user, ... }:{
+{ pkgs, config, lib, user, pkgs-unstable, ... }:{
 
   dotfiles = {
       username = "${user.name}";
@@ -150,4 +150,7 @@
       '';
       };
     };
+    users.users.${user.name}.packages = with pkgs; [
+      foot
+    ];
   }

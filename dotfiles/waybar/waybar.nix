@@ -1,4 +1,4 @@
-{ pkgs, config, lib, user, ... }:{
+{ pkgs, config, lib, user, pkgs-unstable, ... }:{
 
   dotfiles = {
       username = "${user.name}";
@@ -51,7 +51,7 @@
               "tooltip": false
             },
             "custom/mpd": {
-              "exec": "sanitize_output() {\n  decoded=$(printf '%b' \"${1//%/\\\\x}\" 2>/dev/null || echo \"$1\")\n  echo \"$decoded\" | \n    iconv -cf utf-8 -t utf-8//TRANSLIT 2>/dev/null |\n    tr -cd '\\11\\12\\15\\40-\\176' |  # Keep basic printable ASCII\n    sed -e 's/\\\\u[0-9a-fA-F]\\{1,4\\}//g' \\\n        -e 's/[[:cntrl:]]//g' \\\n        -e 's/^[[:space:]]*//' \\\n        -e 's/[[:space:]]*$//'\n}\nplayers=$(playerctl -l 2>/dev/null)\nmeta=\"\"\nfor player in $players; do\n  current=$(playerctl -p \"$player\" metadata --format '{{artist}} - {{title}}' 2>/dev/null)\n  [ -z \"$current\" ] || [ \"$current\" = \" - \" ] && \n    current=$(playerctl -p \"$player\" metadata --format '{{title}}' 2>/dev/null)\n  if [ -z \"$current\" ]; then\n    url=$(playerctl -p \"$player\" metadata xesam:url 2>/dev/null)\n    if [ -n \"$url\" ]; then\n      filename=$(basename \"${url%%\\?*}\")\n      current=$(sanitize_output \"$filename\")\n      current=\"${current%.*}\"\n    fi\n  fi\n  [ -z \"$meta\" ] && [ -n \"$current\" ] && meta=\"$current\"\ndone\nif [ -z \"$meta\" ]; then\n  if [ -n \"$players\" ]; then\n    meta=\"Media player paused\"\n  else\n    meta=\"No media player\"\n  fi\nfi\necho -n \"$meta\" | head -c 70 | tr -d '\\n\\r\\0'\n",
+              "exec": "sanitize_output() {\n  decoded=$(printf '%b' \"$1//%/\\\\x\" 2>/dev/null || echo \"$1\")\n  echo \"$decoded\" | \n    iconv -cf utf-8 -t utf-8//TRANSLIT 2>/dev/null |\n    tr -cd '\\11\\12\\15\\40-\\176' |  # Keep basic printable ASCII\n    sed -e 's/\\\\u[0-9a-fA-F]\\{1,4\\}//g' \\\n        -e 's/[[:cntrl:]]//g' \\\n        -e 's/^[[:space:]]*//' \\\n        -e 's/[[:space:]]*$//'\n}\nplayers=$(playerctl -l 2>/dev/null)\nmeta=\"\"\nfor player in $players; do\n  current=$(playerctl -p \"$player\" metadata --format '{{artist}} - {{title}}' 2>/dev/null)\n  [ -z \"$current\" ] || [ \"$current\" = \" - \" ] && \n    current=$(playerctl -p \"$player\" metadata --format '{{title}}' 2>/dev/null)\n  if [ -z \"$current\" ]; then\n    url=$(playerctl -p \"$player\" metadata xesam:url 2>/dev/null)\n    if [ -n \"$url\" ]; then\n      filename=$(basename \"$url%%\\?*\")\n      current=$(sanitize_output \"$filename\")\n      current=\"$current%.*\"\n    fi\n  fi\n  [ -z \"$meta\" ] && [ -n \"$current\" ] && meta=\"$current\"\ndone\nif [ -z \"$meta\" ]; then\n  if [ -n \"$players\" ]; then\n    meta=\"Media player paused\"\n  else\n    meta=\"No media player\"\n  fi\nfi\necho -n \"$meta\" | head -c 70 | tr -d '\\n\\r\\0'\n",
               "format": "󰝚 {}",
               "interval": 3,
               "on-click": "playerctl play-pause",
@@ -229,7 +229,10 @@
           50% { opacity: 0.5; }
           100% { opacity: 1; }
         }
-      ''
+      '';
       };
     };
+    users.users.${user.name}.packages = with pkgs-unstable; [
+      waybar
+    ];
   }

@@ -48,7 +48,7 @@
       '';
       };
     };
-    environment.systemPackages = with pkgs-unstable; [
+    users.users.${user.name}.packages = with pkgs-unstable; [
       mako
     ];
   }

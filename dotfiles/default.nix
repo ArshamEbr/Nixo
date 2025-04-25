@@ -1,7 +1,7 @@
 {
   imports = [
     ./hyprland
-    ./wayfire
+  #  ./wayfire
     ./foot
     ./waybar
     ./btop
@@ -10,5 +10,7 @@
     ./starship
     ./obs
     ./mako
+    ./udiskie
+    ./gtk3
   ];
 }
