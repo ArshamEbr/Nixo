@@ -1,34 +1,31 @@
 { inputs, pkgs, pkgs-old, pkgs-unstable, user, ... }: 
 let
-  celes-dots = pkgs.fetchFromGitHub {
-    owner = "celesrenata";
-    repo = "dotfiles";
-    rev = "a24961dd618ca10cfa50851aedff2a7e1affdeb0";
-    sha256 = "sha256-QQVeINXRjRmU9eOX1OUTzHu0amz4ZFCJK8n8jYo+YPM=";
-  };
   wofi-calc = pkgs.fetchFromGitHub {
     owner = "Zeioth";
     repo = "wofi-calc";
     rev = "edd316f3f40a6fcb2afadf5b6d9b14cc75a901e0";
     sha256 = "sha256-y8GoTHm0zPkeXhYS/enNAIrU+RhrUMnQ41MdHWWTPas=";
   };
-  winapps = pkgs.fetchFromGitHub {
-    owner = "celesrenata";
-    repo = "winapps";
-    rev = "0319c70fa0dec2da241e9a4b4e35a164f99d6307";
-    sha256 = "sha256-+ZAtEDrHuLJBzF+R6guD7jYltoQcs88qEMvvpjiAXqI=";
-  };
   in
   {
+
+    services.xserver.xkb.options = "ctrl:nocaps";
+
     # Packages that should be installed to the user profile.
     users.users.${user.name}.packages = 
-      (with pkgs-old; [
+
+    (with pkgs-old; [
       gnome.gvfs
     ])
 
     ++
 
     (with pkgs; [
+      firefox
+      thunderbird
+      # hmmm
+      #wayfirePlugins.wcm
+
       blender
       # VNC
       tigervnc
@@ -123,30 +120,24 @@ let
       gnupg
       rar
   
-      # nix related
-      #
-      # it provides the command `nom` works just like `nix`
-      # with more details log output
-      # nix-output-monitor # not needed when using nh
-  
       # productivity
-      hugo # static site generator
-      glow # markdown previewer in terminal
+      hugo
+      glow
   
-      iotop # io monitoring
-      iftop # network monitoring
+      iotop
+      iftop
   
       # system call monitoring
-      strace # system call monitoring
-      ltrace # library call monitoring
-      lsof # list open files
+      strace
+      ltrace
+      lsof
   
       # system tools
       sysstat
-      lm_sensors # for `sensors` command
+      lm_sensors
       ethtool
-      pciutils # lspci
-      usbutils # lsusb
+      pciutils
+      usbutils
       wofi-calc
       mission-center
       parabolic
@@ -278,7 +269,6 @@ let
       starship
   
       # Themes
-      adw-gtk3
       libsForQt5.qt5ct
       gradience
       catppuccin-gtk

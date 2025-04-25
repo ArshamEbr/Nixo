@@ -25,6 +25,15 @@
     environment.variables = {
       VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
       LIBVA_DRIVER_NAME = "iHD";
+      GBM_BACKEND = "gbm";
+
+      # home vars
+    #  LD_LIBRARY_PATH = "/run/opengl-driver/lib";
+    #  VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
+    #  LIBVA_DRIVER_NAME = "iHD";
+      # curso
+      XCURSOR_THEME = "Bibata-Modern-Classic";
+      XCURSOR_SIZE = "24";
     };
     
     services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
@@ -44,7 +53,7 @@
       nvidiaSettings = true;
     
       prime = {
-			  offload.enable = true;
+		    offload.enable = true;
 			  offload.enableOffloadCmd = true;
 		    intelBusId = "PCI:00:02:0";
 		    nvidiaBusId = "PCI:01:00:0";

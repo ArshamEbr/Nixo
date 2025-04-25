@@ -1,4 +1,3 @@
-# dotfiles.nix
 { lib, config, ... }:
 
 let

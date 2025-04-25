@@ -1,22 +1,22 @@
-{ ... }:
+{ user, ... }:
 {
   config = {
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant F this!
 
     /*
-     *HERE* are the Steps to manually downloading a package and pass it to the 
-     nix packages storage :
-     Once you have downloaded the file, please use the following
-     commands and re-run the nixos-rebuild:
-    
-     mv $HOME/Desierd-PKG-Location $PWD/Package-name-in-nix
-    
-     nix-prefetch-url file://$HOME/pkgfile
-    
-     Alternatively, you can use the following command to download the
-     file directly:
-    
-     nix-prefetch-url --name pkg-name https://the-link-of-the-file-to-download
+    *HERE* are the Steps to manually downloading a package and pass it to the 
+    nix packages storage :
+    Once you have downloaded the file, please use the following
+    commands and re-run the nixos-rebuild:
+  
+    mv $HOME/Desierd-PKG-Location $PWD/Package-name-in-nix
+  
+    nix-prefetch-url file://$HOME/pkgfile
+  
+    Alternatively, you can use the following command to download the
+    file directly:
+  
+    nix-prefetch-url --name pkg-name https://the-link-of-the-file-to-download
     */
 
     networking = {

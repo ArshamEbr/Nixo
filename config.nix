@@ -1,27 +1,31 @@
-{ pkgs, pkgs-unstable, config, lib, ... }:
+{ pkgs, pkgs-unstable, config, lib, user, ... }:
 {
   imports = [./hardware.nix];
 
   nix = {
   #  optimise.automatic = true; # Garbage Collector
     settings = {
-      max-jobs = "auto";  # Uses all available CPU cores
-      cores = 4; 
+      max-jobs = 8; # TODO change it to your cpu core count
+      cores = 8; # TODO change it to your cpu core count
       experimental-features = [ "nix-command" "flakes" ]; # Enable Flakes.
-      substituters = [
-        "https://nix-community.cachix.org"
-        "https://cache.nixos.org/"
-      ];
-      trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-      ];
+    #  substituters = [
+    #    "https://nix-community.cachix.org"
+    #    "https://cache.nixos.org/"
+    #  ];
+    #  trusted-public-keys = [
+    #    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    #    "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+    #  ];
     };
   };
 
+#  systemd.services.nix-daemon.environment = {
+#    https_proxy = "socks5h://localhost:7891";
+#    https_proxy = "http://localhost:7890"; # or use http prctocol instead of socks5
+#  };
+
   zramSwap.enable = true;
   nixpkgs.config.allowUnfree = true; # Licences
-  security.rtkit.enable = true;
 
   hardware = {
 
@@ -29,7 +33,7 @@
     uinput.enable = true; # Udev rules
     pulseaudio.enable = false; # Disable PulseAudio
 
-    bluetooth = { # Enable Bluetooth
+    bluetooth = {
       enable = true;
       powerOnBoot = false;
     };
@@ -38,12 +42,12 @@
 
   
   #location.provider = "geoclue2";
-  time.timeZone = "Asia/Tehran"; # yea...Iran...sigh.....
+  time.timeZone = "Asia/Tehran"; # yea...Iran...sigh..... # TODO change to your location
 
   
   i18n = { # Select internationalisation properties.
     defaultLocale = "en_US.UTF-8";
-    supportedLocales = [ "en_US.UTF-8/UTF-8" "fa_IR/UTF-8" ]; 
+    supportedLocales = [ "en_US.UTF-8/UTF-8" "fa_IR/UTF-8" ];  # TODO change to your location
     extraLocaleSettings = {
       LC_ADDRESS = "en_US.UTF-8";
       LC_IDENTIFICATION = "en_US.UTF-8";
@@ -62,24 +66,24 @@
   };
 
   services = {
-
-    #automatic-timezoned.enable = true;
-    openssh.enable = true; # Openssh daemon
-    dbus.enable = true;   
-   # geoclue2.enable = true; # Enable Location 
-    acpid.enable = true; # Enable acpid
-    gnome.gnome-keyring.enable = true; # Gnome Keyring
-    libinput.enable = true; # Enable touchpad support (enabled default in most desktopManager)
-    touchegg.enable = true; # Gestures
+    openssh.enable = true;
+    dbus.enable = true;
+    acpid.enable = true;
+    gnome.gnome-keyring.enable = true;
+    libinput.enable = true;
+    touchegg.enable = true;
     udisks2.enable = true;
-    blueman.enable = true; # Bluetooth 
+    blueman.enable = true;
     gvfs.enable = true;
     fstrim.enable = true;
+  # seatd.enable = true;
+  # automatic-timezoned.enable = true;
+  # geoclue2.enable = true; # Enable Location 
 
     getty = {
       autologinUser = "${user.name}"; # tty auto login to use hyprlock
     };
-
+    
     udev = {
       enable = true;
       packages = [ 
@@ -92,20 +96,18 @@
     };
 
     printing = {
-      enable = true; # Enable CUPS to print documents.
+      enable = true;
       drivers = [ pkgs.gutenprint pkgs.hplipWithPlugin ];
     };
 
     avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
     };
 
     pipewire = {
       enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
       pulse.enable = true;
       wireplumber.enable = true;
       jack.enable = true;
@@ -117,32 +119,34 @@
 
   };
 
-  programs = { 
+  programs = {
 
-    # Optional: Use ccache to speed up future rebuilds
     ccache.enable = true;
+    nix-ld.enable = true;
+    fish.enable = true;
     
-  bash.loginShellInit = ''
-    if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-      read -t 3 -p "Start Hyprland? (Will auto-launch in 3 seconds) [Y/n] " answer
-      case $answer in
-        [Yy]*|"") 
-          exec dbus-run-session Hyprland
-          ;;
-        [Nn]*) 
-          echo "Hyprland launch cancelled"
-          ;;
-      esac
-    fi
-  '';
+    bash = {
+      shellAliases = {
+      hyprxd = "dbus-run-session Hyprland";
+      firexd = "dbus-run-session wayfire";
+      };
 
-    hyprland = { # Best Window Manager
-      enable = true;
-      package = pkgs-unstable.hyprland;
-      xwayland.enable = true; # Whether to enable Xwayland
+      loginShellInit = ''
+        if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+          read -t 3 -p "Start Hyprland? (Will auto-launch in 3 seconds) [Y/n] " answer
+          case $answer in
+            [Yy]*|"") 
+              exec dbus-run-session hyprland
+              ;;
+            [Nn]*) 
+              echo "Hyprland launch cancelled"
+              ;;
+          esac
+        fi
+      '';
     };
 
-    fish = {
+    nh = {
       enable = true;
       flake = "/home/${user.name}/nixo";
       clean = {
@@ -152,24 +156,32 @@
     };
 
   };
- 
-  fonts.packages = with pkgs-unstable; [ # Enable Fonts.
-    nerd-fonts.space-mono
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-emoji
-    liberation_ttf
-    fira-code
-    fira-code-symbols
-    mplus-outline-fonts.githubRelease
-    dina-font
-    proggyfonts
-    fontconfig
-    lexend
-    material-symbols
-    bibata-cursors
-    google-fonts
-  ];
+
+  fonts = {
+    fontconfig = {
+      enable = true;
+      antialias = true;
+    };
+
+    fontDir.enable = true;
+    
+    packages = with pkgs-unstable; [
+      nerd-fonts.space-mono
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-emoji
+      liberation_ttf
+      fira-code
+      fira-code-symbols
+      mplus-outline-fonts.githubRelease
+      dina-font
+      proggyfonts
+      fontconfig
+      lexend
+      material-symbols
+      bibata-cursors
+      google-fonts
+    ];
   };
 
   security = {
@@ -185,21 +197,13 @@
   # Don't forget to set a password with ‘passwd’.
   users = {
     groups = {
-    mlocate = {};
-    plocate = {};
-    libvirt = {};
-    kvm = {};
-  };
-
-  security.sudo.configFile = ''
-    root   ALL=(ALL:ALL) SETENV: ALL
-    %wheel ALL=(ALL:ALL) SETENV: ALL
-    arsham  ALL=(ALL:ALL) SETENV: ALL
-  '';
- 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.arsham = {
-    isNormalUser = true;
+      mlocate = {};
+      plocate = {};
+      libvirt = {};
+      kvm = {};
+    };
+    users.${user.name} = {
+      isNormalUser = true;
       description = "${user.name}";
       extraGroups = [ 
         "networkmanager"
@@ -216,18 +220,20 @@
         "libvirtd"
         "kvm"
         "virsh"
-    ];
+      ];
+    };
   };
 
-  # List packages installed in system profile. To search, run:
   # Enable Wayland for Electron.
   environment = {
     localBinInPath = true;
     sessionVariables.NIXOS_OZONE_WL = "1";
     sessionVariables.MOZ_ENABLE_WAYLAND = "1";
-
-    # $ nix search wget
-    systemPackages = with pkgs; [
+    systemPackages = 
+    (with pkgs; [
+      e2fsprogs
+      proot
+      nixos-generators
       # FTDI
       libftdi1
 
@@ -241,7 +247,7 @@
       android-udev-rules
       libmtp
       glib
- 
+
       # Networking Tools
       wget
       curl
@@ -380,7 +386,6 @@
   
       # Terminals.
       kitty
-      foot
 
       # Emulation
       qemu
@@ -389,25 +394,14 @@
       libcamera
       
       # Shared Dir
-      virtiofsd /*
-       Doing the Steps below is mandatory for sharing the dir with windows vm after installing the virtiofsd in linux :
-       use the "which virtiofsd" command inside terminal and copy the output in 
-       here : "<binary path="OUTPUT_HERE"/>"
-       Then add the Filesystem in virt-manager from add hardware section and 
-       copy the text above in xml section of that for example:
-       #################################################################################
-       <filesystem type="mount" accessmode="passthrough">
-         <driver type="virtiofs"/>
-         <binary path="/etc/profiles/per-user/arsham/bin/virtiofsd"/> #THIS RIGHT HERE!
-         <source dir="/home/arsham/"/>
-         <target dir="Home"/>
-         <address type="pci" domain="0x0000" bus="0x03" slot="0x00" function="0x0"/>
-       </filesystem>
-       ##############################################################################
-       Download and install latest WinFSP inside your windows vm
-       also dont forget to set the VirtIO-FS Service to start automaticly inside services
-      */
-    ];
+      virtiofsd
+    ])
+
+    ++
+
+    (with pkgs-unstable; [
+    ]);
+
   };
 
   system.stateVersion = "24.11";

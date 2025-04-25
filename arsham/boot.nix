@@ -2,7 +2,7 @@
 {
   config = {
 
-    # Override the assertion check
+    # Override the assertion check TODO change for dual boot
     assertions = [
       { assertion = true; message = "Ignoring bootloader requirement since using EFISTUB."; }
     ];
@@ -13,7 +13,7 @@
       extraModprobeConfig = "options snd_hda_intel model=alcplugfix";
       consoleLogLevel = 0;
       supportedFilesystems = [ "ntfs" "nfs" ];
-      # kernelPackages = pkgs-unstable.linuxPackages_latest; 6.13 kernel not fixed rn in jan 21
+      # kernelPackages = pkgs-unstable.linuxPackages_latest; # 6.13 kernel not fixed rn in jan 21
       kernelPackages = pkgs-unstable.linuxPackages_6_12;
 
       loader = {
@@ -32,7 +32,7 @@
         "iommu=pt"                
         "vfio-pci.ids=10de:1c94"
         "vfio-pci.enable_msi=1"
-        "kvmfr.static_size_mb=64"
+        "kvmfr_static_size_mb=64"
       ];
 
       initrd = {
