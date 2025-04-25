@@ -588,10 +588,6 @@
       '';
       };
     };
-  #  environment.systemPackages = with pkgs-unstable; [
-  #    wayfire
-  #  ];
-
     programs.wayfire = {
       enable = true;
       package = pkgs-unstable.wayfire;

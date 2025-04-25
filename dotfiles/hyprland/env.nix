@@ -4,7 +4,7 @@
       username = "${user.name}";
       files = {
       ".config/hypr/env.conf".text = ''
-      #  env = AQ_DRM_DEVICES,/dev/dri/card1:/dev/dri/renderD128
+        env = AQ_DRM_DEVICES,/dev/dri/card1:/dev/dri/renderD128
         env = QT_IM_MODULE, fcitx
         env = XMODIFIERS, @im=fcitx
         # env = GTK_IM_MODULE, wayland   # Crashes electron apps in xwayland
