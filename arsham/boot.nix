@@ -17,7 +17,8 @@
       kernelPackages = pkgs-unstable.linuxPackages_6_12;
 
       loader = {
-        systemd-boot.enable = false;
+        systemd-boot.enable = true; ### sigh
+        timeout = 0;
         grub.enable = false;
         efi.canTouchEfiVariables = true;
       };

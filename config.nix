@@ -325,6 +325,7 @@
       nil
       sublime4
       gnumake
+      zulu23
 
       # Session.
       polkit
