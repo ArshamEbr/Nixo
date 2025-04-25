@@ -19,13 +19,12 @@
      nix-prefetch-url --name pkg-name https://the-link-of-the-file-to-download
     */
 
-    # Networking.
     networking = {
-      # Configure network proxy if necessary                              # these wont effect the terminal
-      # networking.proxy.default = "http://user:password@proxy:port/";    # itself so if you're from iran just
-      # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain"; # download the pkg manually using the guide above!
-      hostName = "Nixo"; # Define your own hostname.
-      networkmanager.enable = true; # Enable NetworkManager.
+      # Configure network proxy if necessary
+    #  proxy.default = "http://192.168.1.120:10808";
+    #  proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+      hostName = "${user.host}";
+      networkmanager.enable = true;
       firewall = {
         enable = true;
         allowedTCPPorts = [ 3216 3658 3659 8082 24800 47984 47989 47990 48010 ];

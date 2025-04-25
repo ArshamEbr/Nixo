@@ -59,9 +59,13 @@
         allowBroken = true;
       };
     };
+    user = {
+      name = "arsham"; # TODO Change it to your own!
+      host = "Nixo";   # TODO Change it to your own!
+    };
   in {
     nixosConfigurations = {
-      Nixo =
+      ${user.host} =
       let
       pkgs = import inputs.nixpkgs rec {
         inherit system;
@@ -74,6 +78,7 @@
           permittedInsecurePackages = [
             "python-2.7.18.7"
             "openssl-1.1.1w"
+            "archiver-3.5.1" ####
           ];
         };
         overlays = [

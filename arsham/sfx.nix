@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, config, ... }:
+{ pkgs, pkgs-unstable, config, user, ... }:
 let
 
   prophet_events = pkgs.writeShellScriptBin "notifx1" ''
@@ -139,10 +139,10 @@ in
         if [[ "$CURRENT_STATE" != "$PREVIOUS_STATE" ]]; then
           case "$CURRENT_STATE" in
             up)
-              ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 wifi_connected
+              ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 wifi_connected
               ;;
             down)
-              ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 wifi_disconnected
+              ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 wifi_disconnected
               ;;
           esac
 
@@ -158,7 +158,7 @@ in
     services = {
 
       battery-events = {
-        enable = true;
+        enable = true; # true
       };
 
       overheat-alert = {
@@ -173,10 +173,10 @@ in
   
       udev = {
         extraRules = ''
-          ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", RUN+="${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash sound_cycle usb_add"
-          ACTION=="remove", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", RUN+="${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash sound_cycle usb_remove"
-          ACTION=="change", SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 charging & disown"
-          ACTION=="change", SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 discharging & disown"
+          ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", RUN+="${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash sound_cycle usb_add"
+          ACTION=="remove", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", RUN+="${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash sound_cycle usb_remove"
+          ACTION=="change", SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="1", RUN+="${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 charging & disown"
+          ACTION=="change", SUBSYSTEM=="power_supply", ENV{POWER_SUPPLY_ONLINE}=="0", RUN+="${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 discharging & disown"
         '';
       };
     };

@@ -1,6 +1,6 @@
 { pkgs, pkgs-unstable, config, lib, ... }:
 {
-  imports = [./hardware.nix]; # Include the results of the hardware scan.
+  imports = [./hardware.nix];
 
   nix = {
   #  optimise.automatic = true; # Garbage Collector
@@ -77,8 +77,7 @@
     fstrim.enable = true;
 
     getty = {
-      autologinUser = "arsham"; # tty auto login to use hyprlock
-    #  autologinOnce = true;
+      autologinUser = "${user.name}"; # tty auto login to use hyprlock
     };
 
     udev = {
@@ -88,7 +87,7 @@
         pkgs.libinput 
       ];
       extraRules = ''
-        SUBSYSTEM=="kvmfr", OWNER="arsham", GROUP="qemu-libvirtd", MODE="0666"
+        SUBSYSTEM=="kvmfr", OWNER="${user.name}", GROUP="qemu-libvirtd", MODE="0666"
       '';
     };
 
@@ -145,11 +144,7 @@
 
     fish = {
       enable = true;
-    };
-
-    nh = { # A better nixos-rebuild version
-      enable = true;
-      flake = "/home/arsham/nixo";
+      flake = "/home/${user.name}/nixo";
       clean = {
       enable = true;
       dates = "weekly";
@@ -175,8 +170,21 @@
     bibata-cursors
     google-fonts
   ];
-  
-  users.groups = { # Extra Groups
+  };
+
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+    sudo.configFile = ''
+      root   ALL=(ALL:ALL) SETENV: ALL
+      %wheel ALL=(ALL:ALL) SETENV: ALL
+      ${user.name}  ALL=(ALL:ALL) SETENV: ALL
+    '';
+  };
+
+  # Don't forget to set a password with ‘passwd’.
+  users = {
+    groups = {
     mlocate = {};
     plocate = {};
     libvirt = {};
@@ -192,11 +200,22 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.arsham = {
     isNormalUser = true;
-    description = "Arsham";
-    extraGroups = [ "networkmanager" "scanner" "lp" "wheel" "input" "uinput" "render" "video" "audio" "docker" "libvirt" "libvirtd" "kvm" "virsh" ];
-    packages = with pkgs; [
-      firefox
-      thunderbird
+      description = "${user.name}";
+      extraGroups = [ 
+        "networkmanager"
+        "scanner"
+        "lp"
+        "wheel"
+        "input"
+        "uinput"
+        "render"
+        "video"
+        "audio"
+        "docker"
+        "libvirt"
+        "libvirtd"
+        "kvm"
+        "virsh"
     ];
   };
 

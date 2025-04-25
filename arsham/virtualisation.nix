@@ -2,6 +2,15 @@
 {
   config = {
 
+  #  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
+    programs.virt-manager.enable = true;
+
+    systemd.tmpfiles.rules = [
+      "f /dev/shm/looking-glass 0660 ${user.name} qemu-libvirtd -"
+      "f /dev/kvmfr0 0660 ${user.name} qemu-libvirtd -"
+    ];
+
     virtualisation = {
 
       docker = {

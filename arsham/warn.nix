@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, user, ... }:
 
 with lib;
 
@@ -13,8 +13,8 @@ let
 
     if (( $(echo "$CPU_TEMP > $TEMP_THRESHOLD" | ${pkgs.bc}/bin/bc -l) )); then
       echo "CPU temperature is $CPU_TEMP°C (above threshold: $TEMP_THRESHOLD°C)"
-      ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.libnotify}/bin/notify-send "CPU Overheating Warning!" "CPU temperature is $CPU_TEMP°C" --icon=dialog-warning
-      ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 cpu_overload
+      ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.libnotify}/bin/notify-send "CPU Overheating Warning!" "CPU temperature is $CPU_TEMP°C" --icon=dialog-warning
+      ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 cpu_overload
       ${pkgs.tlp}/bin/tlp bat
     else
       echo "CPU temperature is $CPU_TEMP°C (below threshold: $TEMP_THRESHOLD°C)"
@@ -31,8 +31,8 @@ let
 
     if (( FREE_RAM < RAM_THRESHOLD )); then
       echo "Low RAM Warning: Only $FREE_RAM MB left (Threshold: $RAM_THRESHOLD MB)"
-      ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.libnotify}/bin/notify-send "Low RAM Warning!" "Only $FREE_RAM MB available!" --icon=dialog-warning
-      ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 low_ram
+      ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.libnotify}/bin/notify-send "Low RAM Warning!" "Only $FREE_RAM MB available!" --icon=dialog-warning
+      ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 low_ram
     else
       echo "RAM is sufficient: $FREE_RAM MB available"
     fi
@@ -46,19 +46,19 @@ let
         battery_percentage=$(cat /sys/class/power_supply/BAT0/capacity)
         if (( battery_percentage % 5 == 0 )) && (( battery_percentage != last_played_percentage )); then
             case $battery_percentage in
-                10) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 10 ;;
-                20) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 20 ;;
-                25) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 25 ;;
-                40) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 40 ;;
-                50) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 50 ;;
-                60) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 60 ;;
-                75) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 75 ;;         
-                80) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 80 ;;
-                90) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 90 ;;
-                100) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash notifx1 100 ;;
+                10) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 10 ;;
+                20) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 20 ;;
+                25) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 25 ;;
+                40) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 40 ;;
+                50) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 50 ;;
+                60) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 60 ;;
+                75) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 75 ;;         
+                80) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 80 ;;
+                90) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 90 ;;
+                100) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 100 ;;
 
-                65) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash battery_toggle off ;;
-                85) ${pkgs.systemd}/bin/machinectl shell arsham@ ${pkgs.bash}/bin/bash battery_toggle on ;;
+                65) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash battery_toggle off ;;
+                85) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash battery_toggle on ;;
 
             esac
             last_played_percentage=$battery_percentage
