@@ -17,6 +17,6 @@
       };
     };
     users.users.${user.name}.packages = with pkgs-unstable; [
-      rofi
+      rofi-wayland-unwrapped
     ];
   }
