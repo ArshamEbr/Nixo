@@ -2,6 +2,7 @@
 {
   config = {
     hardware.graphics = {
+      package = pkgs-unstable.mesa;
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [ 
@@ -10,6 +11,7 @@
         intel-compute-runtime 
         vaapiIntel
         libvdpau-va-gl
+        pkgs-unstable.mesa
         ];
     };
     
