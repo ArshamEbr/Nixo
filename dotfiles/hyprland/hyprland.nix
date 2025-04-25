@@ -16,7 +16,7 @@
     users.users.${user.name}.packages = with pkgs-unstable; [
       hyprland
     ];
-  #  hyprland = {
+  #  programs.hyprland = {
   #    enable = true;
   #    package = pkgs-unstable.hyprland;
   #  };
