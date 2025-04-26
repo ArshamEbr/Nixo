@@ -69,7 +69,7 @@
             background-color: rgba(51, 51, 51, 0.5);
             border-radius: 4rem;
           }         
-        ''
+        '';
       };
     };
     users.users.${user.name}.packages = with pkgs; [
