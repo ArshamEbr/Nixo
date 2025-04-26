@@ -13,5 +13,7 @@
     ./udiskie
     ./gtk3
     ./uwsm
+    ./anyrun
+    ./qt5
   ];
 }
