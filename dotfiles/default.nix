@@ -16,5 +16,7 @@
     ./anyrun
     ./qt5
     ./wlogout
+    ./fish
+    ./mpv
   ];
 }
