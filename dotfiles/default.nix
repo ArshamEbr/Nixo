@@ -15,5 +15,6 @@
     ./uwsm
     ./anyrun
     ./qt5
+    ./wlogout
   ];
 }
