@@ -11,6 +11,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     dream2nix.url = "github:nix-community/dream2nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -65,7 +66,7 @@
           permittedInsecurePackages = [
             "python-2.7.18.7"
             "openssl-1.1.1w"
-            "archiver-3.5.1" ####
+            "archiver-3.5.1"
           ];
         };
         overlays = [
