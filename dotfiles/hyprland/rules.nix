@@ -37,16 +37,17 @@
         windowrulev2 = float, title:^([Pp]icture[-s]?[Ii]n[-s]?[Pp]icture)(.*)$
 
         # Some blur
-        windowrulev2 = opacity 0.80 0.80,class:^(code)$
-        windowrulev2 = opacity 0.80 0.80,class:^(zen)$
-        windowrulev2 = opacity 0.80 0.80,class:^(brave)$
-        windowrulev2 = opacity 0.80 0.80,class:^(amberol)$
-        windowrulev2 = opacity 0.80 0.80,class:^(vesktop)$
-        windowrulev2 = opacity 0.80 0.80,class:^(discord)$
-        windowrulev2 = opacity 0.80 0.80,class:^(nautilus)$
-        windowrulev2 = opacity 0.80 0.80,class:^(thunar)$
-        windowrulev2 = opacity 0.80 0.80,class:^(rofi)$
-        
+        windowrulev2 = opacity 0.80 0.80,class:.* # SystemWide transparency fot blur effect
+      #  windowrulev2 = opacity 0.80 0.80,class:^(code)$
+      #  windowrulev2 = opacity 0.80 0.80,class:^(zen)$
+      #  windowrulev2 = opacity 0.80 0.80,class:^(brave)$
+      #  windowrulev2 = opacity 0.80 0.80,class:^(amberol)$
+      #  windowrulev2 = opacity 0.80 0.80,class:^(vesktop)$
+      #  windowrulev2 = opacity 0.80 0.80,class:^(discord)$
+      #  windowrulev2 = opacity 0.80 0.80,class:^(nautilus)$
+      #  windowrulev2 = opacity 0.80 0.80,class:^(thunar)$
+      #  windowrulev2 = opacity 0.80 0.80,class:^(rofi)$
+      
         # Tearing
         windowrulev2 = immediate,class:(steam_app)
         
@@ -83,32 +84,6 @@
         layerrule = blur, rofi
         layerrule = ignorealpha 0.05, rofi
         layerrule = ignorezero, rofi
-        
-        # ags
-      # layerrule = animation slide top, sideleft.*
-      # layerrule = animation slide top, sideright.*
-      # layerrule = blur, session
-      # layerrule = 
-      # layerrule = blur, bar
-      # layerrule = ignorealpha 0.6, bar
-      # layerrule = blur, corner.*
-      # layerrule = ignorealpha 0.6, corner.*
-      # layerrule = blur, dock
-      # layerrule = ignorealpha 0.6, dock
-      # layerrule = blur, indicator.*
-      # layerrule = ignorealpha 0.6, indicator.*
-      # layerrule = blur, overview
-      # layerrule = ignorealpha 0.6, overview
-      # layerrule = blur, cheatsheet
-      # layerrule = ignorealpha 0.6, cheatsheet
-      # layerrule = blur, sideright
-      # layerrule = ignorealpha 0.6, sideright
-      # layerrule = blur, sideleft
-      # layerrule = ignorealpha 0.6, sideleft
-      # layerrule = blur, indicator*
-      # layerrule = ignorealpha 0.6, indicator*
-      # layerrule = blur, osk
-      # layerrule = ignorealpha 0.6, osk
       '';
       };
     };
