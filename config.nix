@@ -145,19 +145,19 @@
     #    fi
     #  '';
 
-      loginShellInit = ''
-        if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-          read -t 3 -p "Start Hyprland? (Will auto-launch in 3 seconds) [Y/n] " answer
-          case $answer in
-            [Yy]*|"") 
-              exec uwsm start hyprland
-              ;;
-            [Nn]*) 
-              echo "Hyprland launch cancelled"
-              ;;
-          esac
-        fi
-      '';
+    #  loginShellInit = ''
+    #    if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+    #      read -t 3 -p "Start Hyprland? (Will auto-launch in 3 seconds) [Y/n] " answer
+    #      case $answer in
+    #        [Yy]*|"") 
+    #          exec uwsm start hyprland
+    #          ;;
+    #        [Nn]*) 
+    #          echo "Hyprland launch cancelled"
+    #          ;;
+    #      esac
+    #    fi
+    #  '';
     };
 
     nh = {
