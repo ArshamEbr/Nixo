@@ -130,32 +130,9 @@
       firexd = "dbus-run-session wayfire";
       fireoxd = "exec uwsm start wayfire";
       };
-
     #  loginShellInit = ''
-    #    if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-    #      read -t 3 -p "Start Hyprland? (Will auto-launch in 3 seconds) [Y/n] " answer
-    #      case $answer in
-    #        [Yy]*|"") 
-    #          exec dbus-run-session hyprland
-    #          ;;
-    #        [Nn]*) 
-    #          echo "Hyprland launch cancelled"
-    #          ;;
-    #      esac
-    #    fi
-    #  '';
-
-    #  loginShellInit = ''
-    #    if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-    #      read -t 3 -p "Start Hyprland? (Will auto-launch in 3 seconds) [Y/n] " answer
-    #      case $answer in
-    #        [Yy]*|"") 
-    #          exec uwsm start hyprland
-    #          ;;
-    #        [Nn]*) 
-    #          echo "Hyprland launch cancelled"
-    #          ;;
-    #      esac
+    #    if uwsm check may-start && uwsm select; then
+    #      exec uwsm start default
     #    fi
     #  '';
     };
@@ -163,10 +140,12 @@
     nh = {
       enable = true;
       flake = "/home/${user.name}/nixo";
+
       clean = {
-      enable = true;
-      dates = "weekly";
-      extraArgs = "--keep 3";};
+        enable = true;
+        dates = "weekly";
+        extraArgs = "--keep 3";
+      };
     };
 
   };
@@ -201,6 +180,7 @@
   security = {
     rtkit.enable = true;
     polkit.enable = true;
+
     sudo.configFile = ''
       root   ALL=(ALL:ALL) SETENV: ALL
       %wheel ALL=(ALL:ALL) SETENV: ALL
@@ -311,11 +291,6 @@
       binutils
       systemdUkify
 
-      # Shells.
-      fish # My fav
-      zsh
-      bash
-
       # Development Tools.
       git
       nodejs_20
@@ -396,19 +371,10 @@
       gtksourceview.dev
       xdg-desktop-portal-gtk
 
-      # Not GTK.
-      tk
-  
-      # Terminals.
+      tk  
       kitty
-
-      # Emulation
       qemu
-  
-      # Camera
       libcamera
-      
-      # Shared Dir
       virtiofsd
     ])
 

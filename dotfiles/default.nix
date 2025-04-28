@@ -18,5 +18,6 @@
     ./wlogout
     ./fish
     ./mpv
+    ./bspwm
   ];
 }

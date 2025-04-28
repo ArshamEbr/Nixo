@@ -7,9 +7,29 @@
 #        '';
 #      };
 #    };
-    services.xserver.windowManager.bspwm = {
-      enable = true;
-      package = pkgs-unstable.bspwm;
-      sxhkd.package = pkgs-unstable.sxhkd;
+    services = {
+        displayManager = {
+          sddm = {
+            enable = true;
+            wayland.enable = true;
+          };
+        };
+
+      xserver = {
+        enable = true;
+
+      #  windowManager.bspwm = {
+      #    enable = true;
+      #    package = pkgs-unstable.bspwm;
+      #    sxhkd = {
+      #      package = pkgs-unstable.sxhkd;
+      #    };
+      #  };
+
+        xkb = {
+          layout = "us";
+          variant = "";
+        };
+      };
     };
   }
