@@ -74,7 +74,6 @@
     blueman.enable = true;
     gvfs.enable = true;
     fstrim.enable = true;
-  # seatd.enable = true;
   # automatic-timezoned.enable = true;
   # geoclue2.enable = true; # Enable Location 
 
@@ -84,10 +83,12 @@
     
     udev = {
       enable = true;
+
       packages = [ 
         pkgs.libmtp 
         pkgs.libinput 
       ];
+
       extraRules = ''
         SUBSYSTEM=="kvmfr", OWNER="${user.name}", GROUP="qemu-libvirtd", MODE="0666"
       '';
@@ -199,6 +200,7 @@
     users.${user.name} = {
       isNormalUser = true;
       description = "${user.name}";
+
       extraGroups = [ 
         "networkmanager"
         "scanner"
@@ -225,9 +227,11 @@
     sessionVariables.MOZ_ENABLE_WAYLAND = "1";
     systemPackages = 
     (with pkgs; [
+
       e2fsprogs
       proot
       nixos-generators
+
       # FTDI
       libftdi1
 
@@ -381,6 +385,7 @@
     ++
 
     (with pkgs-unstable; [
+      # Specify the pkg names
     ]);
 
   };
