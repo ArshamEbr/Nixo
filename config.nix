@@ -78,9 +78,9 @@
   # automatic-timezoned.enable = true;
   # geoclue2.enable = true; # Enable Location 
 
-    getty = {
-      autologinUser = "${user.name}"; # tty auto login to use hyprlock
-    };
+  #  getty = {
+  #    autologinUser = "${user.name}"; # tty auto login to use hyprlock
+  #  };
     
     udev = {
       enable = true;

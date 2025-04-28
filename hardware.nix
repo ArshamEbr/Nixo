@@ -16,19 +16,19 @@
   fileSystems."/nix" =
     { device = "/dev/disk/by-uuid/ee3239e2-5831-4e2f-ba84-07159e16f70b";
       fsType = "btrfs";
-      options = [ "compress=zstd" "subvol=nix" ];
+      options = [ "compress=zstd" "subvol=nix" "noatime" ];
     };
 
   fileSystems."/home" =
     { device = "/dev/disk/by-uuid/ee3239e2-5831-4e2f-ba84-07159e16f70b";
       fsType = "btrfs";
-      options = [ "compress=zstd" "subvol=home" "noatime" ];
+      options = [ "compress=zstd" "subvol=home" ];
     };
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/71DB-2C6D";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" "noatime" ];
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices =

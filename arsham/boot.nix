@@ -28,7 +28,7 @@
         "initcall_debug=n"
         "systemd.show_status=0"
         "fastboot"
-        "console=tty0"
+      #  "console=tty0"
         "intel_iommu=on"          
         "iommu=pt"                
         "vfio-pci.ids=10de:1c94"
