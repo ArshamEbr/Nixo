@@ -4,7 +4,7 @@
       username = "${user.name}";
       files = {
       ".config/hypr/keybinds.conf".text = ''
-        ################### It just works™ keybinds by Celes Renata (Modified a little by ArshamEbr xD) ###################
+        ################### It just works™ keybinds by Celes Renata (Modified by ArshamEbr xD) ###################
 
         # $Secondary is a reference to Command or Win, depending on what is plugged into the computer.
 
@@ -14,8 +14,9 @@
         $Secondary=CONTROL
         $Tertiary=SHIFT
         
-        bind = $Primary, A, exec, rofi -show drun
-        bind = $Primary$Alternate, Q, exec, power-menu-rofi
+        bind = $Primary, A, exec, pkill anyrun || anyrun
+      #  bind = $Primary, A, exec, rofi -show drun
+        bind = $Primary$Alternate, Q, exec, pkill wlogout || wlogout -p layer-shell
 
         bind = $Primary$Secondary, K, exec, wallch --chgw
 
@@ -52,13 +53,12 @@
         bind = ,XF86Calculator, exec, ~/.local/bin/wofi-calc
         
         bind = $Primary$Secondary, I, exec, XDG_CURRENT_DESKTOP='gnome' gnome-control-center
-        bind = $Primary$Secondary, V, exec, pavucontrol
+        bind = $Primary$Secondary, V, exec, 
         bind = $Primary$Tertiary, Home, exec, gnome-system-monitor
         bind = $Primary$Secondary, Period, exec, pkill fuzzel || ~/.local/bin/fuzzel-emoji
         bind = $Alternate, F4, killactive,
         bind = $Secondary$Alternate, Space, togglefloating,
         bind = $Primary, Q, exec, hyprctl kill
-        bind = $Primary$Tertiary$Alternate, Delete, exec, pkill wlogout || wlogout -p layer-shell
         bind = $Primary$Tertiary$Alternate$Secondary, Delete, exec, systemctl poweroff
         bind = $Secondary$Tertiary, D, exec,~/.local/bin/rubyshot | wl-copy
         bind = $Secondary$Tertiary, 4, exec, grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" - | wl-copy
@@ -69,11 +69,11 @@
         bind = $Primary$Alternate, Space, exec, cliphist list | wofi -Iim --dmenu | cliphist decode | wl-copy && wtype -M ctrl v -M ctrl
         bind = $Secondary$Alternate, V, exec, cliphist list | wofi -Iim --dmenu | cliphist decode | wl-copy && wtype -M ctrl v -M ctrl
         bind = $Primary$Secondary$Tertiary,S,exec,grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" 'tmp.png' && tesseract 'tmp.png' - | wl-copy && rm 'tmp.png'
-        bind = $Secondary$Tertiary, B, exec, playerctl previous
-        bind = $Secondary$Tertiary, P, exec, playerctl play-pause
+      #  bind = $Secondary$Tertiary, B, exec, playerctl previous
+      #  bind = $Secondary$Tertiary, P, exec, playerctl play-pause
         
-        bind = $Primary$Secondary, Slash, exec, pkill anyrun || anyrun
         bind = $Secondary$Tertiary, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh
+        
         bind = $Secondary$Tertiary, left, movewindow, l
         bind = $Secondary$Tertiary, right, movewindow, r
         bind = $Secondary$Tertiary, up, movewindow, u

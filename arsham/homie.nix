@@ -6,6 +6,12 @@ let
     rev = "edd316f3f40a6fcb2afadf5b6d9b14cc75a901e0";
     sha256 = "sha256-y8GoTHm0zPkeXhYS/enNAIrU+RhrUMnQ41MdHWWTPas=";
   };
+  winapps = pkgs.fetchFromGitHub {
+    owner = "celesrenata";
+    repo = "winapps";
+    rev = "0319c70fa0dec2da241e9a4b4e35a164f99d6307";
+    sha256 = "sha256-+ZAtEDrHuLJBzF+R6guD7jYltoQcs88qEMvvpjiAXqI=";
+  };
   in
   {
 
@@ -21,10 +27,7 @@ let
     ++
 
     (with pkgs; [
-      firefox
       thunderbird
-      # hmmm
-      #wayfirePlugins.wcm
 
       blender
       # VNC
@@ -45,7 +48,7 @@ let
       kdePackages.ark
       #
       apktool
-      # Androind EMU
+      # Android EMU
       waydroid
       
       # Minecraft
@@ -61,10 +64,8 @@ let
       openvpn
       openvpn3
 
-      # here is some command line tools I use frequently
-      # feel free to add your own or remove some of them
       fastfetch
-      nnn # terminal file manager
+      nnn
   
       # archives
       zip
@@ -207,27 +208,22 @@ let
       libdbusmenu-gtk3
       playerctl
       mpvpaper
-      mpv
       vlc
       waypaper
       swaybg
       swww
       yt-dlp
-  
+
       # GTK
       webp-pixbuf-loader
       gtk-layer-shell
-      gtk3
       gtksourceview3
       upower
       yad
       ydotool
       gobject-introspection
       wrapGAppsHook
-  
-      # QT
-      libsForQt5.qwt
-  
+      
       # Gnome Stuff
       polkit_gnome
       gnome-keyring
@@ -247,7 +243,6 @@ let
       gjs.dev
   
       # AGS and Hyprland dependencies.
-      libsForQt5.qtutilities
       coreutils
       cliphist
       curl
@@ -257,7 +252,6 @@ let
       gojq
       dart-sass
       axel
-      wlogout
       wl-clipboard
       hyprpicker
     #  gammastep
@@ -265,11 +259,8 @@ let
       bc
       xdg-user-dirs
   
-      # Shells and Terminals
-      starship
-  
       # Themes
-      libsForQt5.qt5ct
+      
       gradience
       catppuccin-gtk
   
