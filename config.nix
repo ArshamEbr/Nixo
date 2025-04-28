@@ -77,9 +77,9 @@
   # automatic-timezoned.enable = true;
   # geoclue2.enable = true; # Enable Location 
 
-  #  getty = {
-  #    autologinUser = "${user.name}"; # tty auto login to use hyprlock
-  #  };
+    getty = {
+      autologinUser = "${user.name}"; # tty auto login to use hyprlock
+    };
     
     udev = {
       enable = true;
@@ -131,11 +131,12 @@
       firexd = "dbus-run-session wayfire";
       fireoxd = "exec uwsm start wayfire";
       };
-    #  loginShellInit = ''
-    #    if uwsm check may-start && uwsm select; then
-    #      exec uwsm start default
-    #    fi
-    #  '';
+      
+      loginShellInit = ''
+        if uwsm check may-start && uwsm select; then
+          exec uwsm start default
+        fi
+      '';
     };
 
     nh = {

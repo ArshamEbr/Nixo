@@ -33,8 +33,8 @@
     #  LD_LIBRARY_PATH = "/run/opengl-driver/lib";
     #  VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
     #  LIBVA_DRIVER_NAME = "iHD";
-      # curso
-    #  WAYLAND_DISPLAY = "wayland-1";
+      # cursor
+      WAYLAND_DISPLAY = "wayland-1";
       XCURSOR_THEME = "Bibata-Modern-Classic";
       XCURSOR_SIZE = "24";
     };
@@ -56,10 +56,10 @@
       nvidiaSettings = true;
     
       prime = {
-		    offload.enable = true;
-			  offload.enableOffloadCmd = true;
-		    intelBusId = "PCI:00:02:0";
-		    nvidiaBusId = "PCI:01:00:0";
+        offload.enable = true;
+        offload.enableOffloadCmd = true;
+        intelBusId = "PCI:00:02:0";
+        nvidiaBusId = "PCI:01:00:0";
       };
     };
   };
