@@ -34,7 +34,7 @@
     #  VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
     #  LIBVA_DRIVER_NAME = "iHD";
       # curso
-      WAYLAND_DISPLAY = "wayland-1";
+    #  WAYLAND_DISPLAY = "wayland-1";
       XCURSOR_THEME = "Bibata-Modern-Classic";
       XCURSOR_SIZE = "24";
     };
