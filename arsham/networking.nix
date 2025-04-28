@@ -1,4 +1,4 @@
-{ user, ... }:
+{ user, lib, ... }:
 {
   config = {
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant F this!
@@ -25,6 +25,7 @@
     #  proxy.noProxy = "127.0.0.1,localhost,internal.domain";
       hostName = "${user.host}";
       networkmanager.enable = true;
+      useDHCP = lib.mkDefault true;
       firewall = {
         enable = true;
         allowedTCPPorts = [ 3216 3658 3659 8082 24800 47984 47989 47990 48010 ];
