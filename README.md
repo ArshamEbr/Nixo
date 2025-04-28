@@ -2,8 +2,11 @@
 
 ## My Hardware
 Laptop: Lenovo Ideapad 3 15ITL6
+
 CPU: Intel i5-1155G7
+
 GPU: Intel Iris Xe / Nvidia MX350
+
 RAM: 12 GB (8 + 4)
 
 
