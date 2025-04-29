@@ -1,7 +1,7 @@
 {
   imports = [
     ./hyprland
-    ./wayfire
+  #  ./wayfire
     ./foot
     ./waybar
     ./btop
