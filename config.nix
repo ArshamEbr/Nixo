@@ -376,8 +376,7 @@
       gtksourceview.dev
       xdg-desktop-portal-gtk
 
-      tk  
-      kitty
+      tk
       qemu
       libcamera
       virtiofsd
