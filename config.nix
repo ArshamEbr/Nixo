@@ -135,6 +135,14 @@
       loginShellInit = ''
         if uwsm check may-start && uwsm select; then
           exec uwsm start default
+        else
+          echo "TTY access denied. Please authenticate."
+          if login; then
+            exec $SHELL
+          else
+            echo "Authentication failed. Exiting..."
+            exit
+          fi
         fi
       '';
     };
