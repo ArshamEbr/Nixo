@@ -72,7 +72,8 @@
       #  bind = $Secondary$Tertiary, B, exec, playerctl previous
       #  bind = $Secondary$Tertiary, P, exec, playerctl play-pause
         
-        bind = $Secondary$Tertiary, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh
+      #  bind = $Secondary$Tertiary, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh
+        bind = $Secondary$Tertiary, T, exec, waypaper
         
         bind = $Secondary$Tertiary, left, movewindow, l
         bind = $Secondary$Tertiary, right, movewindow, r
