@@ -11,8 +11,10 @@
           # Cursor shape
           cursor_shape beam
           
-          # Padding (why weird value? consistency with foot)
           window_margin_width 21.75
+          
+          background_opacity 0.7
+          background #0F131C
           
           # No stupid close confirmation
           confirm_os_window_close 0
