@@ -62,9 +62,9 @@
         bind = $Primary$Tertiary$Alternate$Secondary, Delete, exec, systemctl poweroff
         bind = $Secondary$Tertiary, D, exec,~/.local/bin/rubyshot | wl-copy
         bind = $Secondary$Tertiary, 4, exec, grim -g "$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)" - | wl-copy
-        bind = $Secondary$Tertiary, 5, exec, ~/.config/ags/scripts/record-script.sh
-        bind = $Secondary$Alternate, 5, exec, ~/.config/ags/scripts/record-script.sh --sound
-        bind = $Secondary$Tertiary$Alternate, 5, exec, ~/.config/ags/scripts/record-script.sh --fullscreen-sound
+        bind = $Secondary$Tertiary, 5, exec, record-script
+        bind = $Secondary$Alternate, 5, exec, record-script --sound
+        bind = $Secondary$Tertiary$Alternate, 5, exec, record-script --fullscreen-sound
         bind = $Secondary$Alternate, C, exec, hyprpicker -a
         bind = $Primary$Alternate, Space, exec, cliphist list | wofi -Iim --dmenu | cliphist decode | wl-copy && wtype -M ctrl v -M ctrl
         bind = $Secondary$Alternate, V, exec, cliphist list | wofi -Iim --dmenu | cliphist decode | wl-copy && wtype -M ctrl v -M ctrl
