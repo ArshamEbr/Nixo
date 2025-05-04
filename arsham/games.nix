@@ -7,6 +7,7 @@
       protonup-qt
       wine64
       winetricks
+      antimicrox
     ];
   };
 }

@@ -38,7 +38,7 @@ let
       # Fonts
       nerdfonts
       
-    #  stm32cubemx
+      stm32cubemx
       ncmpcpp
       mpdris2
       ghex
@@ -46,7 +46,7 @@ let
       
       peazip
       kdePackages.ark
-      #
+
       apktool
       # Android EMU
       waydroid
@@ -105,10 +105,7 @@ let
       nmap # A utility for network discovery and security auditing
       ipcalc  # it is a calculator for the IPv4/v6 addresses
       nmap
-  
-      # Games
-      antimicrox
-  
+      
       # misc
       cowsay
       file
