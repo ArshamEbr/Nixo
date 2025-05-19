@@ -40,30 +40,33 @@ let
 
   battery-events-script = pkgs.writeShellScriptBin "bat-percentage-check" ''
     #!/run/current-system/sw/bin/bash
-
-    last_played_percentage=0  
+    
+    last_notified_level=-1
+    
     while true; do
-        battery_percentage=$(cat /sys/class/power_supply/BAT0/capacity)
-        if (( battery_percentage % 5 == 0 )) && (( battery_percentage != last_played_percentage )); then
+        battery_percentage=$(< /sys/class/power_supply/BAT0/capacity)
+    
+        if (( battery_percentage != last_notified_level )); then
             case $battery_percentage in
-                10) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 10 ;;
-                20) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 20 ;;
-                25) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 25 ;;
-                40) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 40 ;;
-                50) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 50 ;;
-                60) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 60 ;;
-                75) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 75 ;;         
-                80) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 80 ;;
-                90) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 90 ;;
-                100) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 100 ;;
-
-                65) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash battery_toggle off ;;
-                85) ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash battery_toggle on ;;
-
+                10|20|50|80)
+                    ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash notifx1 "$battery_percentage"
+                    ;;
+                65)
+                    ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash battery_toggle off
+                    ;;
+                85)
+                    ${pkgs.systemd}/bin/machinectl shell ${user.name}@ ${pkgs.bash}/bin/bash battery_toggle on
+                    ;;
             esac
-            last_played_percentage=$battery_percentage
+            last_notified_level=$battery_percentage
         fi
-        sleep 30
+    
+        # Poll faster if close to any key level
+        if (( battery_percentage % 10 >= 8 || battery_percentage % 10 <= 2 )); then
+            sleep 13
+        else
+            sleep 60
+        fi
     done
     
   '';

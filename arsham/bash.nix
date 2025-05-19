@@ -25,7 +25,7 @@ let
           notifx1 vfio_off & disown
         else
           notify-send "NVIDIA dGPU is in an Unknown State" --icon=$HOME/nixo/resources/icons/report.png
-          notifx1 vfio_fail & disown
+          notifx1 warn & disown
         fi
       fi
       ENDX1
@@ -43,7 +43,7 @@ let
       driver=$(lspci -nnk -d 10de:1c94 | grep "Kernel driver in use" | awk -F': ' '{print $2}')
       if [[ "$driver" == "vfio-pci" ]]; then
         notify-send "NVIDIA dGPU is Already Detached" --icon=$HOME/nixo/resources/icons/gpu.png
-        paplay ~/nixo/resources/sfx/notif.mp3 & disown
+        notifx1 notif & disown
         exit 0
       fi
   
@@ -51,7 +51,7 @@ let
       nvidia_processes=$(lsof /dev/nvidia* | awk 'NR>1 {print $1, $2}' | sort -u)
       if [ -n "$nvidia_processes" ]; then
         notify-send -t 10000 "The following processes are using dGPU:" "\n$nvidia_processes" --icon=$HOME/nixo/resources/icons/warning.png
-        paplay ~/nixo/resources/sfx/error.mp3 & disown
+        notifx1 warn & disown
         echo "dGPU detach aborted: processes using /dev/nvidia0:"
         echo "$nvidia_processes"
         exit 1
@@ -61,7 +61,7 @@ let
       pids=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader | xargs)
       if [ -n "$pids" ]; then
         notify-send -t 10000 "dGPU Detach Aborted" "The following compute processes are using the dGPU:\n$pids" --icon=$HOME/nixo/resources/icons/warning.png
-        paplay ~/nixo/resources/sfx/error.mp3 & disown
+        notifx1 warn & disown
         echo "dGPU detach aborted: compute processes running: $pids"
         exit 1
       fi
@@ -87,9 +87,10 @@ let
       driver=$(lspci -nnk -d 10de:1c94 | grep "Kernel driver in use" | awk -F': ' '{print $2}') 
       if [[ "$driver" == "nvidia" ]]; then
         notify-send "NVIDIA dGPU is already attached" --icon=$HOME/nixo/resources/icons/lgpu.png
-        paplay ~/nixo/resources/sfx/notif.mp3 & disown
+        notifx1 notif & disown
         exit 0
       fi
+      sudo ${pkgs.kmod}/bin/modprobe kvmfr static_size_mb=64
       sudo ${pkgs.kmod}/bin/rmmod vfio_pci vfio_pci_core vfio_iommu_type1
       sudo ${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_0
       sudo ${pkgs.kmod}/bin/modprobe -i nvidia_modeset nvidia_uvm nvidia
@@ -160,13 +161,11 @@ let
           mode_name="Maximum Performance"
           notifx1 max_pwr & disown
           icon=$HOME/nixo/resources/icons/performance.png
-          swww img $HOME/nixo/resources/wallpapers/mitsu.png --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1
       else
           new_mode="bat"
           mode_name="Maximum Power Saving"
           notifx1 max_save & disown
           icon=$HOME/nixo/resources/icons/power_saving.png
-          swww img $HOME/nixo/resources/wallpapers/wolf.jpg --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1
       fi
       sudo ${pkgs.tlp}/bin/tlp "$new_mode"
       notify-send "Power Mode Switched!" "Now in $mode_name mode" --icon=$icon
@@ -233,7 +232,6 @@ let
           exit 1
       fi
       pkill mpvpaper
-      swww img $HOME/nixo/resources/wallpapers/wolf.jpg --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1 & disown
       ${pkgs.libvirt}/bin/virsh -c qemu:///system start Win11
       looking-glass-client -F & disown
       notify-send "Windows VM is Booting UP!" --icon=$HOME/nixo/resources/icons/windows.png
@@ -253,7 +251,6 @@ let
       pkill swaybg
 
       # pgrep mpvpaper > /dev/null || mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes' & disown
-      swww img $HOME/nixo/resources/wallpapers/mitsu.png --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1 & disown
       ${pkgs.libvirt}/bin/virsh -c qemu:///system shutdown Win11 
       ${pkgs.libvirt}/bin/virsh -c qemu:///system shutdown Win11_iAudio
       notify-send "Shutdown initiated for Windows VM" --icon=$HOME/nixo/resources/icons/close.png
@@ -371,7 +368,6 @@ let
           paplay ~/nixo/resources/sfx/error.mp3 & disown
           exit 1
       fi
-      swww img $HOME/nixo/resources/wallpapers/wolf.jpg --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1 & disown
       ${pkgs.libvirt}/bin/virsh -c qemu:///system start Win11_iAudio
       looking-glass-client -f /dev/kvmfr0 -F & disown
       notify-send "Full Windows VM is Booting UP!" --icon=$HOME/nixo/resources/icons/windows.png
@@ -618,6 +614,44 @@ let
     fi
   '';
 
+  waybar-cava = pkgs.stdenv.mkDerivation {
+    name = "waybar-cava";
+    src = ../scripts/WaybarCava.sh;
+    phases = [ "installPhase" ];
+    installPhase = ''
+      mkdir -p $out/bin
+      cp $src $out/bin/waybar_cava
+      chmod +x $out/bin/waybar_cava
+    '';
+  };
+
+  gpu-info = pkgs.stdenv.mkDerivation {
+    name = "gpu-info";
+    src = ../scripts/gpuinfo.sh;
+    phases = [ "installPhase" ];
+    installPhase = ''
+      mkdir -p $out/bin
+      cp $src $out/bin/gpuinfo
+      chmod +x $out/bin/gpuinfo
+    '';
+  };
+
+  power-go = pkgs.writeScriptBin "power-save" ''
+    #!/run/current-system/sw/bin/bash
+    if hyprctl getoption animations:enabled | grep -q 'int: 1'; then
+      hyprctl --batch "\
+        keyword animations:enabled 0;\
+        keyword decoration:blur:enabled 0;\
+        keyword decoration:shadow:enabled 0;\
+        keyword windowrulev2 opacity 1 1,class:.*;\
+        keyword general:gaps_in 0;\
+        keyword general:gaps_out 0;\
+        keyword general:border_size 1;\
+        keyword decoration:rounding 0"
+    else
+      hyprctl reload
+    fi
+  '';
 
 in
 
@@ -653,6 +687,8 @@ in
           {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_3";          options = [ "NOPASSWD" ];}
           {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_4";          options = [ "NOPASSWD" ];}
           {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_5";          options = [ "NOPASSWD" ];}
+
+          {command = "${pkgs.kmod}/bin/modprobe kvmfr static_size_mb=64";                    options = [ "NOPASSWD" ];}
         
         ]; 
       }
@@ -668,5 +704,8 @@ in
         rofi-go
         way-net-go
         record-scripto
+        waybar-cava
+        gpu-info
+        power-go
     ];
   }

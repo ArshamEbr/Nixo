@@ -27,8 +27,9 @@ let
     ++
 
     (with pkgs; [
+      
+      cava
       thunderbird
-
       blender
       # VNC
       tigervnc
@@ -39,6 +40,10 @@ let
       nerdfonts
       
       stm32cubemx
+      stm32flash
+      stlink-gui
+      stlink-tool
+
       ncmpcpp
       mpdris2
       ghex
@@ -91,7 +96,6 @@ let
       gimp
       htop
       nil
-      looking-glass-client
     #  krita
       anydesk
   
@@ -274,5 +278,6 @@ let
     (with pkgs-unstable; [
       v2rayn
       python312Packages.debugpy
+      looking-glass-client
     ]);
   }

@@ -3,19 +3,23 @@
   imports = [./hardware.nix];
 
   nix = {
-  #  optimise.automatic = true; # Garbage Collector
+    optimise.automatic = true; # Garbage Collector
     settings = {
+      accept-flake-config = true;
+      builders-use-substitutes = true;
+      auto-optimise-store = true;
       max-jobs = 8; # TODO change it to your cpu core count
       cores = 8; # TODO change it to your cpu core count
-      experimental-features = [ "nix-command" "flakes" ]; # Enable Flakes.
-    #  substituters = [
-    #    "https://nix-community.cachix.org"
-    #    "https://cache.nixos.org/"
-    #  ];
-    #  trusted-public-keys = [
-    #    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    #    "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-    #  ];
+
+      experimental-features = [ 
+        "nix-command" 
+        "flakes" 
+      ];
+
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
     };
   };
 
@@ -39,7 +43,7 @@
   };
 
   
-  #location.provider = "geoclue2";
+  location.provider = "geoclue2";
   time.timeZone = "Asia/Tehran"; # yea...Iran...sigh..... # TODO change to your location
 
   
@@ -74,11 +78,10 @@
     blueman.enable = true;
     gvfs.enable = true;
     fstrim.enable = true;
-  # automatic-timezoned.enable = true;
-  # geoclue2.enable = true; # Enable Location 
+    geoclue2.enable = true;
 
     getty = {
-      autologinUser = "${user.name}"; # tty auto login to use hyprlock
+      autologinUser = "${user.name}";
     };
     
     udev = {
@@ -90,7 +93,7 @@
       ];
 
       extraRules = ''
-        SUBSYSTEM=="kvmfr", OWNER="${user.name}", GROUP="qemu-libvirtd", MODE="0666"
+        SUBSYSTEM=="kvmfr", OWNER="${user.name}", GROUP="qemu-libvirtd", MODE="0660"
       '';
     };
 
@@ -121,22 +124,27 @@
   programs = {
 
     ccache.enable = true;
-    nix-ld.enable = true;
-    fish.enable = true;
-    
-    bash = {
-      shellAliases = {
-      hyprxd = "dbus-run-session Hyprland";
-      hyproxd = "exec uwsm start Hyprland";
-      firexd = "dbus-run-session wayfire";
-      fireoxd = "exec uwsm start wayfire";
-      };
+    adb.enable = true;
+
+    nix-ld = {
+      enable = true;
       
-      loginShellInit = ''
-          if uwsm check may-start && uwsm select; then
-            exec uwsm start default
-          fi
-      '';
+      libraries = with pkgs; [
+        bash
+        stdenv.cc.cc
+        glibc
+        zlib
+        xorg.libX11
+        xorg.libXext
+        xorg.libXtst
+        xorg.libXi
+        xorg.libXrender
+        xorg.libXrandr
+        xorg.libXcursor
+        xorg.libXfixes
+        xorg.libXdmcp
+        fontconfig
+      ];
     };
 
     nh = {
@@ -144,7 +152,7 @@
       flake = "/home/${user.name}/nixo";
 
       clean = {
-        enable = true;
+        enable = false;
         dates = "weekly";
         extraArgs = "--keep 3";
       };
@@ -190,8 +198,7 @@
     '';
   };
 
-  # Don't forget to set a password with ‘passwd’.
-  users = {
+  users = { # Don't forget to set a password with ‘passwd’.
     groups = {
       mlocate = {};
       plocate = {};
@@ -221,14 +228,23 @@
     };
   };
 
-  # Enable Wayland for Electron.
   environment = {
     localBinInPath = true;
     sessionVariables.NIXOS_OZONE_WL = "1";
     sessionVariables.MOZ_ENABLE_WAYLAND = "1";
     systemPackages = 
     (with pkgs; [
+      # Specify the pkg names (stable)
+      freerdp3Override
+    ])
 
+    ++
+
+    (with pkgs-unstable; [
+      # Specify the pkg names (latest stable)
+      
+      inotify-tools
+      xorg.xinit
       e2fsprogs
       proot
       nixos-generators
@@ -283,7 +299,6 @@
       thefuck
       tldr
       bc
-      freerdp3Override
       kbd
       imagemagick
       sunshine
@@ -333,8 +348,12 @@
       linux-pam
       cliphist
       sudo
-      xwaylandvideobridge
-      polkit-kde-agent
+    #  xwaylandvideobridge
+      kdePackages.xwaylandvideobridge
+      libsForQt5.xwaylandvideobridge
+    #  polkit-kde-agent
+      kdePackages.polkit-kde-agent-1
+      libsForQt5.polkit-kde-agent
       kdePackages.kde-cli-tools
 
       # Wayland.
@@ -377,15 +396,10 @@
       xdg-desktop-portal-gtk
 
       tk
+
       qemu
       libcamera
       virtiofsd
-    ])
-
-    ++
-
-    (with pkgs-unstable; [
-      # Specify the pkg names
     ]);
 
   };

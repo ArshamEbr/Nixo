@@ -5,13 +5,12 @@
       package = pkgs-unstable.mesa;
       enable = true;
       enable32Bit = true;
-      extraPackages = with pkgs; [ 
+      extraPackages = with pkgs-unstable; [ 
         vpl-gpu-rt 
         intel-media-driver 
         intel-compute-runtime 
         vaapiIntel
         libvdpau-va-gl
-        pkgs-unstable.mesa
         ];
     };
     
@@ -27,14 +26,14 @@
     environment.variables = {
       VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
       LIBVA_DRIVER_NAME = "iHD";
-      GBM_BACKEND = "gbm";
+    #  GBM_BACKEND = "gbm";
 
       # home vars
     #  LD_LIBRARY_PATH = "/run/opengl-driver/lib";
     #  VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
     #  LIBVA_DRIVER_NAME = "iHD";
       # cursor
-      WAYLAND_DISPLAY = "wayland-1";
+    #  WAYLAND_DISPLAY = "wayland-1";
       XCURSOR_THEME = "Bibata-Modern-Classic";
       XCURSOR_SIZE = "24";
     };
@@ -45,7 +44,7 @@
       owner = "root";
       group = "root";
       capabilities = "cap_sys_admin+p";
-      source = "${pkgs.sunshine}/bin/sunshine";
+      source = "${pkgs-unstable.sunshine}/bin/sunshine";
     };
 
     hardware.nvidia = {

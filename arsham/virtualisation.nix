@@ -8,7 +8,6 @@
 
     systemd.tmpfiles.rules = [
       "f /dev/shm/looking-glass 0660 ${user.name} qemu-libvirtd -"
-      "f /dev/kvmfr0 0660 ${user.name} qemu-libvirtd -"
     ];
 
     virtualisation = {
@@ -28,26 +27,26 @@
         enable = true; # do this too: sudo virsh net-start default
         onBoot = "ignore"; # Don't start any VMs automatically on boot.
         onShutdown = "shutdown"; # Stop all running VMs on shutdown.
-      #  qemu = {
-      #    verbatimConfig = ''
-      #      cgroup_device_acl = [
-      #        "/dev/null",
-      #        "/dev/full",
-      #        "/dev/zero",
-      #        "/dev/random",
-      #        "/dev/urandom",
-      #        "/dev/ptmx",
-      #        "/dev/kvm",
-      #        "/dev/kvmfr0",
-      #        "/dev/vfio/vfio",
-      #        "/dev/fuse",
-      #        "/dev/vhost-vsock",
-      #        "/dev/vhost-net",
-      #        "/dev/shm/virtiofsd.sock.pid",
-      #        "/dev/shm/virtiofsd.sock"
-      #      ]
-      #    '';
-      #  };
+        qemu = {
+          verbatimConfig = ''
+            cgroup_device_acl = [
+              "/dev/null",
+              "/dev/full",
+              "/dev/zero",
+              "/dev/random",
+              "/dev/urandom",
+              "/dev/ptmx",
+              "/dev/kvm",
+              "/dev/kvmfr0",
+              "/dev/vfio/vfio",
+              "/dev/fuse",
+              "/dev/vhost-vsock",
+              "/dev/vhost-net",
+              "/dev/shm/virtiofsd.sock.pid",
+              "/dev/shm/virtiofsd.sock"
+            ]
+          '';
+        };
       };
     };
   };
