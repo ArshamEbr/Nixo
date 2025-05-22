@@ -70,6 +70,8 @@
             border-radius: 4rem;
           }         
         '';
+
+        ".config/wlogout/icons".source = ../../../resources/wlogout;
       };
     };
     users.users.${user.name}.packages = with pkgs; [
