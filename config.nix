@@ -34,7 +34,6 @@
   hardware = {
     enableAllFirmware = true;
     uinput.enable = true; # Udev rules
-    pulseaudio.enable = false; # Disable PulseAudio
 
     bluetooth = {
       enable = true;
@@ -79,6 +78,7 @@
     gvfs.enable = true;
     fstrim.enable = true;
     geoclue2.enable = true;
+    pulseaudio.enable = false; # Disable PulseAudio
 
     getty = {
       autologinUser = "${user.name}";
@@ -224,6 +224,7 @@
         "libvirtd"
         "kvm"
         "virsh"
+        "dialout"
       ];
     };
   };

@@ -84,6 +84,17 @@
         layerrule = blur, rofi
         layerrule = ignorealpha 0.05, rofi
         layerrule = ignorezero, rofi
+
+        layerrule = blur, logout_dialog
+        
+        layerrule = blur, class:^(swww)$
+
+        layerrule = blur, swaync-control-center
+        layerrule = blur, swaync-notification-window
+        layerrule = ignorezero, swaync-control-center
+        layerrule = ignorezero, swaync-notification-window
+        layerrule = ignorealpha 0.5, swaync-control-center
+        layerrule = ignorealpha 0.5, swaync-notification-window
       '';
       };
     };

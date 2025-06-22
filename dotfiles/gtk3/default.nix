@@ -42,5 +42,6 @@
       gtk4
       adw-gtk3
       morewaita-icon-theme
+      nwg-look
     ];
   }

@@ -2,8 +2,8 @@
   description = "Nixo >:)";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    nixpkgs-old.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-old.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     anyrun.url = "github:Kirottu/anyrun";
     nix-gl-host.url = "github:numtide/nix-gl-host";
@@ -16,7 +16,21 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
+
+  #  home-manager = {
+  #    url = "github:nix-community/home-manager/release-25.05";
+  #    inputs.nixpkgs.follows = "nixpkgs";Add commentMore actions
+  #  };
+
+  #  morewaita = {Add commentMore actions
+  #    url = "github:somepaulo/MoreWaita"; 
+  #    flake = false;
+  #  };
 
   nixConfig = {
     extra-substituters = [
@@ -38,6 +52,7 @@
     nixpkgs-old,
     nixpkgs-unstable,
     anyrun,
+  #  home-manager,
     dream2nix,
     nixgl,
     nix-gl-host,
@@ -82,6 +97,7 @@
             "python-2.7.18.7"
             "openssl-1.1.1w"
             "archiver-3.5.1"
+            "ventoy-1.1.05"
           ];
         };
         overlays = [
@@ -101,6 +117,7 @@
             "python-2.7.18.7"
             "openssl-1.1.1w"
             "archiver-3.5.1"
+            "ventoy-1.1.05"
           ];
         };
       };
@@ -123,6 +140,18 @@
           ./hardware.nix
           ./arsham
           ./dotfiles
+        #  home-manager.nixosModules.home-manager
+        #  {Add commentMore actions
+        #    home-manager.useGlobalPkgs = true;
+        #    home-manager.useUserPackages = true;
+        #    home-manager.extraSpecialArgs = { 
+        #      inherit inputs;
+        #      inherit pkgs-unstable;
+        #      inherit pkgs-old;
+        #      inherit user;
+        #    };
+        #    home-manager.users.arsham = import ./home/home.nix;
+        #  }
         ];
       };
     };

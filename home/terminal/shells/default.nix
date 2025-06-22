@@ -1,6 +1,6 @@
 {
   imports = [
     ./bash
-  #  ./fish
+    ./fish
   ];
 }

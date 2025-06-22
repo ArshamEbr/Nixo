@@ -7,6 +7,8 @@
         eamodio.gitlens
         jnoortheen.nix-ide
         danielsanmedium.dscodegpt
+        platformio.platformio-vscode-ide
+        ms-vscode.cpptools
       ];
     };
   in

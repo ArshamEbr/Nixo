@@ -6,6 +6,46 @@
       ".config/waybar/config".text = ''
         [
           {
+            "modules-center": [
+              "custom/gpuinfo",
+              "temperature",
+              "cpu",
+              "clock",
+              "memory",
+              "disk"
+            ],
+            "modules-left": [
+            //  "custom/launcher",
+              "hyprland/workspaces",
+              "hyprland/window"
+            ],
+            "modules-right": [
+              "tray",
+              "network",
+              "custom/network",
+              "pulseaudio",
+              "backlight",
+              "battery",
+              "idle_inhibitor",
+              "custom/power",
+              "custom/notification"
+            ],
+            "hyprland/window": {
+              "format": "{}",
+              "separate-outputs": true,
+              "rewrite": {
+                "arsham@hyprland =(.*)": "$1 ",
+                "(.*) — Mozilla Firefox": "$1 󰈹",
+                "(.*)Mozilla Firefox": "Firefox 󰈹",
+                "(.*) - Visual Studio Code": "$1 󰨞",
+                "(.*)Visual Studio Code": "Code 󰨞",
+                "(.*) — Dolphin": "$1 󰉋",
+                "(.*)Spotify": "Spotify 󰓇",
+                "(.*)Spotify Premium": "Spotify 󰓇",
+                "(.*)Steam": "Steam 󰓓"
+              },
+              "max-length": 40
+            },
             "backlight": {
               "device": "intel_backlight",
               "format": "{icon} {percent}%",
@@ -47,13 +87,14 @@
             },
             "custom/launcher": {
               "format": " ",
-              "on-click": "rofi -show drun",
+              "on-click": "anyrun",
               "tooltip": false
             },
             "custom/network": {
               "exec": "way_network",
               "interval": 1,
-              "return-type": "text"
+              "return-type": "text",
+              "tooltip": false
             },
             "custom/power": {
               "exec": "echo \"󰓅\" ",
@@ -100,39 +141,30 @@
             },
             "height": 0,
             "hyprland/workspaces": {
-              "active-only": false,
-              "format": "{name}",
-              "on-click": "activate"
+                "active-only": false,
+                "all-outputs": true, 
+                "format": "{icon}",
+                "show-special": false,
+                "on-click": "activate",
+                "on-scroll-up": "hyprctl dispatch workspace e+1",
+                "on-scroll-down": "hyprctl dispatch workspace e-1",
+                "persistent-workspaces": {
+                  "1": [],
+                  "2": [],
+                  "3": [],
+                  "4": [],
+                  "5": [],
+                },
+                "format-icons": {
+                  "active": "",
+                  "default": ""
+              } 
             },
             "layer": "top",
             "memory": {
               "format": "  {}%",
               "interval": 3
             },
-            "modules-center": [
-              "custom/gpuinfo",
-              "temperature",
-              "cpu",
-              "clock",
-              "memory",
-              "disk"
-            ],
-            "modules-left": [
-              "custom/launcher",
-              "hyprland/workspaces"
-            ],
-            "modules-right": [
-              "tray",
-            //  "bluetooth",
-              "network",
-              "custom/network",
-              "pulseaudio",
-              "backlight",
-              "battery",
-              "idle_inhibitor",
-              "custom/power",
-              "custom/notification"
-            ],
             "custom/notification": {
               "tooltip": false,
               "format": " {icon} ",
@@ -215,20 +247,34 @@
       ".config/waybar/style.css".text = ''
         * {
           border: none;
-          border-radius: 8px;
-          font-family: "JetBrainsMono Nerd Font";
-          font-size: 14px;
-          min-height: 0;
+          border-radius: 7px;
+          font-family: "JetBrains Mono Nerd Font";
+          font-weight: bold;
+          min-height: 0;	
+          font-size: 100%;
+          font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+          padding: 0px;
         }
         
         window#waybar {
-          background: rgba(40, 40, 40, 0.602);
-          color: #cdd6f4;
+          background:transparent;
           border-radius: 0px;
-          margin: 0px 0px 0 0px;
+          color: whitesmoke;
         }
         
-        #workspaces button,
+        window#waybar.hidden {
+          opacity: 0.5;
+        }
+        window#waybar.empty {
+          background-color: transparent;
+        }
+        
+        window#waybar.empty #window {
+          padding: 0px;
+          border: 0px;
+          background-color: transparent;
+        }
+        
         #clock, 
         #battery, 
         #cpu, 
@@ -242,20 +288,98 @@
         #gamemode,
         #custom-power,
         #custom-network,
+        #custom-gpuinfo,
+        #custom-notification,
+        #idle_inhibitor,
+        #window,
         #tray {
-          background: transparent;
-          margin: 0px 3px;
+          background: none;
+          margin: 0;
+          padding: 0px 5px;
+        }
+        
+        .modules-left,
+        .modules-center,
+        .modules-right {
+          background: rgba(0, 0, 0, 0.4); /* Unified background */
+          border-radius: 7px;
+          margin: 2px;
           padding: 0 6px;
         }
         
-        /* Active workspace */
-        #workspaces button.active {
-          background: rgba(117, 147, 196, 0.602);
-          color:rgb(151, 188, 249);
+        /* Hover effect for inner modules */
+        .modules-left > *,
+        .modules-center > *,
+        .modules-right > * {
+          margin: 0 1px;
+          padding: 0px 5px;
+          border-radius: 5px;
         }
         
+        .modules-left > *:hover,
+        .modules-center > *:hover,
+        .modules-right > *:hover {
+          background: rgba(49, 50, 68, 0.602);
+        }
+        
+        #workspaces button {
+          color: #6E6A86;
+          box-shadow: none;
+          text-shadow: none;
+          padding: 0px;
+          border-radius: 9px;
+          padding-left: 4px;
+          padding-right: 4px;
+          animation: gradient_f 20s ease-in infinite;
+          transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.682);
+        }
+        
+        #workspaces button.active {
+          color: whitesmoke;
+          border-radius: 15px 15px 15px 15px;
+          padding-left: 8px;
+          padding-right: 8px;
+          animation: gradient_f 20s ease-in infinite;
+          transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
+        }
+        
+        #workspaces button.focused {
+          color: #d8dee9;
+        }
+        #workspaces button.urgent {
+          color: #11111b;
+          border-radius: 10px;
+        }
+        
+        #workspaces button:hover {
+          color: whitesmoke;
+          border-radius: 15px;
+          padding-left: 2px;
+          padding-right: 2px;
+          animation: gradient_f 20s ease-in infinite;
+          transition: all 0.3s cubic-bezier(.55,-0.68,.48,1.682);
+        }
+        
+        tooltip {
+          background: #1e1e2e;
+          border-radius: 10px;
+          border-width: 2px;
+          border-style: solid;
+          border-color: #11111b;
+          color: #cba6f7;
+        }
+        
+        #battery.critical:not(.charging) {
+          color: #f53c3c;
+          animation-name: blink;
+          animation-duration: 0.5s;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+          animation-direction: alternate;
+        }
+        
+        
         /* Hover effects */
-        #workspaces button:hover,
         #clock:hover,
         #battery:hover,
         #cpu:hover,
@@ -281,19 +405,23 @@
           color:rgb(255, 19, 19);
           animation: blink 1s infinite;
         }
-
+        
         #custom-cava_mviz {
-          color: @pink;
+          color: #f5c2e7;
         }
-
+        
         #cava {
-        color: @pink;
+        color: #f5c2e7;
         }
         
         @keyframes blink {
           0% { opacity: 1; }
           50% { opacity: 0.5; }
           100% { opacity: 1; }
+        }
+        
+        #custom-gpuinfo {
+          color: #eba0ac;
         }
       '';
       };

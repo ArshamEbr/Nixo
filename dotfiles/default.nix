@@ -1,23 +1,13 @@
 {
   imports = [
     ./hyprland
-  #  ./wayfire
-    ./foot
-    ./waybar
-    ./btop
-    ./rofi
-    ./vscode
-    ./starship
-    ./obs
-    ./mako
-    ./udiskie
-    ./gtk3
-    ./uwsm
-    ./anyrun
+#  #  ./wayfire
+#    ./vscode
+#    ./obs
+#    ./udiskie
+#    ./gtk3
     ./qt5
-    ./wlogout
-    ./fish
-    ./mpv
-    ./kitty
+#    ./mpv
+    ./terminal
   ];
 }

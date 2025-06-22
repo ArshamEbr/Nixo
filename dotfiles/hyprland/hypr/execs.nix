@@ -21,7 +21,7 @@
 
         # Random stuff and bar
         #exec-once = /usr/lib/geoclue-2.0/demos/agent & gammastep
-        #exec-once = waybar &
+        exec-once = waybar &
         # exec-once = ags &
 
         # Sound Enhancer
