@@ -27,6 +27,22 @@ let
     ++
 
     (with pkgs; [
+
+    #  ttf-material-symbols-variable-git 
+    #  ttf-jetbrains-mono-nerd 
+    #  ttf-ibm-plex 
+    #  app2unit-git 
+    #  psiphon3
+      warp-plus
+      fd 
+      bluez
+      adwaita-icon-theme
+      hicolor-icon-theme
+      gnome-themes-extra
+      gnome-icon-theme
+      procps
+
+      inputs.quickshell.packages.${pkgs.system}.default
       
       cava
       thunderbird
@@ -37,12 +53,18 @@ let
       webcamoid
 
       # Fonts
-      nerdfonts
+    #  nerdfonts
+      google-fonts
+      ibm-plex
+      
       
       stm32cubemx
       stm32flash
       stlink-gui
       stlink-tool
+      stlink
+      platformio
+      esptool
 
       ncmpcpp
       mpdris2
@@ -167,6 +189,9 @@ let
       # Python
       pyenv.out
       (python312.withPackages(ps: with ps; [
+        aubio 
+        numpy 
+
         materialyoucolor
         material-color-utilities
         pillow
@@ -279,5 +304,10 @@ let
       v2rayn
       python312Packages.debugpy
       looking-glass-client
-    ]);
+    ]
+
+    ++
+    
+    builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts
+    ));
   }
