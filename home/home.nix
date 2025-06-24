@@ -1,6 +1,14 @@
 { inputs, pkgs, lib, pkgs-old, pkgs-unstable, user, ... }:
   {
-    imports = [./home];
+    imports = [
+      ./gtk
+      ./hyprland
+      ./mpv
+      ./obs
+      ./terminal
+      ./udiskie
+      ./vscode
+    ];
   
     programs.home-manager.enable = true;
     fonts.fontconfig.enable = true;
@@ -52,7 +60,6 @@
           stm32flash
           stlink-gui
           stlink-tool
-          stlink
           platformio
           esptool
   
@@ -159,7 +166,7 @@
           usbutils
           wofi-calc
           mission-center
-          parabolic
+        #  parabolic
           clipgrab
           ardour
           audacity
@@ -229,7 +236,7 @@
           waypaper
           swaybg
           swww
-          yt-dlp
+        #  yt-dlp
   
           # GTK
           webp-pixbuf-loader

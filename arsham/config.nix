@@ -1,7 +1,5 @@
 { pkgs, pkgs-unstable, config, lib, user, ... }:
 {
-  imports = [./hardware.nix];
-
   nix = {
     optimise.automatic = true; # Garbage Collector
     settings = {
