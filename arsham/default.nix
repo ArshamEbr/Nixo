@@ -2,7 +2,6 @@
   imports = [
     ./bash.nix
     ./boot.nix
-    ./dotfiles.nix
     ./games.nix
     ./graphics.nix
     ./networking.nix
@@ -10,7 +9,9 @@
     ./sfx.nix
     ./warn.nix
     ./virtualisation.nix
-    ./uki.nix
-    ./homie.nix
+  #  ./uki.nix
+    ./config.nix
+    ./hardware.nix
+    ./sddm.nix
   ];
 }

@@ -5,6 +5,7 @@
       animations = {
         enabled = true;
         bezier = [
+          "vividGlow, 0.3, 1.1, 0.6, 1.0"
           "linear, 0, 0, 1, 1"
           "md3_standard, 0.2, 0, 0, 1"
           "md3_decel, 0.05, 0.7, 0.1, 1"
@@ -24,21 +25,24 @@
         ];
     
         animation = [
-          "windows, 1, 3, md3_decel, popin 60%"
-          "windowsIn, 1, 2.6, easeSoft, popin 1%"
-          "windowsOut, 1, 2.6, easeOutQuick, slidefade 18%"
-          "border, 1, 10, default"
-          "fade, 1, 6, md3_decel"
-          "layers, 1, 2, md3_decel, slide"
-          "layersIn, 1, 2.2, menu_decel, slide"
-          "layersOut, 1, 1.6, menu_accel"
-          "fadeLayersIn, 1, 2, menu_decel"
-          "fadeLayersOut, 1, 4.5, menu_accel"
-          "workspaces, 1, 6, menu_decel, slide"
-          "workspaces, 1, 2.5, softAcDecel, slide"
-          "workspaces, 1, 6, menu_decel, slidefade 10%"
-          "specialWorkspace, 1, 2, md3_decel, slidefadevert 15%"
-          "specialWorkspace, 1, 2.2, md3_decel, slidevert"
+        "windows, 1, 4, md3_decel, popin 10%"
+        "windowsIn, 1, 3.6, softAcDecel, popin 5%"
+        "windowsOut, 1, 4.6, crazyshot, slide"
+        "windowsMove, 1, 4, softAcDecel, slide"
+        "border, 1, 25, easeOutQuick"
+        "fade, 1, 6, md3_decel"
+        "layersIn, 1, 3.2, md3_decel, popin"
+        "layersOut, 1, 2.6, menu_accel, popin"
+        "fadeLayersIn, 1, 2, menu_decel"
+        "fadeLayersOut, 1, 4.5, easeOutQuick"
+        "workspaces, 1, 6, menu_decel, slide"
+        "workspaces, 1, 2.5, softAcDecel, slide"
+        "workspaces, 1, 6, menu_decel, slidefade 10%"
+        "specialWorkspace, 1, 2, md3_decel, slidefadevert 15%"
+        "specialWorkspace, 1, 2.2, md3_decel, slidevert"
+        "borderangle, 1, 90, linear, loop"
+      #  "layers, 1, 2, md3_decel, slide"
+
         ];
       };
     };

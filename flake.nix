@@ -11,40 +11,43 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     dream2nix.url = "github:nix-community/dream2nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nur.url = "github:nix-community/NUR";
+    catppuccin.url = "github:catppuccin/nix";
 
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     quickshell = {
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    silentSDDM = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  #  home-manager = {
-  #    url = "github:nix-community/home-manager/release-25.05";
-  #    inputs.nixpkgs.follows = "nixpkgs";Add commentMore actions
-  #  };
-
-  #  morewaita = {Add commentMore actions
-  #    url = "github:somepaulo/MoreWaita"; 
-  #    flake = false;
-  #  };
-
   nixConfig = {
-    extra-substituters = [
-      "https://nix-community.cachix.org"
-      "https://anyrun.cachix.org"
-      "https://cuda-maintainers.cachix.org"
-      "https://hyprland.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
-      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-    ];
+  #  extra-substituters = [
+  #    "https://nix-community.cachix.org"
+  #    "https://anyrun.cachix.org"
+  #    "https://cuda-maintainers.cachix.org"
+  #    "https://hyprland.cachix.org"
+  #  ];
+  #  extra-trusted-public-keys = [
+  #    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  #    "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
+  #    "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+  #    "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+  #  ];
   };
 
   outputs = inputs@{ 
@@ -52,12 +55,14 @@
     nixpkgs-old,
     nixpkgs-unstable,
     anyrun,
-  #  home-manager,
+    home-manager,
     dream2nix,
     nixgl,
     nix-gl-host,
     nix-vscode-extensions,
     nixos-hardware,
+    catppuccin,
+    nur,
     ...
   }:
   let
@@ -102,6 +107,7 @@
         };
         overlays = [
           nixgl.overlay
+          nur.overlays.default
           (import ./overlays/debugpy.nix)
           (import ./overlays/freerdp.nix)
           (import ./overlays/materialyoucolor.nix)
@@ -136,22 +142,21 @@
           nixgl.defaultPackage.x86_64-linux
         ];
         modules = [
-          ./config.nix
-          ./hardware.nix
+        #  "${nixpkgs}/nixos/modules/misc/nixpkgs/read-only.nix"
+        #  ./dotfiles
           ./arsham
-          ./dotfiles
-        #  home-manager.nixosModules.home-manager
-        #  {Add commentMore actions
-        #    home-manager.useGlobalPkgs = true;
-        #    home-manager.useUserPackages = true;
-        #    home-manager.extraSpecialArgs = { 
-        #      inherit inputs;
-        #      inherit pkgs-unstable;
-        #      inherit pkgs-old;
-        #      inherit user;
-        #    };
-        #    home-manager.users.arsham = import ./home/home.nix;
-        #  }
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { 
+              inherit inputs;
+              inherit pkgs-unstable;
+              inherit pkgs-old;
+              inherit user;
+            };
+            home-manager.users.${user.name} = import ./home/home.nix;
+          }
         ];
       };
     };

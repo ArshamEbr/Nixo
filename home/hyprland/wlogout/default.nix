@@ -18,7 +18,7 @@
         }
         {
           label = "logout";
-          action = "pkill Hyprland || pkill sway || pkill niri || loginctl terminate-user $USER";
+          action = "dettach_safe && pkill Hyprland || pkill sway || pkill niri || loginctl terminate-user $USER";
           text = "Logout";
           keybind = "e";
         }

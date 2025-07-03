@@ -91,6 +91,10 @@
         "blur, logout_dialog"
     
         "blur, class:^(swww)$"
+
+        "blur, wofi"
+        "ignorealpha 0.3, wofi"
+        "ignorezero, wofi"
     
         "blur, swaync-control-center"
         "blur, swaync-notification-window"

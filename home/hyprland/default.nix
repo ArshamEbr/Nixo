@@ -1,6 +1,6 @@
 {
   imports = [
-    ./anyrun
+    ./wofi
     ./hypr
     ./hypridle
     ./hyprlock

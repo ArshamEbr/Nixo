@@ -11,7 +11,8 @@
       "$Tertiary" = "SHIFT";
     
       bind = [
-        "$Primary, A, exec, pkill anyrun || anyrun"
+      #  "$Primary, A, exec, pkill anyrun || anyrun"
+        "$Primary, A, exec, pkill wofi || wofi"
         # "$Primary, A, exec, rofi -show drun"
         "$Primary$Alternate, Q, exec, pkill wlogout || wlogout -p layer-shell"
         "$Primary$Secondary, K, exec, wallch --chgw"
@@ -24,7 +25,7 @@
         "$Primary$Alternate, 8, exec, power-save"
         "$Primary, 1, exec, vesktop"
         "$Alternate, 1, exec, discord"
-        "$Primary, 2, exec, telegram-desktop"
+        "$Primary, 2, exec, Telegram"
         "$Primary, M, exec, [float; size 50% 56%; move 100%-w-10 43] foot -e btop"
         "$Alternate, M, exec, [float; size 50% 55%; move 100%-w-10 43] kitty -e btop"
         "$Primary$Alternate, M, exec, missioncenter"
@@ -37,7 +38,7 @@
         "$Primary, B, exec, zen"
         "$Primary$Secondary, X, exec, subl"
         "$Primary, C, exec, code"
-        ",XF86Calculator, exec, ~/.local/bin/wofi-calc"
+        ",XF86Calculator, exec, wofi-calc"
         "$Primary$Secondary, I, exec, XDG_CURRENT_DESKTOP='gnome' gnome-control-center"
         "$Primary$Secondary, V, exec, "
         "$Primary$Tertiary, Home, exec, gnome-system-monitor"
@@ -69,8 +70,9 @@
         "$Alternate, down, movefocus, d"
         "$Secondary, BracketLeft, movefocus, l"
         "$Secondary, BracketRight, movefocus, r"
-        "$Primary$Secondary, right, workspace, +1"
-        "$Primary$Secondary, left, workspace, -1"
+
+        "$Tertiary, right, workspace, +1"
+        "$Tertiary, left, workspace, -1"
         "$Primary$Secondary, BracketLeft, workspace, -1"
         "$Primary$Secondary, BracketRight, workspace, +1"
         "$Primary$Secondary, up, workspace, -5"
@@ -79,6 +81,7 @@
         "$Secondary, Page_Up, workspace, -1"
         "$Primary$Secondary, Page_Down, workspace, +1"
         "$Primary$Secondary, Page_Up, workspace, -1"
+
         "$Secondary$Alternate, Page_Down, movetoworkspace, +1"
         "$Secondary$Alternate, Page_Up, movetoworkspace, -1"
         "$Secondary$Tertiary, Page_Down, movetoworkspace, +1"
@@ -150,6 +153,7 @@
         ", XF86MonBrightnessDown, exec, bash -c 'brightnessctl set 5%- && notify-send -h string:x-canonical-private-synchronous:brightness-sync -u low -i display-brightness-low-symbolic \"󰃠 Brightness\" -h int:value:$(( $(brightnessctl get) * 100 / $(brightnessctl max) )) -t 1000'"
         ", XF86AudioMute, exec, sh -c \"wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && notify-send -h string:x-canonical-private-synchronous:volume-sync -u low -i $(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print ($2==0) ? \"audio-volume-muted-symbolic\" : \"audio-volume-high-symbolic\"}') '󰝚 Volume' -h int:value:$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print int($2*100)}') -t 1000\""
       ];
+
     
       # Mouse binds
       bindm = [

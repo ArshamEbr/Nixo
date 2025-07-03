@@ -1,13 +1,14 @@
 {
   imports = [
     ./hyprland
-#  #  ./wayfire
-#    ./vscode
-#    ./obs
-#    ./udiskie
-#    ./gtk3
+    ./vscode
+    ./obs
+    ./udiskie
+    ./gtk3
     ./qt5
-#    ./mpv
+    ./mpv
     ./terminal
+    ./dotfiles.nix
+    ./homie.nix
   ];
 }

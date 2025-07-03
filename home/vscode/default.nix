@@ -3,9 +3,10 @@
     programs.vscode = {
       enable = true;
       package = pkgs-unstable.vscode;
-      extensions = with pkgs-unstable.vscode-extensions; [
+      profiles.default.extensions = with pkgs-unstable.vscode-extensions; [
         ms-python.python
         ms-vscode.cpptools
+        usernamehw.errorlens
         oderwat.indent-rainbow
         eamodio.gitlens
         jnoortheen.nix-ide

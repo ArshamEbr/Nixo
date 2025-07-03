@@ -78,9 +78,9 @@
     geoclue2.enable = true;
     pulseaudio.enable = false; # Disable PulseAudio
 
-    getty = {
-      autologinUser = "${user.name}";
-    };
+  #  getty = {
+  #    autologinUser = "${user.name}";
+  #  };
     
     udev = {
       enable = true;
@@ -123,10 +123,21 @@
 
     ccache.enable = true;
     adb.enable = true;
+    
+    hyprland = {
+      enable = true;
+      package = pkgs-unstable.hyprland;
+    };
+
+    bash = {
+      shellAliases = {
+      hyprxd = "dbus-run-session Hyprland";
+      hyproxd = "exec uwsm start default";
+      };
+    };
 
     nix-ld = {
       enable = true;
-      
       libraries = with pkgs; [
         bash
         stdenv.cc.cc
@@ -148,7 +159,6 @@
     nh = {
       enable = true;
       flake = "/home/${user.name}/nixo";
-
       clean = {
         enable = false;
         dates = "weekly";
@@ -180,8 +190,8 @@
       fontconfig
       lexend
       material-symbols
-      bibata-cursors
       google-fonts
+      layan-cursors
     ];
   };
 
@@ -295,7 +305,7 @@
       nvtopPackages.full
       usbutils
       pciutils
-      thefuck
+      pay-respects ## thefuck
       tldr
       bc
       kbd

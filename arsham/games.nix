@@ -6,6 +6,7 @@
       lutris
       protonup-qt
       wine64
+      wine
       winetricks
       antimicrox
     ];

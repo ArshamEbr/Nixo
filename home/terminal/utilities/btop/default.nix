@@ -5,7 +5,7 @@
       package = pkgs-unstable.btop;
       settings = {
         theme_background = false;
-        color_theme = "Default";
+      #  color_theme = "Default";
         rounded_corners = true;
         update_ms = 100;
       };

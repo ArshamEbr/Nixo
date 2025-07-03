@@ -2,54 +2,74 @@
   {
     imports = [
       ./gtk
+      ./qt5
       ./hyprland
+      ./librewolf
       ./mpv
       ./obs
       ./terminal
       ./udiskie
       ./vscode
+      inputs.catppuccin.homeModules.catppuccin
     ];
   
     programs.home-manager.enable = true;
+    programs.cava = {
+      enable = true;
+      package = pkgs-unstable.cava;
+      settings = {
+        general.framerate = 60;
+        smoothing.noise_reduction = 88;
+      };
+    };
     fonts.fontconfig.enable = true;
+
+
+    catppuccin = {
+      accent = "blue";
+      flavor = "mocha";
+      vscode.enable = false;
+      btop.enable = true;
+      starship.enable = true;
+      cava.enable = true;
+      mpv.enable = true;
+    };
   
     home = {
   
       username = "${user.name}";
       homeDirectory = "/home/${user.name}";
-      stateVersion = "25.05";  
-  
+      stateVersion = "25.11";  
+      
       sessionVariables = {
         LD_LIBRARY_PATH = "/run/opengl-driver/lib";
         VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
         LIBVA_DRIVER_NAME = "iHD";
+        XCURSOR_THEME = "layan-cursors";
+        XCURSOR_SIZE = "33";
       };
-  
+      
       packages = 
-        (with pkgs-old; [
-          gnome.gvfs
+        (with pkgs; [
+          wofi-calc
         ])
         ++
-        (with pkgs; [
+        (with pkgs-unstable; [
           # Utilities and tools
           warp-plus
           fd
           bluez
-          adwaita-icon-theme
-          hicolor-icon-theme
-          gnome-themes-extra
-          gnome-icon-theme
           procps
   
           # Quickshell
           inputs.quickshell.packages.${pkgs.system}.default
   
           # Media and creative
-          cava
           thunderbird
           blender
           tigervnc
           webcamoid
+          pngquant
   
           # Fonts
           google-fonts
@@ -164,13 +184,12 @@
           ethtool
           pciutils
           usbutils
-          wofi-calc
           mission-center
-        #  parabolic
           clipgrab
           ardour
           audacity
           gparted
+          gnome.gvfs
   
           # Development
           git

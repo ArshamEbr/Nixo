@@ -4,17 +4,19 @@
       enable = true;
 
       theme = {
-        name = "adw-gtk3-dark";
-        package = pkgs-unstable.adw-gtk3;
+        name = "Juno-ocean";
       };
 
       iconTheme = {
-        name = "MoreWaita";
+        name = "BeautyLine";
+      #  package = pkgs.morewaita-icon-theme.overrideAttrs {
+      #    src = inputs.morewaita;
+      #  };
       };
 
       cursorTheme = {
-        name = "Bibata-Modern-Classic";
-        size = 24;
+        name = "layan-cursors";
+        size = 33;
       };
 
       gtk4.extraCss = ''
@@ -22,32 +24,45 @@
       '';
 
       gtk2.extraConfig = ''
-        gtk-cursor-theme-name = "Bibata-Modern-Classic"
-        gtk-cursor-theme-size = 24
-        gtk-icon-theme-name = "MoreWaita"
-        gtk-theme-name = "adw-gtk3-dark"
+        gtk-cursor-theme-name = "layan-cursors"
+        gtk-cursor-theme-size = 33
+        gtk-icon-theme-name = "BeautyLine"
+        gtk-theme-name = "Juno-ocean"
       '';
     };
 
     home.pointerCursor = {
       gtk.enable = true;
       x11.enable = true;
-      package = pkgs-unstable.bibata-cursors;
-      name = "Bibata-Modern-Classic";
-      size = 24;
+      package = pkgs-unstable.layan-cursors; # Layan Cursors
+      name = "layan-cursors";
+      size = 33;
     };
 
     xresources.properties = { # set cursor size and dpi for your monitor
-      "Xcursor.size" = 24;
+      "Xcursor.size" = 33;
       "Xft.dpi" = 172;
-      "Xcursor.theme" = "Bibata-Modern-Classic";
+      "Xcursor.theme" = "layan-cursors";
     };
     
     home.packages = with pkgs-unstable; [
       gtk3
       gtk4
-      adw-gtk3
-      morewaita-icon-theme
       nwg-look
+      # GTK Themes
+      gnome-themes-extra
+      juno-theme
+      adw-gtk3
+      # Cursor Themes
+      layan-cursors
+      bibata-cursors
+      oreo-cursors-plus
+      # Icon Themes
+      morewaita-icon-theme
+      gnome-icon-theme
+      fluent-icon-theme
+      dracula-icon-theme
+      beauty-line-icon-theme
+      whitesur-icon-theme
     ];
   }

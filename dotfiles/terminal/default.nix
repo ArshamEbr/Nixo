@@ -1,8 +1,8 @@
 {
   imports = [
-#    ./foot
-#    ./kitty
+    ./foot
+    ./kitty
     ./shells
-#    ./utilities
+    ./utilities
   ];
 }

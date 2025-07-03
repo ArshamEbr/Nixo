@@ -1,4 +1,4 @@
-{ inputs, pkgs, pkgs-old, pkgs-unstable, user, ... }:
+{ inputs, pkgs, pkgs-old, pkgs-unstable, user, config, ... }:
 let
   profilePath = "${config.xdg.configHome}/librewolf";
 in
@@ -10,7 +10,7 @@ in
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
       };
     };
-    home.file."${profilePath}/chrome/userChrome.css".text = ''
+    home.file."${profilePath}/userChrome.css".text = ''
       @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
   
       :root {

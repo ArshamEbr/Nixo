@@ -3,7 +3,7 @@
     programs.kitty = {
       enable = true;
       package = pkgs-unstable.kitty;
-      shellIntegration.enableFishIntegration = true;
+    #  shellIntegration.enableFishIntegration = true;
       enableGitIntegration = true;
       settings = {
         # Cursor
@@ -18,12 +18,12 @@
         confirm_os_window_close = "0";
     
         # Shell
-        shell = "fish";
+        shell = "zsh";
       };
 
       font = {
         name = "SpaceMono Nerd Font";
-        size = "11.0";
+        size = 11;
       };
 
       keybindings = {

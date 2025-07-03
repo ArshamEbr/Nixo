@@ -32,7 +32,7 @@
           margin: 0;
           padding: 12px;
           border-radius: 24px;
-          background-color: rgba(15, 13, 25, 0.52);
+          background-color: rgba(15, 13, 25, 0);
           border: 2px solid rgba(200, 180, 255, 0.08);
           box-shadow: 0px 30px 50px rgba(0, 0, 0, 0.5);
           backdrop-filter: blur(36px);

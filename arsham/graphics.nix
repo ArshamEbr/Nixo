@@ -26,16 +26,8 @@
     environment.variables = {
       VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
       LIBVA_DRIVER_NAME = "iHD";
-    #  GBM_BACKEND = "gbm";
-
-      # home vars
-    #  LD_LIBRARY_PATH = "/run/opengl-driver/lib";
-    #  VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
-    #  LIBVA_DRIVER_NAME = "iHD";
-      # cursor
-    #  WAYLAND_DISPLAY = "wayland-1";
-      XCURSOR_THEME = "Bibata-Modern-Classic";
-      XCURSOR_SIZE = "24";
+      XCURSOR_THEME = "layan-cursors";
+      XCURSOR_SIZE = "33";
     };
     
     services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
@@ -46,6 +38,29 @@
       capabilities = "cap_sys_admin+p";
       source = "${pkgs-unstable.sunshine}/bin/sunshine";
     };
+    
+  #  specialisation = {
+  #    intelOnly.configuration = {
+  #      services.xserver.videoDrivers = [ "modesetting" ];
+  #    };
+  #  
+  #    nvidiaOffload.configuration = {
+  #      services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  #      hardware.nvidia = {
+  #        package = config.boot.kernelPackages.nvidiaPackages.latest;
+  #        modesetting.enable = true;
+  #        powerManagement.enable = true;
+  #        open = false;
+  #        nvidiaSettings = true;
+  #        prime = {
+  #          offload.enable = true;
+  #          offload.enableOffloadCmd = true;
+  #          intelBusId = "PCI:00:02:0";
+  #          nvidiaBusId = "PCI:01:00:0";
+  #        };
+  #      };
+  #    };
+  #  };
 
     hardware.nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.latest;

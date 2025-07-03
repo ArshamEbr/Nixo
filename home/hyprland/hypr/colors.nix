@@ -3,8 +3,9 @@
     wayland.windowManager.hyprland.settings = {
       
       general = {
-        "col.active_border" = "rgba(F7DCDE39)";
-        "col.inactive_border" = "rgba(A58A8D30)";
+        "col.active_border" = "rgba(111111ff) rgba(00ffffff) rgba(222222ff) rgba(ff00ffff) rgba(333333ff) rgba(ffffffff) 60deg";
+      #  "col.active_border" = "rgba(F7DCDE39)";
+        "col.inactive_border" = "rgba(ffffffff) rgba(00000000) rgba(00000000) rgba(00000000) rgba(00000000) rgba(00000000) rgba(00000000) rgba(00000000) rgba(00000000) rgba(ffffffff) 60deg";
       };
     
       misc = {

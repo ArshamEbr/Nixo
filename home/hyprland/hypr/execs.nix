@@ -15,7 +15,7 @@
         # "mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes'"
     
         # Static and gif wallpaper (swww)
-        "swww-daemon --format xrgb"
+      #  "swww-daemon --format xrgb"
         # "swww img $HOME/nixo/resources/wallpapers/wolf.jpg --transition-step 100 --transition-fps 120 --transition-type grow --transition-angle 30 --transition-duration 1"
     
         # Random stuff and bar
@@ -44,7 +44,7 @@
         "wl-paste --type image --watch cliphist store"
     
         # Cursor
-        "hyprctl setcursor Bibata-Modern-Classic 24"
+        "hyprctl setcursor layan-cursors 33"
     
         # Gestures
         "touchegg"
@@ -56,7 +56,7 @@
         # "~/.local/bin/sunshine &"
     
         # Hyprlock (LockScreen)
-        "hyprlock"
+      #  "hyprlock"
     
         # Rebind the dGPU
         "sleep 7 && reattach_safe"
@@ -72,7 +72,7 @@
         "udiskie -t &"
     
         # idk
-        "/nix/store/qkj4b3si2xbry58xslhm1vrixhxrvskp-dbus-1.14.10/bin/dbus-update-activation-environment --systemd DISPLAY HYPRLAND_INSTANCE_SIGNATURE WAYLAND_DISPLAY XDG_CURRENT_DESKTOP && systemctl --user stop hyprland-session.target && systemctl --user start hyprland-session.target"
+        #"/nix/store/qkj4b3si2xbry58xslhm1vrixhxrvskp-dbus-1.14.10/bin/dbus-update-activation-environment --systemd DISPLAY HYPRLAND_INSTANCE_SIGNATURE WAYLAND_DISPLAY XDG_CURRENT_DESKTOP && systemctl --user stop hyprland-session.target && systemctl --user start hyprland-session.target"
     
         # "sleep 1 && dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       ];

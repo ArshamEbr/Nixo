@@ -2,19 +2,19 @@
 {
   config = {
 
-    # Override the assertion check TODO change for dual boot
-    assertions = [
-      { assertion = true; message = "Ignoring bootloader requirement since using EFISTUB."; }
-    ];
+  #  # Override the assertion check TODO change for dual boot
+  #  assertions = [
+  #    { assertion = true; message = "Ignoring bootloader requirement since using EFISTUB."; }
+  #  ];
 
     boot = {
 
-      extraModulePackages = [ pkgs.linuxKernel.packages.linux_6_12.kvmfr pkgs.linuxKernel.packages.linux_6_12.acpi_call ];
+      extraModulePackages = [ pkgs.linuxKernel.packages.linux_6_14.kvmfr ];
       extraModprobeConfig = "options snd_hda_intel model=alcplugfix";
       consoleLogLevel = 0;
       supportedFilesystems = [ "ntfs" "nfs" ];
-      # kernelPackages = pkgs-unstable.linuxPackages_latest; # 6.13 kernel not fixed rn in jan 21
-      kernelPackages = pkgs-unstable.linuxPackages_6_12;
+    #  kernelPackages = pkgs-unstable.linuxPackages_latest; # 6.13 kernel not fixed rn in jan 21
+      kernelPackages = pkgs.linuxPackages_6_14;
 
       loader = {
         systemd-boot.enable = true; ### sigh
@@ -34,6 +34,7 @@
         "vfio-pci.ids=10de:1c94"
         "vfio-pci.enable_msi=1"
         "kvmfr_static_size_mb=64"
+        "i915.enable_psr=1"
       ];
 
       initrd = {
@@ -52,11 +53,11 @@
 
       plymouth = {
         enable = true;
-        theme = "rog_2";
+        theme = "proxzima"; # rog_2
         themePackages = with pkgs; [
-          (adi1090x-plymouth-themes.override {
-            selected_themes = [ "rog_2" ];
-          })
+          plymouth-matrix-theme
+          plymouth-proxzima-theme
+          adi1090x-plymouth-themes
         ];
       };
 
@@ -66,5 +67,14 @@
           "kvm-intel"
         ];
     };
+
+  #  specialisation = {
+  #    liquorix = {
+  #      configuration = {
+  #        boot.kernelPackages = pkgs.linuxPackages_lqx;
+  #        system.nixos.tags = [ "lqx" ];
+  #      };
+  #    };
+  #  };
   };
 }

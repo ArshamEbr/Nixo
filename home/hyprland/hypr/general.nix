@@ -50,10 +50,10 @@
       general = {
         allow_tearing = true; # This just allows the `immediate` window rule to work
         # focus_to_other_workspaces = true # ahhhh i still haven't properly implemented this
-        border_size = 1;
-        gaps_in = 4;
-        gaps_out = 5;
-        gaps_workspaces = 50;
+        border_size = 3;
+        gaps_in = 2;
+        gaps_out = 0;
+        gaps_workspaces = 10;
         layout = "dwindle";
         no_focus_fallback = true;
         resize_on_border = true;
@@ -76,7 +76,7 @@
         };
     
         shadow = {
-          enabled = true;
+          enabled = false; # was enabled
           color = "rgba(0000002A)";
           ignore_window = true;
           offset = "0 2";
@@ -84,22 +84,19 @@
           render_power = 4;
         };
     
-        # screen_shader = ~/.config/hypr/shaders/nothing.frag
-        # screen_shader = ~/.config/hypr/shaders/vibrance.frag
+        rounding = 18;
     
-        rounding = 20;
-    
-        dim_inactive = false;
+        dim_inactive = true;
         dim_special = 0;
-        dim_strength = 0.1;
+        dim_strength = 0.15;
       };
     
       misc = {
         allow_session_lock_restore = true;
         animate_manual_resizes = false;
         animate_mouse_windowdragging = false;
-        background_color = "rgba(18111AFF)";
-        disable_hyprland_logo = true;
+      #  background_color = "rgba(18111AFF)";
+        disable_hyprland_logo = false;
         enable_swallow = false;
         focus_on_activate = true;
         force_default_wallpaper = 0;

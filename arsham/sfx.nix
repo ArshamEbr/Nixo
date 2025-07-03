@@ -166,7 +166,7 @@ in
 
       overheat-alert = {
         enable = true;
-        temperatureThreshold = 90;
+        temperatureThreshold = 100;
       };
 
       low-ram-warning = {

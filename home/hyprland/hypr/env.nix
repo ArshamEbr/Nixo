@@ -17,7 +17,7 @@
         "QT_QPA_PLATFORMTHEME, qt5ct"
       #  "QT_STYLE_OVERRIDE,kvantum"
         "WLR_NO_HARDWARE_CURSORS, 1"
-        "XCURSOR_SIZE,24"
+        "XCURSOR_SIZE,33"
       #  ######## Screen tearing #########
       #  "WLR_DRM_NO_ATOMIC, 1"
       ];
