@@ -61,9 +61,6 @@
           bluez
           procps
   
-          # Quickshell
-          inputs.quickshell.packages.${pkgs.system}.default
-  
           # Media and creative
           thunderbird
           blender
