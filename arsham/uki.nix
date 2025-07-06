@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ 
+  pkgs,
+  config,
+  lib,
+  ... 
+}:
 
 let
   EFI_ARCH = "x64";

@@ -1,4 +1,9 @@
-{ pkgs, pkgs-unstable, config, user, ... }:
+{ 
+  pkgs,
+  user, 
+  ... 
+}:
+
 let
 
   prophet_events = pkgs.writeShellScriptBin "notifx1" ''

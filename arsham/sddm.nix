@@ -1,4 +1,10 @@
-{ pkgs, inputs, ... }: 
+{ 
+  pkgs, 
+  pkgs-stable,
+  inputs, 
+  ...
+}:
+
 let
   mitsu-bg = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/ArshamEbr/nixo/stable/resources/wallpapers/mitsu.mp4";
@@ -49,7 +55,7 @@ let
   environment.systemPackages = [sddm-theme];
   qt.enable = true;
   services.displayManager.sddm = {
-    package = pkgs.kdePackages.sddm;
+    package = pkgs-stable.kdePackages.sddm;
     enable = true;
     wayland.enable = true;
     theme = sddm-theme.pname;

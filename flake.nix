@@ -2,10 +2,9 @@
   description = "Nixo >:)";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-old.url = "github:nixos/nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    anyrun.url = "github:Kirottu/anyrun";
     nix-gl-host.url = "github:numtide/nix-gl-host";
     nixgl.url = "github:nix-community/nixGL";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -26,20 +25,18 @@
 
     silentSDDM = {
       url = "github:uiriansan/SilentSDDM";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
 
   nixConfig = {
   #  extra-substituters = [
   #    "https://nix-community.cachix.org"
-  #    "https://anyrun.cachix.org"
   #    "https://cuda-maintainers.cachix.org"
   #    "https://hyprland.cachix.org"
   #  ];
   #  extra-trusted-public-keys = [
   #    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-  #    "anyrun.cachix.org-1:pqBobmOjI7nKlsUMV25u9QHa9btJK65/C8vnO3p346s="
   #    "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
   #    "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
   #  ];
@@ -47,9 +44,8 @@
 
   outputs = inputs@{ 
     nixpkgs,
+    nixpkgs-stable,
     nixpkgs-old,
-    nixpkgs-unstable,
-    anyrun,
     home-manager,
     dream2nix,
     nixgl,
@@ -70,7 +66,14 @@
         allowBroken = true;
       };
     };
-    pkgs-devshell = import inputs.nixpkgs-unstable {
+    pkgs-devshell = import inputs.nixpkgs {
+      inherit system;
+      config = {
+        allowUnfree = true;
+        allowBroken = true;
+      };
+    };
+    pkgs-stable = import nixpkgs-stable {
       inherit system;
       config = {
         allowUnfree = true;
@@ -109,7 +112,7 @@
           (import ./overlays/wofi-calc.nix)
         ];
       };
-      pkgs-unstable = import inputs.nixpkgs-unstable {
+      pkgs-stable = import inputs.nixpkgs-stable {
         inherit system;
         config = {
           allowUnfree = true;
@@ -126,13 +129,12 @@
       nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit pkgs;
-          inherit pkgs-unstable;
+          inherit pkgs-stable;
           inherit inputs;
           inherit pkgs-old;
           inherit user;
         };
         system.packages = [ 
-          anyrun.packages.${system}.anyrun
           nix-gl-host.defaultPackage.x86_64-linux
           nixgl.defaultPackage.x86_64-linux
         ];
@@ -145,8 +147,9 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = { 
+              inherit pkgs;
+              inherit pkgs-stable;
               inherit inputs;
-              inherit pkgs-unstable;
               inherit pkgs-old;
               inherit user;
             };

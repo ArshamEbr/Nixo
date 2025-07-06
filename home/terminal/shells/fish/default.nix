@@ -1,8 +1,6 @@
-{ inputs, pkgs, pkgs-old, pkgs-unstable, user, ... }:
 {
   programs.fish = {
     enable = true;
-    package = pkgs-unstable.fish;
     interactiveShellInit = ''
       # Fisher plugin manager
       set -U _fisher_plugins jorgebucaran/fisher

@@ -1,4 +1,9 @@
-{ pkgs, user, ... }:
+{ 
+  pkgs, 
+  user, 
+  ... 
+}:
+
 let
 
   dGPU_VFIO = pkgs.stdenv.mkDerivation {

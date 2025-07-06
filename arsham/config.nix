@@ -1,4 +1,10 @@
-{ pkgs, pkgs-unstable, config, lib, user, ... }:
+{ 
+  pkgs, 
+  pkgs-stable,
+  user, 
+  ... 
+}:
+
 {
   nix = {
     optimise.automatic = true; # Garbage Collector
@@ -123,10 +129,17 @@
 
     ccache.enable = true;
     adb.enable = true;
+
+    nekoray = {
+      enable = true;
+      tunMode = {
+        enable = true;
+      #  setuid = true;
+      };
+    };
     
     hyprland = {
       enable = true;
-      package = pkgs-unstable.hyprland;
     };
 
     bash = {
@@ -176,7 +189,7 @@
 
     fontDir.enable = true;
     
-    packages = with pkgs-unstable; [
+    packages = with pkgs; [
       nerd-fonts.space-mono
       noto-fonts
       noto-fonts-cjk-sans
@@ -242,14 +255,13 @@
     sessionVariables.NIXOS_OZONE_WL = "1";
     sessionVariables.MOZ_ENABLE_WAYLAND = "1";
     systemPackages = 
-    (with pkgs; [
+    (with pkgs-stable; [
       # Specify the pkg names (stable)
-      freerdp3Override
     ])
 
     ++
 
-    (with pkgs-unstable; [
+    (with pkgs; [
       # Specify the pkg names (latest stable)
       
       inotify-tools
@@ -357,13 +369,10 @@
       linux-pam
       cliphist
       sudo
-    #  xwaylandvideobridge
       kdePackages.xwaylandvideobridge
-      libsForQt5.xwaylandvideobridge
-    #  polkit-kde-agent
       kdePackages.polkit-kde-agent-1
-      libsForQt5.polkit-kde-agent
       kdePackages.kde-cli-tools
+      freerdp3Override
 
       # Wayland.
       xdg-desktop-portal-hyprland

@@ -4,6 +4,7 @@
     ./hypr
     ./hypridle
     ./hyprlock
+    ./quickshell
     ./swaync
     ./waybar
     ./wlogout

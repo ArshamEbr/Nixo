@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  pkgs,
+  ... 
+}:
+
 {
   powerManagement.powertop.enable = true;                      # enable powertop auto tuning on startup.
   services = {
