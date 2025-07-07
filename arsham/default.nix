@@ -13,5 +13,6 @@
     ./config.nix
     ./hardware.nix
     ./sddm.nix
+    ./hostapd.nix
   ];
 }
