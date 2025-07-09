@@ -1,5 +1,4 @@
-{ 
-  inputs, 
+{
   pkgs, 
   lib, 
   pkgs-stable, 
@@ -9,16 +8,14 @@
 
 {
   imports = [
-    ./gtk
-    ./qt5
     ./hyprland
     ./librewolf
     ./mpv
     ./obs
     ./terminal
+    ./theme
     ./udiskie
     ./vscode
-    inputs.catppuccin.homeModules.catppuccin
   ];
 
   programs.home-manager.enable = true;
@@ -30,17 +27,6 @@
     };
   };
   fonts.fontconfig.enable = true;
-
-
-  catppuccin = {
-    accent = "blue";
-    flavor = "mocha";
-  #  vscode.profiles.default.enable = true;
-    btop.enable = true;
-    starship.enable = true;
-    cava.enable = true;
-    mpv.enable = true;
-  };
   
   home = {
   
@@ -52,8 +38,6 @@
       LD_LIBRARY_PATH = "/run/opengl-driver/lib";
       VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
       LIBVA_DRIVER_NAME = "iHD";
-      XCURSOR_THEME = "layan-cursors";
-      XCURSOR_SIZE = "33";
     };
     
     packages = 
@@ -67,6 +51,9 @@
         fd
         bluez
         procps
+        v2rayn
+        python312Packages.debugpy
+        looking-glass-client
         
         # Media and creative
         thunderbird
@@ -312,12 +299,6 @@
         grim
         tesseract
         slurp
-      ])
-      ++
-      (with pkgs; [
-        v2rayn
-        python312Packages.debugpy
-        looking-glass-client
       ])
       ++
       (builtins.filter lib.isDerivation (builtins.attrValues pkgs-stable.nerd-fonts));
