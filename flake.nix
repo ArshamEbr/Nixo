@@ -153,7 +153,7 @@
               inherit pkgs-old;
               inherit user;
             };
-            home-manager.users.${user.name} = import ./home/home.nix;
+            home-manager.users.${user.name} = import ./arsham/home/home.nix;
           }
         ];
       };

@@ -610,7 +610,7 @@ let
 
   gpu-info = pkgs.stdenv.mkDerivation {
     name = "gpu-info";
-    src = ../scripts/gpuinfo.sh;
+    src = ../../scripts/gpuinfo.sh;
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin

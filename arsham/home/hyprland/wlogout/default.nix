@@ -131,6 +131,6 @@
   };
 
   xdg.configFile = {
-    "wlogout/icons/".source = ../../../resources/wlogout;
+    "wlogout/icons/".source = ../../../../resources/wlogout;
   };
 }
