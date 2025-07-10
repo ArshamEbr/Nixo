@@ -2,5 +2,5 @@
   imports = [
     ./home
     ./system
-  ]
+  ];
 }

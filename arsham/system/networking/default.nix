@@ -1,4 +1,5 @@
 { 
+  pkgs,
   user, 
   lib, 
   ... 
@@ -34,7 +35,7 @@
   #  proxy.default = "http://192.168.1.120:10808";
   #  proxy.default = "http://192.168.202.53:10808";
   #  proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-    wireless.enable = true;
+  #  wireless.enable = true;
     hostName = "${user.host}";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
