@@ -536,28 +536,6 @@ let
     fi
   '';
 
-  ags-go = pkgs.writeScriptBin "agsAction" ''
-      #!/run/current-system/sw/bin/bash
-      monitor_count=$(hyprctl monitors | grep -c 'Monitor')
-      for ((i=0; i<monitor_count; i++)); do
-        ags -t "$1""$i"
-      done
-  '';
-
-  rofi-go = pkgs.writeScriptBin "power-menu-rofi" ''
-    #!/run/current-system/sw/bin/bash
-
-    chosen=$(printf " Shutdown\n Reboot\n Suspend\n Lock\n Logout" | rofi -dmenu -i -p "Power" -theme ~/.config/rofi/powermenu.rasi)
-    
-    case "$chosen" in
-        " Shutdown") systemctl poweroff ;;
-        " Reboot") systemctl reboot ;;
-        " Suspend") systemctl suspend ;;
-        " Lock") hyprlock ;;  # Replace with your lock command
-        " Logout") hyprctl dispatch exit ;;
-    esac
-  '';
-
   way-net-go = pkgs.writeScriptBin "way_network" ''
     #!/run/current-system/sw/bin/bash
     # Change to your network interface
@@ -705,11 +683,9 @@ in
         Battery_Related
         fancy_wallpaper_switcher
         nh-go
-        ags-go
-        rofi-go
         way-net-go
         record-scripto
-        waybar-cava
+      #  waybar-cava
         gpu-info
         power-go
     ];

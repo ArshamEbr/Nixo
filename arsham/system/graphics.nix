@@ -6,7 +6,7 @@
 
 {
   services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
-
+  
   hardware = {
     graphics = {
       enable = true;
@@ -19,7 +19,7 @@
         libvdpau-va-gl
       ];
     };
-
+    
     nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.latest;
       modesetting.enable = true;
@@ -38,8 +38,6 @@
   environment.variables = {
     VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
     LIBVA_DRIVER_NAME = "iHD";
-    XCURSOR_THEME = "layan-cursors";
-    XCURSOR_SIZE = "33";
   };
   
   services.ollama = {

@@ -45,4 +45,17 @@
       };
     };
   };
+  environment.systemPackages = with pkgs; [
+    virtiofsd
+    qemu
+    protonup-qt
+    wine64
+    wine
+    winetricks
+    
+    # Game related
+    heroic
+    lutris
+    antimicrox
+  ];
 }

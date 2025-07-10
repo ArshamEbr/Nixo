@@ -5,25 +5,20 @@
 }:
 
 {
-
-#  # Override the assertion check TODO change for dual boot
-#  assertions = [
-#    { assertion = true; message = "Ignoring bootloader requirement since using EFISTUB."; }
-#  ];
-  
   boot = {
     extraModulePackages = [ pkgs-stable.linuxKernel.packages.linux_6_14.kvmfr ];
     extraModprobeConfig = "options snd_hda_intel model=alcplugfix";
     consoleLogLevel = 0;
     supportedFilesystems = [ "ntfs" "nfs" ];
   #  kernelPackages = pkgs-unstable.linuxPackages_latest; # 6.13 kernel not fixed rn in jan 21
+  #  kernelPackages = pkgs-stable.linux_xanmod_latest;
     kernelPackages = pkgs-stable.linuxPackages_6_14;
     
     loader = {
-      systemd-boot.enable = true; ### sigh
-      timeout = 0;
-      grub.enable = false;
       efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+      grub.enable = false;
+      timeout = 0;
     };
     
     kernelParams = [
@@ -31,7 +26,6 @@
       "initcall_debug=n"
       "systemd.show_status=0"
       "fastboot"
-      "console=tty0"
       "intel_iommu=on"          
       "iommu=pt"                
       "vfio-pci.ids=10de:1c94"
@@ -41,11 +35,21 @@
     ];
     
     initrd = {
-      availableKernelModules = [ "xhci_pci" "vmd" "ahci" "usb_storage" "sd_mod" ];
       verbose = false;
       compressor = "zstd";
-      compressorArgs = [ "-T0" ];
       systemd.enable = true;
+      compressorArgs = [ 
+        "-T0"
+      ];
+        
+      availableKernelModules = [ 
+        "xhci_pci"
+        "vmd"
+        "ahci"
+        "usb_storage"
+        "sd_mod"
+      ];
+        
       kernelModules = [
         "vfio_pci"          
         "vfio"
@@ -63,20 +67,11 @@
         adi1090x-plymouth-themes
       ];
     };
-      # kernelModules = lib.mkBefore [
+    
     kernelModules = [
         "i915"
         "uinput"
         "kvm-intel"
     ];
   };
-  
-#  specialisation = {
-#    liquorix = {
-#      configuration = {
-#        boot.kernelPackages = pkgs.linuxPackages_lqx;
-#        system.nixos.tags = [ "lqx" ];
-#      };
-#    };
-#  };
 }

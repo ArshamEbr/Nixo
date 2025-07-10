@@ -5,12 +5,36 @@
 }:
 
 {
+  imports = [
+    ./vpn.nix
+  #  ./hostapd.nix
+  ];
+  
+  services = {
+    blueman.enable = true;
+    openssh.enable = true;
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+  };
+  
+  systemd.services = {
+    NetworkManager-wait-online.enable = false;
+  };
+  
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = false;
+  };
+  
   networking = {
     # Configure network proxy if necessary
   #  proxy.default = "http://192.168.1.120:10808";
   #  proxy.default = "http://192.168.202.53:10808";
   #  proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-  #  wireless.enable = true;  # Enables wireless support via wpa_supplicant F this!
+    wireless.enable = true;
     hostName = "${user.host}";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
@@ -51,5 +75,19 @@
         { from = 27000; to = 27031; }
       ];
     };
-  };  
+  };
+  
+  environment.systemPackages = with pkgs; [
+      # Networking Tools
+      wget
+      curl
+      rsync
+      nmap
+      pssh
+      tmate
+      nix-prefetch-git
+      iw
+      networkmanagerapplet
+      blueman
+  ];
 }

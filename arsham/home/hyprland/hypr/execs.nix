@@ -22,7 +22,7 @@
       # "ags &"
       
       # Sound Enhancer
-      "easyeffects --gapplication-service &"
+    #  "easyeffects --gapplication-service &"
       
       # Input method
       "fcitx5"

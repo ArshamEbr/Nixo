@@ -7,48 +7,37 @@
 
 {
   nix = {
-    optimise.automatic = true; # Garbage Collector
+    optimise.automatic = true;
     settings = {
       accept-flake-config = true;
       builders-use-substitutes = true;
       auto-optimise-store = true;
-      max-jobs = 8; # TODO change it to your cpu core count
-      cores = 8; # TODO change it to your cpu core count
-
+      max-jobs = 8;              # TODO change it to your cpu core count
+      cores = 8;                 # TODO change it to your cpu core count
       experimental-features = [ 
         "nix-command" 
         "flakes" 
       ];
-
+      
       trusted-users = [
         "root"
         "@wheel"
       ];
     };
   };
-
-#  systemd.services.nix-daemon.environment = {
-#    https_proxy = "socks5h://localhost:7891";
-#    https_proxy = "http://localhost:7890"; # or use http prctocol instead of socks5
-#  };
   
   zramSwap.enable = true;
-  nixpkgs.config.allowUnfree = true; # Licences
-
+  nixpkgs.config.allowUnfree = true;
+  
   hardware = {
     enableAllFirmware = true;
-    uinput.enable = true; # Udev rules
-
-    bluetooth = {
-      enable = true;
-      powerOnBoot = false;
-    };
+    uinput.enable = true;
   };
-
+  
   
   location.provider = "geoclue2";
-  time.timeZone = "Asia/Tehran"; # yea...Iran...sigh..... # TODO change to your location
-
+  time.timeZone = "Asia/Tehran"; # yea...Iran...sigh.....      # TODO change to your location
+  
   
   i18n = { # Select internationalisation properties.
     defaultLocale = "en_US.UTF-8";
@@ -65,90 +54,51 @@
       LC_TIME = "en_US.UTF-8";
     };
   };
-
-  systemd.services = {
-    NetworkManager-wait-online.enable = false;
-  };
-
+  
   services = {
-    openssh.enable = true;
     dbus.enable = true;
     acpid.enable = true;
     gnome.gnome-keyring.enable = true;
     libinput.enable = true;
     touchegg.enable = true;
     udisks2.enable = true;
-    blueman.enable = true;
     gvfs.enable = true;
     fstrim.enable = true;
     geoclue2.enable = true;
-    pulseaudio.enable = false; # Disable PulseAudio
-
-  #  getty = {
-  #    autologinUser = "${user.name}";
-  #  };
-    
     udev = {
       enable = true;
-
       packages = [ 
         pkgs.libmtp 
         pkgs.libinput 
       ];
-
+      
       extraRules = ''
         SUBSYSTEM=="kvmfr", OWNER="${user.name}", GROUP="qemu-libvirtd", MODE="0660"
       '';
     };
-
+    
     printing = {
       enable = true;
       drivers = [ pkgs.gutenprint pkgs.hplipWithPlugin ];
     };
-
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-    };
-
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
-      jack.enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-    };
-
   };
-
+  
   programs = {
-
+    hyprland.enable = true;
     ccache.enable = true;
     adb.enable = true;
-
-    nekoray = {
-      enable = true;
-      tunMode = {
-        enable = true;
-      #  setuid = true;
-      };
-    };
-    
-    hyprland = {
-      enable = true;
-    };
-
     bash = {
       shellAliases = {
       hyprxd = "dbus-run-session Hyprland";
       hyproxd = "exec uwsm start default";
       };
     };
-
+    
+    steam = {
+      enable = true;
+    #  extest.enable = true;
+    };
+    
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
@@ -168,7 +118,7 @@
         fontconfig
       ];
     };
-
+    
     nh = {
       enable = true;
       flake = "/home/${user.name}/nixo";
@@ -178,47 +128,18 @@
         extraArgs = "--keep 3";
       };
     };
-
   };
-
-  fonts = {
-    fontconfig = {
-      enable = true;
-      antialias = true;
-    };
-
-    fontDir.enable = true;
-    
-    packages = with pkgs; [
-      nerd-fonts.space-mono
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-emoji
-      liberation_ttf
-      fira-code
-      fira-code-symbols
-      mplus-outline-fonts.githubRelease
-      dina-font
-      proggyfonts
-      fontconfig
-      lexend
-      material-symbols
-      google-fonts
-      layan-cursors
-    ];
-  };
-
+  
   security = {
     rtkit.enable = true;
     polkit.enable = true;
-
     sudo.configFile = ''
       root   ALL=(ALL:ALL) SETENV: ALL
       %wheel ALL=(ALL:ALL) SETENV: ALL
       ${user.name}  ALL=(ALL:ALL) SETENV: ALL
     '';
   };
-
+  
   users = { # Don't forget to set a password with ‘passwd’.
     groups = {
       mlocate = {};
@@ -229,7 +150,6 @@
     users.${user.name} = {
       isNormalUser = true;
       description = "${user.name}";
-
       extraGroups = [ 
         "networkmanager"
         "scanner"
@@ -249,7 +169,9 @@
       ];
     };
   };
-
+  
+  system.stateVersion = "24.11";
+  
   environment = {
     localBinInPath = true;
     sessionVariables.NIXOS_OZONE_WL = "1";
@@ -258,9 +180,9 @@
     (with pkgs-stable; [
       # Specify the pkg names (stable)
     ])
-
+    
     ++
-
+    
     (with pkgs; [
       # Specify the pkg names (latest stable)
       
@@ -269,46 +191,23 @@
       e2fsprogs
       proot
       nixos-generators
-
+      
       # FTDI
       libftdi1
-
+      
       # Editors
       vim
       nano
-
+      
       # Some auto mount stuff for mtp
       gvfs
       jmtpfs
       android-udev-rules
       libmtp
       glib
-
-      # Networking Tools
-      wget
-      curl
-      rsync
-      nmap
-      pssh
-      tmate
-      nix-prefetch-git
-
-      # Audio.
-      ladspaPlugins
-      calf
-      lsp-plugins
-      easyeffects
-      alsa-utils
-
-      # Sound
-      libspatialaudio
-      pulseaudio
-      pipewire
-
+      
       # System Tools.
       glxinfo
-      blueman
-      networkmanagerapplet
       nix-index
       mlocate
       util-linux
@@ -326,12 +225,12 @@
       android-tools
       remmina
       libnotify
-
+      
       # EFI and UKI related
       efibootmgr
       binutils
       systemdUkify
-
+      
       # Development Tools.
       git
       nodejs_20
@@ -348,7 +247,6 @@
       cairo.dev
       gdk-pixbuf.dev
       atk.dev
-      libpulseaudio.dev
       typescript
       ninja
       node2nix
@@ -356,7 +254,7 @@
       sublime4
       gnumake
       zulu23
-
+      
       # Session.
       polkit
       polkit_gnome
@@ -373,7 +271,7 @@
       kdePackages.polkit-kde-agent-1
       kdePackages.kde-cli-tools
       freerdp3Override
-
+      
       # Wayland.
       xdg-desktop-portal-hyprland
       xwayland
@@ -399,7 +297,7 @@
       waypipe
       libva
       libva-utils
-
+      
       # GTK
       gtk3
       gtk3.dev
@@ -412,15 +310,9 @@
       gtksourceview
       gtksourceview.dev
       xdg-desktop-portal-gtk
-
+      
       tk
-
-      qemu
       libcamera
-      virtiofsd
     ]);
-
   };
-
-  system.stateVersion = "24.11";
 }

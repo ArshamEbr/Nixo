@@ -1,5 +1,6 @@
 {
-  pkgs, 
+  pkgs,
+  inputs,
   lib, 
   pkgs-stable, 
   user, 

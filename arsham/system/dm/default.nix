@@ -33,7 +33,7 @@ let
 in
 let 
   sddm-theme = inputs.silentSDDM.packages.${pkgs.system}.default.override {
-    theme = "rei"; # silvia ken rei
+    theme = "rei"; # silvia, ken, rei
     extraBackgrounds = [
       mitsu-bg 
       l-from-death-note-bg 

@@ -129,4 +129,8 @@
       }
     '';
   };
+
+  xdg.configFile = {
+    "wlogout/icons/".source = ../../../resources/wlogout;
+  };
 }
