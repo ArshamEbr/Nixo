@@ -57,11 +57,5 @@
       set fish_pager_color_progress "brwhite --background=cyan"
       set fish_pager_color_selected_background --reverse
     '';
-
-    shellAliases = {
-      dwd = "aria2c -x 16 -s 16";
-      gic = "git clone";
-      cle = "clear";
-    };
   };
 }

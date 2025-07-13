@@ -23,27 +23,15 @@
       ignoreAllDups = true;
       extended = true;
     };
-  
-    shellAliases = {
-      ll = "ls -alF";
-      la = "ls -A";
-      l = "ls -CF";
-      gs = "git status";
-      ".." = "cd ..";
-      cle = "clear";
-      dwd = "aria2c -x 16 -s 16";
-      gic = "git clone";
-      gconv = "nix hash convert --to sri --hash-algo sha256";
-    };
-
+    
     initContent = ''
       # Prompt for Powerlevel10k
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
+      
       # Path tweaks
       export PATH="$HOME/.local/bin:$PATH"
-
+      
       # Custom history settings
       HISTFILE=~/.zsh_history
       HISTSIZE=10000
@@ -51,14 +39,14 @@
       setopt HIST_FIND_NO_DUPS
       bindkey '^[[A' history-beginning-search-backward
       bindkey '^[[B' history-beginning-search-forward
-
+      
       # Performance boost
       zstyle ':completion:*' rehash true
-
+      
       # Less startup lag
       zstyle ':completion:*' cache-path ~/.zsh/cache
     '';
-
+    
     plugins = [
       {
         name = "powerlevel10k";

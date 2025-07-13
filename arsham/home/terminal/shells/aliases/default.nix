@@ -1,0 +1,47 @@
+{
+  pkgs,
+  ...
+}:
+
+let
+  commonAliases = {
+    ls = "eza";
+    tree = "eza --tree --git-ignore";
+    ll = "ls -alF";
+    la = "ls -A";
+    l = "ls -CF";
+    ".." = "cd ..";
+    grep = "grep --color=auto";
+    rm = "gio trash";
+    c = "clear";
+    h = "history";
+    cat = "bat";
+    
+    man = "batman";
+    y = "yazi";
+    
+    gs = "git status";
+    gic = "git clone";
+    gconv = "nix hash convert --to sri --hash-algo sha256";
+    
+    dwd = "aria2c -x 16 -s 16";
+    
+    nr = "sudo nixos-rebuild switch --flake ~/nixo/arsham#Nixo";
+    nb = "sudo nixos-rebuild build --flake ~/nixo/arsham#Nixo";
+  };
+in 
+{
+  options = {
+    my.aliases = mkOption {
+      type = types.attrsOf types.str;
+      default = commonAliases;
+      description = "Common shell aliases for all shells.";
+    };
+  };
+  
+  config = {
+    programs.bash.shellAliases = commonAliases;
+    programs.zsh.shellAliases = commonAliases;
+    programs.fish.shellAliases = commonAliases; # fish uses functions, but this works
+  };
+}
