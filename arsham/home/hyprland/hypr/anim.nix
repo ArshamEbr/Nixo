@@ -23,10 +23,9 @@
       ];
       
       animation = [
-      "windows, 1, 4, md3_decel, popin 10%"
-      "windowsIn, 1, 3.6, softAcDecel, popin 5%"
-      "windowsOut, 1, 4.6, crazyshot, slide"
-      "windowsMove, 1, 4, softAcDecel, slide"
+      "windowsIn, 1, 4.6, hyprnostretch, popin 70%"
+      "windowsOut, 1, 3.6, md2, popin 60%"
+      "windowsMove, 1, 5.6, md3_decel, slide 90%"
       "border, 1, 25, easeOutQuick"
       "fade, 1, 6, md3_decel"
       "layersIn, 1, 3.2, md3_decel, popin"
