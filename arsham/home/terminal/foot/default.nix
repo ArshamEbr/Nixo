@@ -49,8 +49,6 @@
         bright7 = "C1C6D6";
       };
   
-      csd = { };
-  
       key-bindings = {
         scrollback-up-page = "Page_Up";
         scrollback-down-page = "Page_Down";

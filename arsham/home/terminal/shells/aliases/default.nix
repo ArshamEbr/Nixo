@@ -1,5 +1,6 @@
 {
   pkgs,
+  user,
   ...
 }:
 
@@ -9,7 +10,7 @@ let
     tree = "eza --tree --git-ignore";
     ll = "ls -alF";
     la = "ls -A";
-    l = "ls -CF";
+    l = "eza -lah";
     ".." = "cd ..";
     grep = "grep --color=auto";
     rm = "gio trash";
@@ -26,22 +27,14 @@ let
     
     dwd = "aria2c -x 16 -s 16";
     
-    nr = "sudo nixos-rebuild switch --flake ~/nixo/arsham#Nixo";
-    nb = "sudo nixos-rebuild build --flake ~/nixo/arsham#Nixo";
+    nr = "sudo nixos-rebuild switch --flake ~/nixo/${user.name}#${user.host}";
+    nb = "sudo nixos-rebuild build --flake ~/nixo/${user.name}#${user.host}";
   };
-in 
-{
-  options = {
-    my.aliases = mkOption {
-      type = types.attrsOf types.str;
-      default = commonAliases;
-      description = "Common shell aliases for all shells.";
+in
+  {
+    config = {
+      programs.bash.shellAliases = commonAliases;
+      programs.zsh.shellAliases = commonAliases;
+      programs.fish.shellAliases = commonAliases; # fish uses functions, but this works
     };
-  };
-  
-  config = {
-    programs.bash.shellAliases = commonAliases;
-    programs.zsh.shellAliases = commonAliases;
-    programs.fish.shellAliases = commonAliases; # fish uses functions, but this works
-  };
-}
+  }

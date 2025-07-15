@@ -8,7 +8,7 @@
 {
   imports = [
     ./vpn.nix
-  #  ./hostapd.nix
+    # ./hostapd.nix
   ];
   
   services = {
@@ -21,9 +21,7 @@
     };
   };
   
-  systemd.services = {
-    NetworkManager-wait-online.enable = false;
-  };
+  systemd.services.NetworkManager-wait-online.enable = false;
   
   hardware.bluetooth = {
     enable = true;
@@ -32,27 +30,18 @@
   
   networking = {
     # Configure network proxy if necessary
-  #  proxy.default = "http://192.168.1.120:10808";
-  #  proxy.default = "http://192.168.202.53:10808";
-  #  proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-  #  wireless.enable = true;
+    # proxy.default = "http://192.168.1.120:10808";
+    # proxy.default = "http://192.168.202.53:10808";
+    # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+    # wireless.enable = true;
     hostName = "${user.host}";
-    networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
-    interfaces.wlp2s0.useDHCP = lib.mkDefault true;
+    networkmanager.enable = true;
+    # interfaces.wlp2s0.useDHCP = lib.mkDefault true;
     firewall = {
       enable = true;
       allowedTCPPorts = [ 
-        3216 
-        3658 
-        3659 
-        8082 
-        24800 
-        47984 
-        47989 
-        47990 
-        48010 
-        2080
+        3216 3658 3659 8082 24800 47984 47989 47990 48010 2080
       ];
       
       allowedTCPPortRanges = [
@@ -62,9 +51,7 @@
       ];
       
       allowedUDPPorts = [ 
-        3216 
-        27036 
-        48010 
+        3216 27036 48010
       ];
       
       allowedUDPPortRanges = [
@@ -79,16 +66,15 @@
   };
   
   environment.systemPackages = with pkgs; [
-      # Networking Tools
-      wget
-      curl
-      rsync
-      nmap
-      pssh
-      tmate
-      nix-prefetch-git
-      iw
-      networkmanagerapplet
-      blueman
+    wget
+    curl
+    rsync
+    nmap
+    pssh
+    tmate
+    nix-prefetch-git
+    iw
+    networkmanagerapplet
+    blueman
   ];
 }

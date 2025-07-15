@@ -90,7 +90,6 @@
     bash = {
       shellAliases = {
       hyprxd = "dbus-run-session Hyprland";
-      hyproxd = "exec uwsm start default";
       };
     };
     

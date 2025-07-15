@@ -5,7 +5,6 @@
     ./fonts
     ./networking
     ./power
-    
     ./boot.nix
     ./global.nix
     ./graphics.nix

@@ -19,7 +19,7 @@
   # Configure station mode to connect to existing WiFi
   networking.wireless.enable = true;
   networking.wireless.interfaces = [ "wlp2s0" ];
-  networking.wireless.networks = { "ArshamAir" = { psk = "0940998866arsham"; }; };
+  networking.wireless.networks = { "ArshamAir" = { psk = "examplee"; }; };
 
   # Configure AP mode with hostapd
   services.hostapd = {

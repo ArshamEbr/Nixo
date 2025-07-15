@@ -27,7 +27,6 @@
       lexend
       material-symbols
       google-fonts
-      layan-cursors
     ];
   };
 }

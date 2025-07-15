@@ -1,3 +1,8 @@
+/**
+  NixOS module that provides custom utilities and scripts for managing dGPU VFIO passthrough, battery settings, Windows VM, audio device reattachment, dynamic wallpapers, network monitoring, GPU info, and power-saving features. 
+  Installs related binaries and configures sudo rules for seamless hardware and VM management.
+*/
+
 { 
   pkgs, 
   user, 
@@ -72,7 +77,6 @@ let
       fi
   
       # Detach the dGPU
-      sudo systemctl stop ollama
       sudo ${pkgs.kmod}/bin/rmmod nvidia_modeset nvidia_uvm nvidia
       sudo ${pkgs.kmod}/bin/modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1
       sudo ${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_01_00_0
@@ -101,7 +105,6 @@ let
       sudo ${pkgs.kmod}/bin/modprobe -i nvidia_modeset nvidia_uvm nvidia
       notify-send "NVIDIA dGPU is Reattached" --icon=$HOME/nixo/resources/icons/nvidia.png
       paplay ~/nixo/resources/sfx/attach.mp3 & disown
-      sudo systemctl restart ollama
       exit
       ENDX3
       chmod 755 $out/bin/reattach_safe
@@ -520,19 +523,24 @@ let
   
   nh-go = pkgs.writeScriptBin "nixo" ''
     #!/run/current-system/sw/bin/bash
-    
+  
+    tlp_mode() {
+      sudo ${pkgs.tlp}/bin/tlp "$1"
+    }
+  
     notifx1 nix_build_start & disown
-    sudo ${pkgs.tlp}/bin/tlp ac
+    tlp_mode ac
     output=$(${pkgs.nh}/bin/nh os switch "$@" 2>&1 | tee /dev/tty)
-
-    if echo "$output" | grep -qi "error"; then
+    nh_status=$?
+  
+    if [ $nh_status -ne 0 ]; then
       notifx1 nix_build_failed & disown
-      sudo ${pkgs.tlp}/bin/tlp bat
+      tlp_mode bat
       notify-send "NixOS Rebuild FAILED!" --icon=$HOME/nixo/resources/icons/report.png
     else
       notifx1 nix_build_ok & disown
-      sudo ${pkgs.tlp}/bin/tlp bat
-      notify-send "NixOS Rebuild SUCESS!" --icon=$HOME/nixo/resources/icons/check.png
+      tlp_mode bat
+      notify-send "NixOS Rebuild SUCCESS!" --icon=$HOME/nixo/resources/icons/check.png
     fi
   '';
 
@@ -658,8 +666,6 @@ in
           {command = "${pkgs.kmod}/bin/rmmod vfio_pci vfio_pci_core vfio_iommu_type1";       options = [ "NOPASSWD" ];}
           {command = "${pkgs.kmod}/bin/modprobe -i nvidia_modeset nvidia_uvm nvidia";        options = [ "NOPASSWD" ];}
           
-          {command = "/etc/profiles/per-user/${user.name}/bin/systemctl stop ollama";        options = [ "NOPASSWD" ];}
-          {command = "/etc/profiles/per-user/${user.name}/bin/systemctl restart ollama";     options = [ "NOPASSWD" ];}
           
           {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_0";            options = [ "NOPASSWD" ];}
           {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_3";            options = [ "NOPASSWD" ];}
