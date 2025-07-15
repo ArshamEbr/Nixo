@@ -1,10 +1,10 @@
-{
+{ 
   pkgs,
   ...
 }:
 
 {
-  imports = [./sfx.nix];
+  imports = [ ./sfx.nix ];
   
   services = {
     pulseaudio.enable = false;
@@ -19,7 +19,7 @@
       };
     };
   };
-
+  
   systemd.user.services.easyeffects = {
     enable = true;
     description = "EasyEffects GApplication service";
@@ -30,19 +30,17 @@
       Restart = "on-failure";
     };
   };
-
+  
   environment.systemPackages = with pkgs; [
-    # Audio.
+    # Audio plugins and utilities
     ladspaPlugins
     calf
     lsp-plugins
     easyeffects
     alsa-utils
-
-    # Sound
     libspatialaudio
-    pulseaudio
     pipewire
+    pulseaudio
     
     # Development headers
     libpulseaudio.dev

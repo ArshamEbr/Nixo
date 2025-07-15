@@ -1,3 +1,10 @@
+/**
+  NixOS module providing systemd services for hardware monitoring and notifications.
+  
+  Includes configurable services for CPU overheating alerts, low RAM warnings, and battery event notifications.
+  Each service can be enabled and customized via module options, and integrates with systemd for persistent monitoring.
+*/
+
 { 
   config, 
   pkgs, 
