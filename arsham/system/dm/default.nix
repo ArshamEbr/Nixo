@@ -1,5 +1,10 @@
-{ 
-  pkgs, 
+/**
+Configures the SDDM display manager with a custom theme and a set of remote wallpapers.
+Fetches wallpapers by URL and hash, applies them as backgrounds, and enables SDDM with Wayland support and additional Qt settings.
+*/
+
+{
+  pkgs,
   pkgs-stable,
   inputs, 
   ...

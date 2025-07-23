@@ -1,77 +1,109 @@
+/**
+Configures system power management settings in NixOS.
+
+Enables powertop auto-tuning and TLP for advanced power management,
+disables GNOME's power-profiles-daemon and thermald, and sets detailed
+TLP parameters for CPU, GPU, disk, and device power optimization.
+*/
+
 {
   pkgs,
   ... 
 }:
 
 {
-  powerManagement.powertop.enable = true;                      # enable powertop auto tuning on startup.
+  powerManagement.powertop.enable = true;
+  
   services = {
     system76-scheduler.settings.cfsProfiles.enable = true;     # Better scheduling for CPU cycles
-    power-profiles-daemon.enable = false;                      # Disable GNOMEs power management 
-    thermald.enable = true;                                    # Enable thermald, the temperature management daemon. (only necessary if on Intel CPUs)
-    tlp = {                                                    # Enable TLP (better than gnomes internal power manager)
+    power-profiles-daemon.enable = false;
+    thermald.enable = true;                                   # only if on Intel CPUs
+    tlp = {
       enable = true;
-      settings = { # sudo tlp-stat #TODO change these based on your system!
+      settings = { # TODO change these based on your system! run "sudo tlp-stat"   
         
-        SCHED_POWERSAVE_ON_AC = 0;
-        SCHED_POWERSAVE_ON_BAT = 1;
+        # Scheduler power saving: 0=off, 1=on
+        SCHED_POWERSAVE_ON_AC = 0;   # Disable scheduler power saving on AC
+        SCHED_POWERSAVE_ON_BAT = 1;  # Enable scheduler power saving on battery
         
-        CPU_MIN_PERF_ON_AC = 0;
-        CPU_MAX_PERF_ON_AC = 100;
-        CPU_MIN_PERF_ON_BAT = 0;
-        CPU_MAX_PERF_ON_BAT = 90;
+        # CPU performance limits (percent)
+        CPU_MIN_PERF_ON_AC = 0;      # Minimum CPU performance on AC
+        CPU_MAX_PERF_ON_AC = 100;    # Maximum CPU performance on AC
+        CPU_MIN_PERF_ON_BAT = 0;     # Minimum CPU performance on battery
+        CPU_MAX_PERF_ON_BAT = 90;    # Maximum CPU performance on battery
         
-        INTEL_GPU_MIN_FREQ_ON_AC = "1250";
-        INTEL_GPU_MIN_FREQ_ON_BAT = "100";
-        INTEL_GPU_MAX_FREQ_ON_AC = "1350";
-        INTEL_GPU_MAX_FREQ_ON_BAT = "900";
-        INTEL_GPU_BOOST_FREQ_ON_AC = "1350";
-        INTEL_GPU_BOOST_FREQ_ON_BAT = "1000";
+        # Intel GPU frequency settings (MHz)
+        INTEL_GPU_MIN_FREQ_ON_AC = "1250";   # Minimum GPU freq on AC
+        INTEL_GPU_MIN_FREQ_ON_BAT = "100";   # Minimum GPU freq on battery
+        INTEL_GPU_MAX_FREQ_ON_AC = "1350";   # Maximum GPU freq on AC
+        INTEL_GPU_MAX_FREQ_ON_BAT = "900";   # Maximum GPU freq on battery
+        INTEL_GPU_BOOST_FREQ_ON_AC = "1350"; # Boost GPU freq on AC
+        INTEL_GPU_BOOST_FREQ_ON_BAT = "1000";# Boost GPU freq on battery
         
-        CPU_BOOST_ON_AC = 1;
-        CPU_BOOST_ON_BAT = 0;
-        CPU_HWP_DYN_BOOST_ON_AC = 1;
-        CPU_HWP_DYN_BOOST_ON_BAT = 0;
-        CPU_SCALING_GOVERNOR_ON_AC = "performance";
-        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-        CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
+        # CPU boost and dynamic boost
+        CPU_BOOST_ON_AC = 1;         # Enable CPU turbo boost on AC
+        CPU_BOOST_ON_BAT = 0;        # Disable CPU turbo boost on battery
+        CPU_HWP_DYN_BOOST_ON_AC = 1; # Enable hardware P-state dynamic boost on AC
+        CPU_HWP_DYN_BOOST_ON_BAT = 0;# Disable hardware P-state dynamic boost on battery
         
-        CPU_SCALING_MIN_FREQ_ON_AC = 2500000;  # min 400 MHz # 1155g7 intel core i5 11th gen so
-        CPU_SCALING_MAX_FREQ_ON_AC = 4500000; # max 4,5 GHz # change it for your hardware limit TODO change freq to yours
-        CPU_SCALING_MIN_FREQ_ON_BAT = 400000;
-        CPU_SCALING_MAX_FREQ_ON_BAT = 2500000;
+        # CPU governor and energy policy
+        CPU_SCALING_GOVERNOR_ON_AC = "performance";      # Governor on AC
+        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";       # Governor on battery
+        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";    # Energy policy on AC
+        CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power"; # Energy policy on battery
         
-        START_CHARGE_THRESH_BAT0 = 0; # dummy value                                             sudo tlp setcharge 0 1 -> Conservation on
-        STOP_CHARGE_THRESH_BAT0 = 0; # set it to 1 for conservation mode or 0 for full charge.  sudo tlp setcharge 0 0 -> Conservation off
+        # CPU frequency limits (kHz) - adjust for your hardware!
+        CPU_SCALING_MIN_FREQ_ON_AC = 2500000;  # Minimum CPU freq on AC (e.g., 2.5 GHz)
+        CPU_SCALING_MAX_FREQ_ON_AC = 4500000;  # Maximum CPU freq on AC (e.g., 4.5 GHz)
+        CPU_SCALING_MIN_FREQ_ON_BAT = 400000;  # Minimum CPU freq on battery (e.g., 400 MHz)
+        CPU_SCALING_MAX_FREQ_ON_BAT = 2500000; # Maximum CPU freq on battery (e.g., 2.5 GHz)
         
-        RUNTIME_PM_ON_AC = "auto";
-        RUNTIME_PM_ON_BAT = "auto";
-        RUNTIME_PM_DRIVER_BLACKLIST = "mei_me iTCO_wdt";
-        PCIE_ASPM_ON_AC = "performance";
-        PCIE_ASPM_ON_BAT = "powersupersave";
-        NVIDIA_GPU_POWER_ON_AC = "on";
-        NVIDIA_GPU_POWER_ON_BAT = "off";
-        USB_AUTOSUSPEND = 1;
-        USB_AUTOSUSPEND_BLACKLIST = "input";
-        PLATFORM_PROFILE_ON_AC = "performance";
-        PLATFORM_PROFILE_ON_BAT = "low-power";
+        # Battery charge thresholds (dummy values, adjust as needed)
+        START_CHARGE_THRESH_BAT0 = 0; # Start charging threshold for BAT0
+        STOP_CHARGE_THRESH_BAT0 = 0;  # Stop charging threshold for BAT0
         
-        DISK_IDLE_SECS_ON_AC = "60";
-        DISK_IDLE_SECS_ON_BAT = "2";
-        SATA_LINKPWR_ON_AC = "max_performance"; # "med_power_with_dipm" keep in mind
-        SATA_LINKPWR_ON_BAT = "min_power";
-        DISK_IOSCHED = "mq-deadline mq-deadline";
+        # Runtime power management
+        RUNTIME_PM_ON_AC = "auto";                       # Enable runtime PM on AC
+        RUNTIME_PM_ON_BAT = "auto";                      # Enable runtime PM on battery
+        RUNTIME_PM_DRIVER_BLACKLIST = "mei_me iTCO_wdt"; # Drivers to exclude from runtime PM
         
-        WIFI_PWR_ON_AC = "off";
-        WIFI_PWR_ON_BAT = "on";
-        NMI_WATCHDOG = "0";
-        SOUND_POWER_SAVE_ON_AC = "0";
-        SOUND_POWER_SAVE_ON_BAT = "1";
-        SOUND_POWER_SAVE_CONTROLLER = "Y";
-        DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth";
-        DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE = "bluetooth";
-        DEVICES_TO_DISABLE_ON_SHUTDOWN = "bluetooth wifi";
+        # PCIe Active State Power Management
+        PCIE_ASPM_ON_AC = "performance";     # ASPM policy on AC
+        PCIE_ASPM_ON_BAT = "powersupersave"; # ASPM policy on battery
+        
+        # NVIDIA GPU power management
+        NVIDIA_GPU_POWER_ON_AC = "on";   # Power on NVIDIA GPU on AC
+        NVIDIA_GPU_POWER_ON_BAT = "off"; # Power off NVIDIA GPU on battery
+        
+        # USB autosuspend
+        USB_AUTOSUSPEND = 1;                 # Enable USB autosuspend
+        USB_AUTOSUSPEND_BLACKLIST = "input"; # Exclude input devices from autosuspend
+        
+        # Platform profile (if supported)
+        PLATFORM_PROFILE_ON_AC = "performance"; # Platform profile on AC
+        PLATFORM_PROFILE_ON_BAT = "low-power";  # Platform profile on battery
+        
+        # Disk settings
+        DISK_IDLE_SECS_ON_AC = "60";              # Disk idle timeout on AC (seconds)
+        DISK_IDLE_SECS_ON_BAT = "2";              # Disk idle timeout on battery (seconds)
+        SATA_LINKPWR_ON_AC = "max_performance";   # SATA link power management on AC
+        SATA_LINKPWR_ON_BAT = "min_power";        # SATA link power management on battery
+        DISK_IOSCHED = "mq-deadline mq-deadline"; # Disk I/O scheduler
+        
+        # WiFi power saving
+        WIFI_PWR_ON_AC = "off";    # Disable WiFi power saving on AC
+        WIFI_PWR_ON_BAT = "on";    # Enable WiFi power saving on battery
+        
+        # Miscellaneous
+        NMI_WATCHDOG = "0";                # Disable NMI watchdog
+        SOUND_POWER_SAVE_ON_AC = "0";      # Disable sound power saving on AC
+        SOUND_POWER_SAVE_ON_BAT = "1";     # Enable sound power saving on battery
+        SOUND_POWER_SAVE_CONTROLLER = "Y"; # Enable sound controller power saving
+        
+        # Device management
+        DEVICES_TO_DISABLE_ON_STARTUP = "bluetooth";           # Disable Bluetooth at startup
+        DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE = "bluetooth";    # Disable Bluetooth on battery if not in use
+        DEVICES_TO_DISABLE_ON_SHUTDOWN = "bluetooth wifi";     # Disable Bluetooth and WiFi on shutdown
       };
     };
   };
