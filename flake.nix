@@ -141,7 +141,7 @@
         modules = [
         #  "${nixpkgs}/nixos/modules/misc/nixpkgs/read-only.nix"
         #  ./dotfiles
-          ./arsham/system
+          ./arsham/system/system.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

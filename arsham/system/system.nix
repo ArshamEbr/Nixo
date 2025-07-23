@@ -6,6 +6,17 @@
 }:
 
 {
+  imports = [
+    ./audio
+    ./dm
+    ./fonts
+    ./hardware
+    ./networking
+    ./power
+    ./scripts
+    ./virt
+  ];
+  
   nix = {
     optimise.automatic = true;
     settings = {
@@ -79,7 +90,10 @@
     
     printing = {
       enable = true;
-      drivers = [ pkgs.gutenprint pkgs.hplipWithPlugin ];
+      drivers = with pkgs; [ 
+        gutenprint
+        hplipWithPlugin
+      ];
     };
   };
   
@@ -137,6 +151,12 @@
       %wheel ALL=(ALL:ALL) SETENV: ALL
       ${user.name}  ALL=(ALL:ALL) SETENV: ALL
     '';
+    wrappers.sunshine = {
+      owner = "root";
+      group = "root";
+      capabilities = "cap_sys_admin+p";
+      source = "${pkgs.sunshine}/bin/sunshine";
+    };
   };
   
   users = { # Don't forget to set a password with ‘passwd’.
@@ -165,6 +185,7 @@
         "kvm"
         "virsh"
         "dialout"
+        "adbusers"
       ];
     };
   };
@@ -190,6 +211,7 @@
       e2fsprogs
       proot
       nixos-generators
+      rustdesk-flutter
       
       # FTDI
       libftdi1
@@ -221,7 +243,7 @@
       kbd
       imagemagick
       sunshine
-      android-tools
+    #  android-tools
       remmina
       libnotify
       
@@ -266,9 +288,9 @@
       linux-pam
       cliphist
       sudo
-      kdePackages.xwaylandvideobridge
+    #  kdePackages.xwaylandvideobridge
       kdePackages.polkit-kde-agent-1
-      kdePackages.kde-cli-tools
+    #  kdePackages.kde-cli-tools
       freerdp3Override
       
       # Wayland.

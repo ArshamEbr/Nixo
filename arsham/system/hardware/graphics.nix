@@ -39,19 +39,4 @@
     VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json";
     LIBVA_DRIVER_NAME = "iHD";
   };
-  
-  services.ollama = {
-    enable = false;
-    host = "0.0.0.0";
-    port = 11434;
-    acceleration = "cuda";
-    models = "~/models";
-  };
-  
-  security.wrappers.sunshine = {
-    owner = "root";
-    group = "root";
-    capabilities = "cap_sys_admin+p";
-    source = "${pkgs.sunshine}/bin/sunshine";
-  };
 }

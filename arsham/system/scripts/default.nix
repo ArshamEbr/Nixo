@@ -607,7 +607,7 @@ let
 
   waybar-cava = pkgs.stdenv.mkDerivation {
     name = "waybar-cava";
-    src = ../scripts/WaybarCava.sh;
+    src = ../resources/scripts/WaybarCava.sh;
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
@@ -676,7 +676,6 @@ in
           {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_0";          options = [ "NOPASSWD" ];}
           {command = "${pkgs.kmod}/bin/rmmod vfio_pci vfio_pci_core vfio_iommu_type1";       options = [ "NOPASSWD" ];}
           {command = "${pkgs.kmod}/bin/modprobe -i nvidia_modeset nvidia_uvm nvidia";        options = [ "NOPASSWD" ];}
-          
           
           {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_0";            options = [ "NOPASSWD" ];}
           {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_00_1f_3";            options = [ "NOPASSWD" ];}
