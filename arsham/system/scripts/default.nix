@@ -618,7 +618,7 @@ let
 
   gpu-info = pkgs.stdenv.mkDerivation {
     name = "gpu-info";
-    src = ../../resources/scripts/gpuinfo.sh;
+    src = ../../../resources/scripts/gpuinfo.sh;
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
@@ -629,7 +629,7 @@ let
 
   odin4 = pkgs.stdenv.mkDerivation {
     name = "odin4";
-    src = ../../resources/bin/odin4;
+    src = ../../../resources/bin/odin4;
     phases = [ "installPhase" ];
     installPhase = ''
       mkdir -p $out/bin
