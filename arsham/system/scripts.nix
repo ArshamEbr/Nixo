@@ -627,6 +627,17 @@ let
     '';
   };
 
+  odin4 = pkgs.stdenv.mkDerivation {
+    name = "odin4";
+    src = ../../resources/bin/odin4;
+    phases = [ "installPhase" ];
+    installPhase = ''
+      mkdir -p $out/bin
+      cp $src $out/bin/odin
+      chmod +x $out/bin/odin
+    '';
+  };
+
   power-go = pkgs.writeScriptBin "power-save" ''
     #!/run/current-system/sw/bin/bash
     if hyprctl getoption animations:enabled | grep -q 'int: 1'; then
@@ -694,5 +705,6 @@ in
       #  waybar-cava
         gpu-info
         power-go
+        odin4
     ];
   }
