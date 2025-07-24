@@ -10,7 +10,6 @@
 {
   imports = [
     ./hyprland
-    ./librewolf
     ./mpv
     ./obs
     ./terminal
