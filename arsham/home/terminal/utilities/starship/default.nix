@@ -1,6 +1,8 @@
 {
   programs.starship = { # starship - an customizable prompt for any shell
     enable = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
     settings = {
       add_newline = false;
   

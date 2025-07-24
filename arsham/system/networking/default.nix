@@ -21,7 +21,10 @@
     };
   };
   
-  systemd.services.NetworkManager-wait-online.enable = false;
+  systemd.services = {
+    NetworkManager-wait-online.enable = false;
+    systemd-networkd-wait-online.enable = false;
+  };
   
   hardware.bluetooth = {
     enable = true;
@@ -41,7 +44,17 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [ 
-        3216 3658 3659 8082 24800 47984 47989 47990 48010 2080
+        3216
+        3658
+        3659
+        8082
+        24800
+        47984
+        47989
+        47990
+        48010
+      #  51820
+        2080
       ];
       
       allowedTCPPortRanges = [
@@ -51,7 +64,10 @@
       ];
       
       allowedUDPPorts = [ 
-        3216 27036 48010
+        3216
+        27036
+        48010
+      #  51820
       ];
       
       allowedUDPPortRanges = [

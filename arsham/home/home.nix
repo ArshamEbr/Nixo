@@ -19,13 +19,6 @@
   ];
 
   programs.home-manager.enable = true;
-  programs.cava = {
-    enable = true;
-    settings = {
-      general.framerate = 60;
-      smoothing.noise_reduction = 88;
-    };
-  };
   fonts.fontconfig.enable = true;
   
   home = {
@@ -82,7 +75,6 @@
         
         # Archiving
         peazip
-        kdePackages.ark
         
         # Android tools
         apktool
