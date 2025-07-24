@@ -3,7 +3,7 @@
   inputs,
   lib, 
   pkgs-stable, 
-  user, 
+  user,
   ... 
 }:
 
@@ -17,7 +17,8 @@
     ./udiskie
     ./vscode
   ];
-
+  
+  xdg.userDirs.enable = true;
   programs.home-manager.enable = true;
   fonts.fontconfig.enable = true;
   
@@ -55,6 +56,9 @@
         tigervnc
         webcamoid
         pngquant
+        lowfi
+        ani-cli
+        tauon
         
         # Fonts
         google-fonts
@@ -67,9 +71,14 @@
         stlink-tool
         platformio
         esptool
+        gcc-arm-embedded
+        dtc
+        pkgs.pkgsCross.aarch64-multiplatform.stdenv.cc
+        edl
+        pmbootstrap
+        gptfdisk
         
         # Music and file management
-        ncmpcpp
         mpdris2
         ghex
         baobab
@@ -94,6 +103,7 @@
         networkmanager-openvpn
         openvpn
         openvpn3
+        anydesk
         
         # System info
         fastfetch
@@ -125,7 +135,6 @@
         gimp
         htop
         nil
-        anydesk
         
         # Networking tools
         mtr
