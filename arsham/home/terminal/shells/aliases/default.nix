@@ -27,6 +27,8 @@ let
     
     dwd = "aria2c -x 16 -s 16";
     
+    ukl = "sudo \"$HOME/rosemary/UKL/run.sh\"";
+    
     nr = "sudo nixos-rebuild switch --flake ~/nixo/${user.name}#${user.host}";
     nb = "sudo nixos-rebuild build --flake ~/nixo/${user.name}#${user.host}";
   };
