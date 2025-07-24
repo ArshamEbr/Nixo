@@ -16,9 +16,12 @@
     
     loader = {
       efi.canTouchEfiVariables = true;
-      systemd-boot.enable = true;
-      grub.enable = false;
       timeout = 0;
+      systemd-boot = {
+        enable = true;
+        consoleMode = "max";
+        editor = false;  
+      };
     };
     
     kernelParams = [
