@@ -25,6 +25,7 @@ RAM: 12 GB (8 GB + 4 GB)
 - 🔥 Custom services and modules
 - 🌌 Personalized display manager (SDDM with a live background)
 - 📝 Numerous custom scripts for ease of use and automation
+- 🎶 Added custom event sounds in the notifx1 script
 
 ## ⚡ TL;DR 
 A NixOS setup optimized for beauty, speed, and simplicity, with attention to both aesthetics and control.
