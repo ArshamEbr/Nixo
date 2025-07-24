@@ -78,6 +78,8 @@ TLP parameters for CPU, GPU, disk, and device power optimization.
         # USB autosuspend
         USB_AUTOSUSPEND = 1;                 # Enable USB autosuspend
         USB_AUTOSUSPEND_BLACKLIST = "input"; # Exclude input devices from autosuspend
+        USB_EXCLUDE_PHONE = 1;               # Don't autosuspend phones
+        USB_EXCLUDE_PRINTER = 1;             # Don't autosuspend printers
         
         # Platform profile (if supported)
         PLATFORM_PROFILE_ON_AC = "performance"; # Platform profile on AC
@@ -89,10 +91,16 @@ TLP parameters for CPU, GPU, disk, and device power optimization.
         SATA_LINKPWR_ON_AC = "max_performance";   # SATA link power management on AC
         SATA_LINKPWR_ON_BAT = "min_power";        # SATA link power management on battery
         DISK_IOSCHED = "mq-deadline mq-deadline"; # Disk I/O scheduler
+        AHCI_RUNTIME_PM_ON_AC = "on";
+        AHCI_RUNTIME_PM_ON_BAT = "auto";
+        DISK_DEVICES = "ata-WDC_WDBNCE5000PNC_20294J442712"; # TODO change this using tlp diskid
         
         # WiFi power saving
         WIFI_PWR_ON_AC = "off";    # Disable WiFi power saving on AC
         WIFI_PWR_ON_BAT = "on";    # Enable WiFi power saving on battery
+        
+        # Network power management
+        WOL_DISABLE = "Y";  # Disable Wake-on-LAN if not needed
         
         # Miscellaneous
         NMI_WATCHDOG = "0";                # Disable NMI watchdog
