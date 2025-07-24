@@ -1,29 +1,32 @@
 ![Name](https://img.shields.io/badge/Arsham-Nixo-lightblue) ![Hyprland](https://img.shields.io/badge/Hyprland-Wayland-cyan) ![HM](https://img.shields.io/badge/Ditched-HomeMnager-red) ![Pnix](https://img.shields.io/badge/Pure-Nix-violet) ![Flake](https://img.shields.io/badge/Flake-orange) ![License](https://img.shields.io/github/license/ArshamEbr/Nixo)
 
-## My Hardware
-Laptop: Lenovo Ideapad 3 15ITL6
+## 🧊 My NixOS Configuration
 
-CPU: Intel i5-1155G7
+# 💻 Hardware
+Laptop: Lenovo IdeaPad 3 15ITL6
 
-GPU: Intel Iris Xe / Nvidia MX350
+CPU: Intel Core i5-1155G7
 
-RAM: 12 GB (8 + 4)
+GPU: Intel Iris Xe + Nvidia MX350
+
+RAM: 12 GB (8 GB + 4 GB)
 
 
-## ✨ Features
+# ✨ Features
 
-- 🛠 Flake-based configuration
-- 🖥 Custom Hyprland setup
-- 📦 No Home Manager (Pure-nix)
-- 🌎 Portable, easy to deploy on new machines (with some effort)
+- 🛠️ Flake-based NixOS configuration
+- 🖥️ Custom Hyprland setup (polished and responsive)
+- 📦 Modular Home Manager integration
+- 🌍 Portable and adaptable for new systems (with some setup)
 - 🔥 Custom services and modules
-- ❄️ Added UKI for removing boot-loader
-- 🌟 No displayManager (direct login from tty)
+- 🌌 Personalized display manager (SDDM with a live background)
+- 📝 Numerous custom scripts for ease of use and automation
 
-# TL;DR
-A NixOS config optimized for beauty, speed, and simplicity.
+# ⚡ TL;DR 
+A NixOS setup optimized for beauty, speed, and simplicity, with attention to both aesthetics and control.
 
-# Sources
+# 📚 Sources & Inspirations
+
 [Celes Renata](https://github.com/celesrenata/nix-flakes)
 [end-4(modified)](https://github.com/end-4/dots-hyprland)
 [SomeEmptyBox(Peace)](https://github.com/SomeEmptyBox/nixcfg)
