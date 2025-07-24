@@ -23,8 +23,6 @@
       accept-flake-config = true;
       builders-use-substitutes = true;
       auto-optimise-store = true;
-      max-jobs = 8;              # TODO change it to your cpu core count
-      cores = 8;                 # TODO change it to your cpu core count
       experimental-features = [ 
         "nix-command" 
         "flakes" 
