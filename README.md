@@ -1,4 +1,4 @@
-![Name](https://img.shields.io/badge/Arsham-Nixo-lightblue) ![Hyprland](https://img.shields.io/badge/Hyprland-Wayland-cyan) ![HM](https://img.shields.io/badge/Ditched-HomeMnager-red) ![Pnix](https://img.shields.io/badge/Pure-Nix-violet) ![Flake](https://img.shields.io/badge/Flake-orange) ![License](https://img.shields.io/github/license/ArshamEbr/Nixo)
+![Name](https://img.shields.io/badge/Arsham-Nixo-lightblue) ![Hyprland](https://img.shields.io/badge/Hyprland-Wayland-cyan) ![HM](https://img.shields.io/badge/HomeMnager-blue) ![Pnix](https://img.shields.io/badge/Pure-Nix-violet) ![Flake](https://img.shields.io/badge/Flake-orange) ![License](https://img.shields.io/github/license/ArshamEbr/Nixo)
 
 # 🧊 My NixOS Configuration
 
