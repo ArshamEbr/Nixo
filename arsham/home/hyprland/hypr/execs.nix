@@ -66,6 +66,9 @@
       # Disk manager
       "udiskie -t &"
       
+      # Turn on battery conservation mode
+      "battery_toggle on"
+      
       # idk
       #"/nix/store/qkj4b3si2xbry58xslhm1vrixhxrvskp-dbus-1.14.10/bin/dbus-update-activation-environment --systemd DISPLAY HYPRLAND_INSTANCE_SIGNATURE WAYLAND_DISPLAY XDG_CURRENT_DESKTOP && systemctl --user stop hyprland-session.target && systemctl --user start hyprland-session.target"
       
