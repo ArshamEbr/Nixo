@@ -523,23 +523,41 @@ let
   
   nh-go = pkgs.writeScriptBin "nixo" ''
     #!/run/current-system/sw/bin/bash
-  
+    
     tlp_mode() {
       sudo ${pkgs.tlp}/bin/tlp "$1"
     }
-  
+    
+    check_battery_conservation() {
+      if [ -f /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode ]; then
+        cat /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode
+      else
+        echo "0"  # Default to off if file doesn't exist
+      fi
+    }
+
+    restore_battery_conservation() {
+      if [ "$1" = "1" ]; then
+        sudo ${pkgs.tlp}/bin/tlp setcharge 0 1
+        echo "Battery conservation mode restored"
+      fi
+    }
+    
+    initial_conservation_state=$(check_battery_conservation)
     notifx1 nix_build_start & disown
     tlp_mode ac
     output=$(${pkgs.nh}/bin/nh os switch "$@" 2>&1 | tee /dev/tty)
     nh_status=$?
-  
+    
     if [ $nh_status -ne 0 ]; then
       notifx1 nix_build_failed & disown
-      tlp_mode bat
+      tlp_mode start
+      restore_battery_conservation "$initial_conservation_state"
       notify-send "NixOS Rebuild FAILED!" --icon=$HOME/nixo/resources/icons/report.png
     else
       notifx1 nix_build_ok & disown
-      tlp_mode bat
+      tlp_mode start
+      restore_battery_conservation "$initial_conservation_state"
       notify-send "NixOS Rebuild SUCCESS!" --icon=$HOME/nixo/resources/icons/check.png
     fi
   '';
@@ -667,6 +685,7 @@ in
           
           {command = "${pkgs.tlp}/bin/tlp bat";                                              options = [ "NOPASSWD" ];}
           {command = "${pkgs.tlp}/bin/tlp ac";                                               options = [ "NOPASSWD" ];}
+          {command = "${pkgs.tlp}/bin/tlp start";                                            options = [ "NOPASSWD" ];}
           {command = "${pkgs.tlp}/bin/tlp-stat -s";                                          options = [ "NOPASSWD" ];}
           
           {command = "${pkgs.kmod}/bin/rmmod nvidia_modeset nvidia_uvm nvidia";              options = [ "NOPASSWD" ];}
