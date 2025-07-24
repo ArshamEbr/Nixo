@@ -47,6 +47,7 @@
         v2rayn
         python312Packages.debugpy
         looking-glass-client
+        wireguard-tools
         
         # Media and creative
         thunderbird

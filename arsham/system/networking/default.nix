@@ -41,8 +41,36 @@
     useDHCP = lib.mkDefault true;
     networkmanager.enable = true;
     # interfaces.wlp2s0.useDHCP = lib.mkDefault true;
+
+  #  wireguard = {
+  #    enable = false;
+  #    interfaces = {
+  #      wg0 = {
+  #        ips = [ "192.168.133.2/30" ];
+  #        privateKeyFile = "/home/arsham/nixo/arsham/system/networking/privatekey";
+  #        listenPort = 51820;
+  #        mtu = 1240;
+  #        peers = [
+  #          {
+  #            publicKey = "GxQE2dm2LQEHsDD30M9iZxhFM3UDccjUWynWjc+mDSE=";
+  #            allowedIPs = [
+  #              "192.168.133.0/30"
+  #              "192.168.134.0/30"
+  #              "192.168.42.0/24"
+  #              "10.1.1.0/24"
+  #            ];
+  #            endpoint = "frameshift.net:51827";
+  #            persistentKeepalive = 25;
+  #          }
+  #        ];
+  #      };
+  #    };
+  #  };
+  
     firewall = {
       enable = true;
+    #  checkReversePath = false; 
+    #  trustedInterfaces = [ "wg0" ];
       allowedTCPPorts = [ 
         3216
         3658
