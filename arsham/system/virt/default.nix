@@ -52,6 +52,7 @@
     wine64
     wine
     winetricks
+    looking-glass-client # KVM client
     
     # Game related
     heroic

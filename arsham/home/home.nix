@@ -40,267 +40,297 @@
       ])
       ++
       (with pkgs; [
-        # Utilities and tools
-        warp-plus
-        fd
-        bluez
-        procps
-        v2rayn
-        python312Packages.debugpy
-        looking-glass-client
+        # ============================================================================
+        # CORE SYSTEM UTILITIES
+        # ============================================================================
+        fd                  # Modern find replacement
+        procps              # Process utilities (ps, top, etc.)
+        fastfetch           # System info display
+        htop                # Interactive process viewer
+        iotop               # I/O monitoring
+        iftop               # Network bandwidth monitoring
+        mission-center      # System monitoring GUI
+        sysstat             # System performance tools
+        lm_sensors          # Hardware sensors
+        ethtool             # Ethernet tool
+        pciutils            # PCI utilities (lspci)
+        usbutils            # USB utilities (lsusb)
+        
+        # ============================================================================
+        # FILE MANAGEMENT & ARCHIVES
+        # ============================================================================
+        nnn                 # Terminal file manager
+        baobab              # Disk usage analyzer
+        nautilus            # GNOME file manager
+        file-roller         # Archive manager GUI
+        
+        # Archive formats
+        zip
+        unzip
+        xz
+        p7zip
+        rar
+        zstd
+        peazip              # GUI archive manager
+        
+        # ============================================================================
+        # CLI UTILITIES & TOOLS
+        # ============================================================================
+        ripgrep             # Fast grep alternative
+        jq                  # JSON processor
+        yq-go               # YAML processor
+        eza                 # Modern ls replacement
+        fzf                 # Fuzzy finder
+        tree                # Directory tree display
+        which               # Command location finder
+        gnused              # Stream editor
+        gnutar              # Archive utility
+        gawk                # Text processing
+        cowsay              # Fun text display
+        glow                # Markdown renderer
+        bc                  # Calculator
+        
+        # ============================================================================
+        # NETWORKING & INTERNET
+        # ============================================================================
+        # Browsers
+        inputs.zen-browser.packages.${pkgs.system}.default
+        brave
+        
+        # Communication
+        telegram-desktop
+        vesktop             # Alternative Discord client
+        thunderbird         # Email client
+        
+        # Network tools
+        mtr                 # Network diagnostic
+        iperf3              # Network performance
+        dnsutils            # DNS utilities
+        ldns                # DNS library tools
+        aria2               # Download manager
+        socat               # Network relay
+        nmap                # Network scanner
+        ipcalc              # IP calculator
+        
+        # VPN & Remote
+        networkmanager-openvpn
+        openvpn
         wireguard-tools
+        anydesk             # Remote desktop
+        tigervnc            # VNC client
         
-        # Media and creative
-        thunderbird
-        blender
-        tigervnc
-        webcamoid
-        pngquant
-        lowfi
-        ani-cli
-        tauon
+        # ============================================================================
+        # DEVELOPMENT TOOLS
+        # ============================================================================
+        # Development tools
+        git                 # Version control
+        nil                 # Nix LSP
+        graphviz            # Graph visualization
         
-        # Fonts
-        google-fonts
-        ibm-plex
+        # Static site generation
+        hugo
+        nodejs_20
         
-        # Embedded development
+        # ============================================================================
+        # EMBEDDED & HARDWARE DEVELOPMENT
+        # ============================================================================
+        # STM32 Development
         stm32cubemx
         stm32flash
         stlink-gui
         stlink-tool
+        gcc-arm-embedded
+        
+        # General embedded
         platformio
         esptool
-        gcc-arm-embedded
-        dtc
+        dtc                 # Device tree compiler
         pkgs.pkgsCross.aarch64-multiplatform.stdenv.cc
-        edl
-        pmbootstrap
-        gptfdisk
         
-        # Music and file management
-        mpdris2
-        ghex
-        baobab
-        
-        # Archiving
-        peazip
-        
-        # Android tools
-        apktool
-        waydroid
-        
-        # Gaming
-        prismlauncher
+        # Mobile/Android development
+        edl                 # Qualcomm tools
+        pmbootstrap         # PostmarketOS
+        gptfdisk            # GPT partitioning
+        apktool             # Android APK tool
+        waydroid            # Android emulator
         
         # Arduino
         arduino-ide
         
-        # Bootable media
-        ventoy-full
-        
-        # Networking
-        networkmanager-openvpn
-        openvpn
-        openvpn3
-        anydesk
-        
-        # System info
-        fastfetch
-        nnn
-        
-        # Archives
-        zip
-        xz
-        unzip
-        p7zip
-        
-        # CLI utilities
-        ripgrep
-        jq
-        yq-go
-        eza
-        fzf
-        
-        # Browsers and communication
-        inputs.zen-browser.packages.${pkgs.system}.default
-        firefox
-        brave
-        telegram-desktop
-        discord
-        vesktop
-        
-        # Creative tools
-        darktable
+        # ============================================================================
+        # MULTIMEDIA & CREATIVE
+        # ============================================================================
+        # Image editing
         gimp
-        htop
-        nil
+        darktable           # RAW photo processor
+        pngquant            # PNG optimizer
         
-        # Networking tools
-        mtr
-        iperf3
-        dnsutils
-        ldns
-        aria2
-        socat
-        nmap
-        ipcalc
+        # 3D & Video
+        blender
+        wf-recorder         # Wayland screen recorder
+        webcamoid           # Webcam utility
         
-        # Misc utilities
-        cowsay
-        file
-        which
-        tree
-        gnused
-        gnutar
-        gawk
-        zstd
-        gnupg
-        rar
-        wofi-calc
-        
-        # Productivity
-        hugo
-        glow
-        
-        # Monitoring
-        iotop
-        iftop
-        
-        # System call monitoring
-        strace
-        ltrace
-        lsof
-        
-        # System tools
-        sysstat
-        lm_sensors
-        ethtool
-        pciutils
-        usbutils
-        mission-center
-        clipgrab
-        ardour
+        # Audio/Music
         audacity
-        gparted
-        gnome.gvfs
+        ardour              # Professional audio
+        tauon               # Music player
+        pavucontrol         # PulseAudio control
+        playerctl           # Media player control
+        mpdris2             # MPD integration
         
-        # Development
-        git
+        # Video players
+        vlc
+        mpvpaper            # Video wallpaper
+        ani-cli             # Anime streaming
         
-        # MicroTex dependencies
+        # ============================================================================
+        # SYSTEM THEMING & DESKTOP
+        # ============================================================================
+        # GNOME components
+        gnome-keyring
+        gnome-control-center
+        gnome-bluetooth
+        blueberry           # Bluetooth manager
+        
+        # Wallpapers & backgrounds
+        waypaper
+        swaybg
+        swww
+        
+        # Hyprland/Wayland tools
+        hyprpicker          # Color picker
+        wl-clipboard        # Clipboard manager
+        cliphist            # Clipboard history
+        fuzzel              # Application launcher
+        slurp               # Screen area selection
+        grim                # Screenshot utility
+        swappy              # Screenshot editor
+        wofi-calc           # Calculator for wofi
+        
+        # System integration
+        brightnessctl       # Brightness control
+        wlsunset            # Blue light filter
+        libnotify           # Notifications
+        xdg-user-dirs       # User directories
+        upower              # Power management
+        yad                 # Dialog boxes
+        ydotool             # Input automation
+        
+        # ============================================================================
+        # SYSTEM LIBRARIES & DEPENDENCIES
+        # ============================================================================
+        bluez               # Bluetooth stack
+        wireplumber         # Audio session manager
+        networkmanager      # Network management
+        
+        # GTK/UI libraries
+        libdbusmenu-gtk3
+        webp-pixbuf-loader
+        gtk-layer-shell
+        gtksourceview3
+        gobject-introspection
+        gjs                 # GNOME JavaScript
+        
+        # Development libraries (Consider: Move to shell.nix for projects)
         tinyxml-2
         gtkmm3
         gtksourceviewmm
         cairomm
         
-        # Version control
-        graphviz
-        cvs
-        mercurial
-        p4
-        subversion
+        # ============================================================================
+        # FONTS
+        # ============================================================================
+        google-fonts
+        ibm-plex
         
-        # Python
+        # ============================================================================
+        # GAMING & ENTERTAINMENT
+        # ============================================================================
+        prismlauncher       # Minecraft launcher
+        
+        # ============================================================================
+        # PRODUCTIVITY & OFFICE
+        # ============================================================================
+        ghex                # Hex editor
+        tesseract           # OCR
+        clipgrab            # Video downloader
+        
+        # ============================================================================
+        # UTILITIES & MISC
+        # ============================================================================
+        ventoy-full         # Bootable USB creator
+        gparted             # Partition editor
+        gnome.gvfs          # Virtual filesystem
+        
+        # System debugging
+        strace              # System call tracer
+        ltrace              # Library call tracer
+        lsof                # List open files
+        
+        # Compression/decompression
+        gnupg               # Encryption
+        
+        # Misc tools
+        coreutils
+        curl
+        ddcutil             # Monitor control
+        gojq                # Go JSON processor
+        dart-sass           # Sass compiler
+        axel                # Download accelerator
+        
+        # ============================================================================
+        # PYTHON ENVIRONMENT
+        # ============================================================================
         pyenv.out
+        python312Packages.debugpy
         (python312.withPackages(ps: with ps; [
-          aubio
+          # Core Python packages
           numpy
-          materialyoucolor
-          material-color-utilities
           pillow
-          poetry-core
-          pywal
           setuptools-scm
           wheel
-          pywayland
-          psutil
-          importlib-metadata
+          pip
           certifi
           colorama
-          breezy
           tqdm
-          pydbus
-          dbus-python
-          pygobject3
-          watchdog
-          pip
-          evdev
+          psutil
+          importlib-metadata
           appdirs
-          inotify-simple
-          ordered-set
           six
           hatchling
-          pycairo
-          xkeysnail
-          speechrecognition
+          ordered-set
+          inotify-simple
+          
+          # Audio processing
+          aubio
           pyaudio
+          speechrecognition
+          
+          # GUI frameworks
           tkinter
+          pycairo
+          pygobject3
+          
+          # System integration
+          pywayland
+          dbus-python
+          pydbus
+          evdev
+          xkeysnail
+          watchdog
+          
+          # Theming
+          materialyoucolor
+          material-color-utilities
+          pywal
+          
+          # Development
+          poetry-core
+          breezy
+          
+          # APIs
           google
         ]))
-        
-        # Player and audio
-        pavucontrol
-        wireplumber
-        libdbusmenu-gtk3
-        playerctl
-        mpvpaper
-        vlc
-        waypaper
-        swaybg
-        swww
-        
-        # GTK
-        webp-pixbuf-loader
-        gtk-layer-shell
-        gtksourceview3
-        upower
-        yad
-        ydotool
-        # Removed wrapGAppsHook (build tool)
-        gobject-introspection
-        
-        # GNOME
-      #  polkit-gnome
-        gnome-keyring
-        gnome-control-center
-        gnome-bluetooth
-        file-roller
-        
-        # GNOME desktop
-        nautilus
-        nodejs_20
-        yaru-theme
-        blueberry
-        networkmanager
-        brightnessctl
-        wlsunset
-        gjs
-        # AGS and Hyprland dependencies
-        coreutils
-        cliphist
-        curl
-        ddcutil
-        fuzzel
-        gojq
-        dart-sass
-        axel
-        wl-clipboard
-        hyprpicker
-        libnotify
-        bc
-        xdg-user-dirs
-        
-        # Themes
-        gradience
-        catppuccin-gtk
-        
-        # Screenshot and recorder
-        swappy
-        wf-recorder
-        grim
-        tesseract
-        slurp
       ])
       ++
       (builtins.filter lib.isDerivation (builtins.attrValues pkgs-stable.nerd-fonts));
