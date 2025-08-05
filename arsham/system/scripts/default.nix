@@ -656,6 +656,17 @@ let
     '';
   };
 
+  mi-thermal-crypt = pkgs.stdenv.mkDerivation {
+    name = "mi-thermal-crypt";
+    src = ../../../resources/bin/mi-thermal-crypt;
+    phases = [ "installPhase" ];
+    installPhase = ''
+      mkdir -p $out/bin
+      cp $src $out/bin/mi-thermal-crypt
+      chmod +x $out/bin/mi-thermal-crypt
+    '';
+  };
+
   power-go = pkgs.writeScriptBin "power-save" ''
     #!/run/current-system/sw/bin/bash
     if hyprctl getoption animations:enabled | grep -q 'int: 1'; then
@@ -724,5 +735,6 @@ in
         gpu-info
         power-go
         odin4
+        mi-thermal-crypt
     ];
   }
