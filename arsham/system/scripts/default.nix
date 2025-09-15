@@ -667,6 +667,31 @@ let
     '';
   };
 
+  yin = pkgs.stdenv.mkDerivation {
+    name = "yin";
+    src = ../../../resources/bin;
+    
+    # Runtime dependencies
+    buildInputs = with pkgs; [
+      wayland
+      pixman
+      lz4
+      ffmpeg
+    ];
+    
+    phases = [ "installPhase" "fixupPhase" ];
+    
+    installPhase = ''
+      mkdir -p $out/bin
+      cp $src/yin $out/bin/yin
+      cp $src/yinctl $out/bin/yinctl
+      chmod +x $out/bin/yin
+      chmod +x $out/bin/yinctl
+    '';
+    
+    dontStrip = true;
+  };
+
   power-go = pkgs.writeScriptBin "power-save" ''
     #!/run/current-system/sw/bin/bash
     if hyprctl getoption animations:enabled | grep -q 'int: 1'; then
@@ -736,5 +761,6 @@ in
         power-go
         odin4
         mi-thermal-crypt
+        yin
     ];
   }
