@@ -30,6 +30,6 @@
         "hwdec" = "auto-safe";
       };
     };
-    home.file.".config/mpv/scripts/visualizer.lua".source = ../../../resources/scripts/visualizer.lua;
   };
+  home.file.".config/mpv/scripts/visualizer.lua".source = ../../../resources/scripts/visualizer.lua;
 }
