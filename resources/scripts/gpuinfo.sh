@@ -23,7 +23,7 @@ get_intel_gpu_temperature() {
 # Function to get AMD GPU metrics dynamically
 get_amd_gpu_metrics() {
   local card_path="$1"
-  local temperature utilization core_clock power_usage
+  local temperature utilization core_clock power_usage hwmon_dir
 
   # Find hwmon directory dynamically
   hwmon_dir=$(find "${card_path}/hwmon" -type d -name 'hwmon*' -print -quit 2>/dev/null)
@@ -111,7 +111,7 @@ else
       # Get emoji based on temperature
       emoji=$(get_temperature_emoji "$temperature")
       # Print the formatted information in JSON
-      echo "{\"text\":\"$temperature°C\", \"tooltip\":\"Primary GPU: $primary_gpu\n$emoji Temperature: $temperature°C\n󰾆 Utilization: $gpu_load%\n Clock Speed: $core_clock MHz\n Power Usage: $power_usage W\"}"
+      echo "{\"text\":\"$temperature°C\", \"tooltip\":\"Primary GPU: $primary_gpu\n$emoji Temperature: $temperature°C\n󰾆 Utilization: $gpu_load%\n Clock Speed: $core_clock MHz${power_line}\"}"
       exit 0
     fi
   fi
