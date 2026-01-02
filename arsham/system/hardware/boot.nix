@@ -62,7 +62,7 @@
     
     plymouth = {
       enable = true;
-      theme = "proxzima"; # rog_2
+      theme = "owl"; # rog_2
       themePackages = with pkgs; [
         adi1090x-plymouth-themes
       ];
