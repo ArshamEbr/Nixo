@@ -87,6 +87,7 @@
         48010
       #  51820
         2080
+        21118
       ];
       
       allowedTCPPortRanges = [
