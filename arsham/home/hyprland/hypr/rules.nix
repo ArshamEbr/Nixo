@@ -86,7 +86,9 @@
       "blur, wofi"
       "ignorealpha 0.05, wofi"
       "ignorezero, wofi"
-      
+
+      "animation slide right, swaync-control-center"
+      "animation slide right, swaync-notification-window"    
       "blur, swaync-control-center"
       "blur, swaync-notification-window"
       "ignorezero, swaync-control-center"
