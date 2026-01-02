@@ -78,17 +78,13 @@
       "ignorealpha 0.05, waybar"
       "ignorezero, waybar"
       
-      # Rofi Blur (maybe)
-      "blur, rofi"
-      "ignorealpha 0.05, rofi"
-      "ignorezero, rofi"
       
       "blur, logout_dialog"
       
       "blur, class:^(swww)$"
       
       "blur, wofi"
-      "ignorealpha 0.3, wofi"
+      "ignorealpha 0.05, wofi"
       "ignorezero, wofi"
       
       "blur, swaync-control-center"
