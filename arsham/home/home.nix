@@ -21,6 +21,7 @@
   xdg.userDirs.enable = true;
   programs.home-manager.enable = true;
   fonts.fontconfig.enable = true;
+  services.polkit-gnome.enable = true;
   
   home = {
   
