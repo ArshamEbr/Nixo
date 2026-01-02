@@ -4,6 +4,7 @@
   lib, 
   pkgs-stable, 
   user,
+  frostix,
   ... 
 }:
 
@@ -149,18 +150,7 @@
         pkgs.pkgsCross.aarch64-multiplatform.stdenv.cc
         
         # Mobile/Android development
-        edl                 # Qualcomm tools
-        pmbootstrap         # PostmarketOS
-        gptfdisk            # GPT partitioning
-        apktool             # Android APK tool
-        waydroid            # Android emulator
-        
-        # Arduino
-        arduino-ide
-        
-        # ============================================================================
-        # MULTIMEDIA & CREATIVE
-        # ============================================================================
+        frostix.mtkclient-git
         # Image editing
         gimp
         darktable           # RAW photo processor

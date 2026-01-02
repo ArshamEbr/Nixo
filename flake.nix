@@ -27,6 +27,11 @@
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    frostix = {
+      url = "github:shomykohai/frostix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -54,11 +59,13 @@
     nixos-hardware,
     catppuccin,
     nur,
+    frostix,
     ...
   }:
   let
     system = "x86_64-linux";
     lib = nixpkgs.lib;
+    frostixPkgs = inputs.frostix.packages.${system};
     pkgs-old = import inputs.nixpkgs-old {
       inherit system;
       config = {
@@ -152,6 +159,7 @@
               inherit inputs;
               inherit pkgs-old;
               inherit user;
+              frostix = frostixPkgs;
             };
             home-manager.users.${user.name} = import ./arsham/home/home.nix;
           }
