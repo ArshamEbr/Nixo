@@ -39,6 +39,12 @@
     ignored_applications=@Invalid()
   '';
 
+  qt = {
+    enable = true;
+    style.name = "catppuccin-frappe-blue-standard";
+    platformTheme.name = "gtk3";
+  };
+
   home.packages = with pkgs; [
     libsForQt5.qt5ct
     libsForQt5.qwt
