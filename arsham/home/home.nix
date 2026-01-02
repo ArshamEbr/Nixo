@@ -25,7 +25,6 @@
   services.polkit-gnome.enable = true;
   
   home = {
-  
     username = "${user.name}";
     homeDirectory = "/home/${user.name}";
     stateVersion = "25.11";
@@ -38,150 +37,148 @@
     
     packages = 
       (with pkgs-stable; [
-        # Your stable pkgs here
+        # Add stable packages here if needed
       ])
       ++
       (with pkgs; [
-        # ============================================================================
-        # CORE SYSTEM UTILITIES
-        # ============================================================================
-        fd                  # Modern find replacement
-        procps              # Process utilities (ps, top, etc.)
-        fastfetch           # System info display
-        htop                # Interactive process viewer
-        iotop               # I/O monitoring
-        iftop               # Network bandwidth monitoring
-        mission-center      # System monitoring GUI
-        sysstat             # System performance tools
-        lm_sensors          # Hardware sensors
-        ethtool             # Ethernet tool
-        pciutils            # PCI utilities (lspci)
-        usbutils            # USB utilities (lsusb)
+        # Core system utilities
+        fd
+        procps
+        fastfetch
+        htop
+        iotop
+        iftop
+        mission-center
+        sysstat
+        lm_sensors
+        ethtool
+        pciutils
+        usbutils
         
-        # ============================================================================
-        # FILE MANAGEMENT & ARCHIVES
-        # ============================================================================
-        nnn                 # Terminal file manager
-        baobab              # Disk usage analyzer
-        nautilus            # GNOME file manager
-        file-roller         # Archive manager GUI
-        
-        # Archive formats
+        # File management & archives
+        nnn
+        baobab
+        nautilus
+        file-roller
         zip
         unzip
         xz
         p7zip
         rar
         zstd
-        peazip              # GUI archive manager
+        peazip
         
-        # ============================================================================
-        # CLI UTILITIES & TOOLS
-        # ============================================================================
-        ripgrep             # Fast grep alternative
-        jq                  # JSON processor
-        yq-go               # YAML processor
-        eza                 # Modern ls replacement
-        fzf                 # Fuzzy finder
-        tree                # Directory tree display
-        which               # Command location finder
-        gnused              # Stream editor
-        gnutar              # Archive utility
-        gawk                # Text processing
-        cowsay              # Fun text display
-        glow                # Markdown renderer
-        bc                  # Calculator
+        # CLI utilities
+        ripgrep
+        jq
+        yq-go
+        eza
+        fzf
+        tree
+        which
+        gnused
+        gnutar
+        gawk
+        cowsay
+        glow
+        bc
         
-        # ============================================================================
-        # NETWORKING & INTERNET
-        # ============================================================================
         # Browsers
         inputs.zen-browser.packages.${pkgs.system}.default
         brave
+        firefox
         
         # Communication
         telegram-desktop
-        vesktop             # Alternative Discord client
-        thunderbird         # Email client
+        vesktop
+        thunderbird
         
         # Network tools
-        mtr                 # Network diagnostic
-        iperf3              # Network performance
-        dnsutils            # DNS utilities
-        ldns                # DNS library tools
-        aria2               # Download manager
-        socat               # Network relay
-        nmap                # Network scanner
-        ipcalc              # IP calculator
-        
-        # VPN & Remote
+        mtr
+        iperf3
+        dnsutils
+        ldns
+        aria2
+        socat
+        nmap
+        ipcalc
         networkmanager-openvpn
         openvpn
         wireguard-tools
-        anydesk             # Remote desktop
-        tigervnc            # VNC client
+        anydesk
+        tigervnc
         
-        # ============================================================================
-        # DEVELOPMENT TOOLS
-        # ============================================================================
         # Development tools
-        git                 # Version control
-        nil                 # Nix LSP
-        graphviz            # Graph visualization
-        
-        # Static site generation
+        git
+        git-lfs
+        git-filter-repo
+        nil
+        graphviz
+        lmstudio
+        qucs-s
         hugo
         nodejs_20
         
-        # ============================================================================
-        # EMBEDDED & HARDWARE DEVELOPMENT
-        # ============================================================================
-        # STM32 Development
+        # STM32 development
         stm32cubemx
         stm32flash
         stlink-gui
         stlink-tool
         gcc-arm-embedded
         
-        # General embedded
+        # Embedded & hardware
         platformio
         esptool
-        dtc                 # Device tree compiler
+        dtc
         pkgs.pkgsCross.aarch64-multiplatform.stdenv.cc
+        pkgsCross.aarch64-multiplatform.binutils
+        pkgsCross.aarch64-multiplatform.buildPackages.gcc
+        pkgsCross.aarch64-multiplatform.buildPackages.binutils
+        bison
+        flex
+        arduino-ide
         
         # Mobile/Android development
         frostix.mtkclient-git
+        edl
+        pmbootstrap
+        gptfdisk
+        apktool
+        waydroid
+        android-tools
+      #  android-studio
+        imgpatchtools
+        scrcpy
+        
         # Image editing
         gimp
-        darktable           # RAW photo processor
-        pngquant            # PNG optimizer
+        darktable
+        pngquant
         
-        # 3D & Video
+        # 3D & video
         blender
-        wf-recorder         # Wayland screen recorder
-        webcamoid           # Webcam utility
+        wf-recorder
+        webcamoid
         
-        # Audio/Music
+        # Audio/music
         audacity
-        ardour              # Professional audio
-        tauon               # Music player
-        pavucontrol         # PulseAudio control
-        playerctl           # Media player control
-        mpdris2             # MPD integration
+      #  (ardour.override { videoSupport = false; })
+        ardour
+        tauon
+        pavucontrol
+        playerctl
+        mpdris2
         
         # Video players
         vlc
-        mpvpaper            # Video wallpaper
-        ani-cli             # Anime streaming
+        mpvpaper
+        ani-cli
         
-        # ============================================================================
-        # SYSTEM THEMING & DESKTOP
-        # ============================================================================
         # GNOME components
         gnome-keyring
         gnome-control-center
         gnome-bluetooth
-        blueberry           # Bluetooth manager
+        blueberry
         
         # Wallpapers & backgrounds
         waypaper
@@ -189,93 +186,74 @@
         swww
         
         # Hyprland/Wayland tools
-        hyprpicker          # Color picker
-        wl-clipboard        # Clipboard manager
-        cliphist            # Clipboard history
-        fuzzel              # Application launcher
-        slurp               # Screen area selection
-        grim                # Screenshot utility
-        swappy              # Screenshot editor
-        wofi-calc           # Calculator for wofi
+        hyprpicker
+        wl-clipboard
+        cliphist
+        fuzzel
+        slurp
+        grim
+        swappy
+        wofi-calc
         
         # System integration
-        brightnessctl       # Brightness control
-        wlsunset            # Blue light filter
-        libnotify           # Notifications
-        xdg-user-dirs       # User directories
-        upower              # Power management
-        yad                 # Dialog boxes
-        ydotool             # Input automation
+        brightnessctl
+        wlsunset
+        libnotify
+        xdg-user-dirs
+        upower
+        yad
+        ydotool
         
-        # ============================================================================
-        # SYSTEM LIBRARIES & DEPENDENCIES
-        # ============================================================================
-        bluez               # Bluetooth stack
-        wireplumber         # Audio session manager
-        networkmanager      # Network management
-        
-        # GTK/UI libraries
+        # System libraries
+        bluez
+        wireplumber
+        networkmanager
         libdbusmenu-gtk3
         webp-pixbuf-loader
         gtk-layer-shell
         gtksourceview3
         gobject-introspection
-        gjs                 # GNOME JavaScript
+        gjs
         
-        # Development libraries (Consider: Move to shell.nix for projects)
+        # Development libraries (Consider: Move to per-project shell.nix)
         tinyxml-2
         gtkmm3
         gtksourceviewmm
         cairomm
         
-        # ============================================================================
-        # FONTS
-        # ============================================================================
+        # Fonts
         google-fonts
         ibm-plex
         
-        # ============================================================================
-        # GAMING & ENTERTAINMENT
-        # ============================================================================
-        prismlauncher       # Minecraft launcher
+        # Gaming
+        prismlauncher
         
-        # ============================================================================
-        # PRODUCTIVITY & OFFICE
-        # ============================================================================
-        ghex                # Hex editor
-        tesseract           # OCR
-        clipgrab            # Video downloader
+        # Productivity
+        ghex
+        tesseract
+        super-productivity
         
-        # ============================================================================
-        # UTILITIES & MISC
-        # ============================================================================
-        ventoy-full         # Bootable USB creator
-        gparted             # Partition editor
-        gnome.gvfs          # Virtual filesystem
-        
-        # System debugging
-        strace              # System call tracer
-        ltrace              # Library call tracer
-        lsof                # List open files
-        
-        # Compression/decompression
-        gnupg               # Encryption
-        
-        # Misc tools
+        # Utilities
+        ventoy-full
+        gparted
+        gnome.gvfs
+        strace
+        ltrace
+        lsof
+        gnupg
         coreutils
         curl
-        ddcutil             # Monitor control
-        gojq                # Go JSON processor
-        dart-sass           # Sass compiler
-        axel                # Download accelerator
+        ddcutil
+        gojq
+        dart-sass
+        axel
+        google-authenticator
         
-        # ============================================================================
-        # PYTHON ENVIRONMENT
-        # ============================================================================
+        # Python environment
         pyenv.out
         python312Packages.debugpy
-        (python312.withPackages(ps: with ps; [
-          # Core Python packages
+        (python313.withPackages(ps: with ps; [
+          # Core
           numpy
           pillow
           setuptools-scm
@@ -292,17 +270,17 @@
           ordered-set
           inotify-simple
           
-          # Audio processing
+          # Audio
           aubio
           pyaudio
           speechrecognition
           
-          # GUI frameworks
+          # GUI
           tkinter
           pycairo
           pygobject3
           
-          # System integration
+          # System
           pywayland
           dbus-python
           pydbus
@@ -318,6 +296,10 @@
           # Development
           poetry-core
           breezy
+          ipykernel
+          jupyter
+          notebook
+          open-interpreter
           
           # APIs
           google
