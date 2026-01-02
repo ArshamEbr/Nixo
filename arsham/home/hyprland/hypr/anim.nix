@@ -38,6 +38,8 @@
       "specialWorkspace, 1, 2, md3_decel, slidefadevert 15%"
       "specialWorkspace, 1, 2.2, md3_decel, slidevert"
       "borderangle, 1, 90, linear, loop"
+      "hyprfocusIn, 1, 2, easeSoft"
+      "hyprfocusOut, 1, 8, crazyshot"
       ];
     };
   };
