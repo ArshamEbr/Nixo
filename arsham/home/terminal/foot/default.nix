@@ -23,11 +23,11 @@
 
       cursor = {
         style = "beam";
-        color = "0F131C DFE2EF";
         beam-thickness = 1.5;
       };
 
       colors = {
+        cursor = "0F131C DFE2EF";
         alpha = 0.7;
         background = "0F131C";
         foreground = "DFE2EF";
