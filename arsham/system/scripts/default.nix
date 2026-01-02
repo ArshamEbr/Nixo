@@ -17,90 +17,96 @@ let
       #    Check dGPU Status     #
       #                          #
       ############################
-      #!/run/current-system/sw/bin/bash
-      set -x
-      vfio_status=$(lspci -nnk -d 10de:1c94 | grep -i 'Kernel driver in use' | grep -i 'vfio-pci')
-      if [[ -n "$vfio_status" ]]; then
-        notify-send "NVIDIA dGPU is Passed Through" --icon=$HOME/nixo/resources/icons/nvidia.png
-        notifx1 detached & disown
+      #!/usr/bin/env bash
+      # Hardware ID for your dGPU (GTX 1060 Mobile?)
+      GPU_ID="10de:1c94"
+      driver_info=$(lspci -nnk -d "$GPU_ID" | grep -i "Kernel driver in use")
+      if [[ "$driver_info" == *"vfio-pci"* ]]; then
+        notify-send "dGPU Status" "NVIDIA dGPU is Passed Through" --icon="$HOME/nixo/resources/icons/nvidia.png"
+        notifx1 detached
+      elif [[ "$driver_info" == *"nvidia"* ]]; then
+        notify-send "dGPU Status" "NVIDIA dGPU is Under Control" --icon="$HOME/nixo/resources/icons/lgpu.png"
+        notifx1 vfio_off
       else
-        nvidia_status=$(lspci -nnk -d 10de:1c94 | grep -i 'Kernel driver in use' | grep -i 'nvidia')
-        if [[ -n "$nvidia_status" ]]; then
-          notify-send "NVIDIA dGPU is Under Control" --icon=$HOME/nixo/resources/icons/lgpu.png
-          notifx1 vfio_off & disown
-        else
-          notify-send "NVIDIA dGPU is in an Unknown State" --icon=$HOME/nixo/resources/icons/report.png
-          notifx1 warn & disown
-        fi
+        notify-send "dGPU Status" "NVIDIA dGPU is in an Unknown State" --icon="$HOME/nixo/resources/icons/report.png"
+        notifx1 warn
       fi
       ENDX1
       chmod 755 $out/bin/check_gpu_status
-      cat > $out/bin/dettach_safe <<'ENDX2'
+      cat > $out/bin/detach_safe <<'ENDX2'
       ############################
       #                          #
       #    Detach dGPU Safely    #
       #                          #
       ############################
-      #!/run/current-system/sw/bin/bash
-      set -x
-  
-      # Check if NVIDIA dGPU is already detached
-      driver=$(lspci -nnk -d 10de:1c94 | grep "Kernel driver in use" | awk -F': ' '{print $2}')
+      #!/usr/bin/env bash
+      
+      GPU_ID="10de:1c94"
+      driver=$(lspci -nnk -d "$GPU_ID" | grep "Kernel driver in use" | awk -F': ' '{print $2}')
       if [[ "$driver" == "vfio-pci" ]]; then
-        notify-send "NVIDIA dGPU is Already Detached" --icon=$HOME/nixo/resources/icons/gpu.png
-        notifx1 notif & disown
+        notify-send "Status" "NVIDIA dGPU is Already Detached" --icon="$HOME/nixo/resources/icons/gpu.png"
+        notifx1 detached
         exit 0
       fi
-  
-      # Check for processes using /dev/nvidia0
-      nvidia_processes=$(lsof /dev/nvidia* | awk 'NR>1 {print $1, $2}' | sort -u)
+      if [[ "$driver" != "nvidia" ]]; then
+        notify-send "Error" "dGPU is in an unknown state (Driver: $driver)" --icon="$HOME/nixo/resources/icons/report.png"
+        notifx1 warn
+        exit 1
+      fi
+      nvidia_processes=$(lsof /dev/nvidia* 2>/dev/null | awk 'NR>1 {print $1, $2}' | sort -u)
       if [ -n "$nvidia_processes" ]; then
-        notify-send -t 10000 "The following processes are using dGPU:" "\n$nvidia_processes" --icon=$HOME/nixo/resources/icons/warning.png
-        notifx1 warn & disown
-        echo "dGPU detach aborted: processes using /dev/nvidia0:"
+        notify-send -t 10000 "Abort" "Processes are using the dGPU:\n$nvidia_processes" --icon="$HOME/nixo/resources/icons/warning.png"
+        notifx1 warn
+        echo "Abort: Processes using /dev/nvidia0:"
         echo "$nvidia_processes"
         exit 1
       fi
-  
-      # Check for compute processes using nvidia-smi
-      pids=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader | xargs)
+      pids=$(nvidia-smi --query-compute-apps=pid --format=csv,noheader 2>/dev/null | xargs)
       if [ -n "$pids" ]; then
-        notify-send -t 10000 "dGPU Detach Aborted" "The following compute processes are using the dGPU:\n$pids" --icon=$HOME/nixo/resources/icons/warning.png
-        notifx1 warn & disown
-        echo "dGPU detach aborted: compute processes running: $pids"
+        notify-send -t 10000 "Abort" "Compute processes running:\n$pids" --icon="$HOME/nixo/resources/icons/warning.png"
+        notifx1 warn
+        echo "Abort: Compute processes running: $pids"
         exit 1
       fi
-  
-      # Detach the dGPU
+      echo "Unloading NVIDIA drivers..."
       sudo ${pkgs.kmod}/bin/rmmod nvidia_modeset nvidia_uvm nvidia
-      sudo ${pkgs.kmod}/bin/modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1
+      echo "Loading VFIO modules..."
+      sudo ${pkgs.kmod}/bin/modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1 
+      echo "Detaching PCI device..."
       sudo ${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_01_00_0
-      notify-send "NVIDIA dGPU is Detached" --icon=$HOME/nixo/resources/icons/nvidia.png
-      paplay ~/nixo/resources/sfx/detach.mp3 & disown
-      exit
+      notify-send "Success" "NVIDIA dGPU is Detached" --icon="$HOME/nixo/resources/icons/nvidia.png"
+      notifx1 detached
       ENDX2
-      chmod 755 $out/bin/dettach_safe
+      chmod 755 $out/bin/detach_safe
       cat > $out/bin/reattach_safe <<'ENDX3'
       ############################
       #                          #
       #   Reattach dGPU Safely   #
       #                          #
       ############################
-      #!/run/current-system/sw/bin/bash
-      set -x
-      driver=$(lspci -nnk -d 10de:1c94 | grep "Kernel driver in use" | awk -F': ' '{print $2}') 
+      #!/usr/bin/env bash
+      GPU_ID="10de:1c94"
+      driver=$(lspci -nnk -d "$GPU_ID" | grep "Kernel driver in use" | awk -F': ' '{print $2}')
       if [[ "$driver" == "nvidia" ]]; then
-        notify-send "NVIDIA dGPU is already attached" --icon=$HOME/nixo/resources/icons/lgpu.png
-        notifx1 notif & disown
+        notify-send "Status" "NVIDIA dGPU is already attached" --icon="$HOME/nixo/resources/icons/lgpu.png"
+        notifx1 notif
         exit 0
       fi
+      if [[ "$driver" != "vfio-pci" ]]; then
+        notify-send "Error" "dGPU is in an unknown state (Driver: $driver). Cannot reattach." --icon="$HOME/nixo/resources/icons/report.png"
+        notifx1 warn
+        exit 1
+      fi
+      echo "Ensuring kvmfr is loaded..."
       sudo ${pkgs.kmod}/bin/modprobe kvmfr static_size_mb=64
+      echo "Unloading VFIO modules..."
       sudo ${pkgs.kmod}/bin/rmmod vfio_pci vfio_pci_core vfio_iommu_type1
+      echo "Reattaching PCI device to Host..."
       sudo ${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_0
+      echo "Loading NVIDIA drivers..."
       sudo ${pkgs.kmod}/bin/modprobe -i nvidia_modeset nvidia_uvm nvidia
-      notify-send "NVIDIA dGPU is Reattached" --icon=$HOME/nixo/resources/icons/nvidia.png
-      paplay ~/nixo/resources/sfx/attach.mp3 & disown
-      exit
+      notify-send "Success" "NVIDIA dGPU is Reattached" --icon="$HOME/nixo/resources/icons/nvidia.png"
+      notifx1 reattached
       ENDX3
       chmod 755 $out/bin/reattach_safe
     '';
@@ -117,7 +123,7 @@ let
       #   Battery Conservation Mode   #
       #                               #
       #################################
-      #!/run/current-system/sw/bin/bash
+      #!/usr/bin/env bash
       set -x
   
       # Function to turn conservation mode on
@@ -156,7 +162,7 @@ let
       #    Change TLP Profile    #
       #                          #
       ############################
-      #!/run/current-system/sw/bin/bash
+      #!/usr/bin/env bash
       set -x
       current_mode=$(${pkgs.tlp}/bin/tlp-stat -s | grep "Mode" | awk '{print $3}')
       if [[ "$current_mode" == "battery" ]]; then
@@ -181,7 +187,7 @@ let
       #  For Displaying On Hyprlock  #
       #                              #
       ################################
-      #!/run/current-system/sw/bin/bash
+      #!/usr/bin/env bash
       set -x
       #Variables
       enable_battery=false
@@ -226,20 +232,26 @@ let
       #       the windows VM        #
       #                             #
       ###############################
-      #!/run/current-system/sw/bin/bash
-      set -x
-      dettach_safe
-      exit_code=$?
-      if [ $exit_code -ne 0 ]; then
-          notify-send "Windows Boot aborted!" --icon=$HOME/nixo/resources/icons/error.png
+      #!/usr/bin/env bash
+      if ! detach_safe; then
+          notify-send "Boot Error" "GPU Detach failed! Windows Boot aborted." --icon="$HOME/nixo/resources/icons/error.png"
+          notifx1 error
           exit 1
       fi
+      vm_name="Win10"
+      state=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate "$vm_name" 2>/dev/null)
+      if [[ "$state" == "running" ]]; then
+          notify-send "Status" "Windows VM is already running." --icon="$HOME/nixo/resources/icons/windows.png"
+          looking-glass-client -F & disown
+          exit 0
+      fi
       pkill mpvpaper
-      ${pkgs.libvirt}/bin/virsh -c qemu:///system start Win11
+      pkill swaybg
+      echo "Starting $vm_name..."
+      ${pkgs.libvirt}/bin/virsh -c qemu:///system start "$vm_name"
       looking-glass-client -F & disown
-      notify-send "Windows VM is Booting UP!" --icon=$HOME/nixo/resources/icons/windows.png
-      paplay ~/nixo/resources/sfx/windows_on.mp3 & disown
-      exit
+      notify-send "VM Manager" "Windows VM is Booting UP!" --icon="$HOME/nixo/resources/icons/windows.png"
+      notifx1 windows_on
       ENDX1
       chmod 755 $out/bin/dgpu_windows_vm_start
       cat > $out/bin/dgpu_windows_vm_shutdown <<'ENDX2'
@@ -249,36 +261,55 @@ let
       #    and reattach the dGPU    #
       #                             #
       ###############################
-      #!/run/current-system/sw/bin/bash
-      set -x
-      pkill swaybg
-
-      # pgrep mpvpaper > /dev/null || mpvpaper '*' ~/Wallpapers/mitsu.mp4 -o '--loop-file=yes' & disown
-      ${pkgs.libvirt}/bin/virsh -c qemu:///system shutdown Win11 
-      ${pkgs.libvirt}/bin/virsh -c qemu:///system shutdown Win11_iAudio
-      notify-send "Shutdown initiated for Windows VM" --icon=$HOME/nixo/resources/icons/close.png
-      max_wait=10
+      #!/usr/bin/env bash
+      VM1="Win10"
+      VM2="Win11_iAudio"
+      MAX_WAIT=10
+      state_win10=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate "$VM1" 2>/dev/null)
+      state_audio=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate "$VM2" 2>/dev/null)
+      if [[ "$state_win10" == "shut off" && "$state_audio" == "shut off" ]]; then
+          notify-send "VM Manager" "VMs are already off. Aborting shutdown sequence." --icon="$HOME/nixo/resources/icons/shutdown.png"
+          exit 0
+      fi
+      # pkill swaybg
+      # pkill -f mpvpaper 
+      safe_shutdown() {
+        local vm="$1"
+        local state="$2"
+        if [[ "$state" == "running" ]]; then
+          echo "Shutting down $vm..."
+          ${pkgs.libvirt}/bin/virsh -c qemu:///system shutdown "$vm" > /dev/null
+        elif [[ "$state" == "shut off" ]]; then
+          echo "$vm is already off."
+        else
+          echo "$vm is in state: $state (skipping)"
+        fi
+      }
+      safe_shutdown "$VM1" "$state_win10"
+      safe_shutdown "$VM2" "$state_audio"
+      notify-send "VM Manager" "Shutting down Windows VMs..." --icon="$HOME/nixo/resources/icons/close.png"
       waited=0
       while true; do
-          state_win11=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate Win11 2>/dev/null)
-          state_audio_win11=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate Win11_iAudio 2>/dev/null)     
-          if [[ "$state_win11" == "shut off" && "$state_audio_win11" == "shut off" ]]; then
+          state_win10=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate "$VM1" 2>/dev/null)
+          state_audio=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate "$VM2" 2>/dev/null)
+          if [[ "$state_win10" == "shut off" && "$state_audio" == "shut off" ]]; then
+              echo "All VMs shut down successfully."
               break
           fi    
           sleep 2
           waited=$((waited+2))     
-          if (( waited >= max_wait )); then
-              notify-send "Timeout waiting for Windows VM to shut down. GPU reattach aborted." --icon=$HOME/nixo/resources/icons/report.png
-              paplay ~/nixo/resources/sfx/error.mp3 & disown
+          if (( waited >= MAX_WAIT )); then
+              notify-send "Timeout" "Windows VM took too long to shut down." --icon="$HOME/nixo/resources/icons/report.png"
+              notifx1 error &
               exit 1
           fi
-      done     
+      done
       pkill -f looking-glass-client 
-      notify-send "Windows VM is completely shutdown!" --icon=$HOME/nixo/resources/icons/shutdown.png
-      paplay ~/nixo/resources/sfx/windows_off.mp3 & disown
-      reattach_safe & disown
-      iaudio_reattach & disown
-      exit
+      notify-send "VM Manager" "Windows VMs completely shutdown!" --icon="$HOME/nixo/resources/icons/shutdown.png"
+      notifx1 windows_off &
+      reattach_safe & 
+      iaudio_reattach &
+      exit 0
       ENDX2
       chmod 755 $out/bin/dgpu_windows_vm_shutdown
       cat > $out/bin/iaudio_reattach <<'ENDX3'
@@ -288,7 +319,7 @@ let
       #          Speakers           #
       #                             #
       ###############################
-      #!/run/current-system/sw/bin/bash 
+      #!/usr/bin/env bash 
       set -x
       driver=$(lspci -nnk -d 8086:a0c8 | grep "Kernel driver in use" | awk -F': ' '{print $2}')
       if [[ "$driver" == "sof-audio-pci-intel-tgl" ]]; then
@@ -321,7 +352,7 @@ let
       #  experiance in windows VM  #
       #                            #
       ##############################
-      #!/run/current-system/sw/bin/bash
+      #!/usr/bin/env bash
       set -x
       driver=$(lspci -nnk -d 8086:a0c8 | grep "Kernel driver in use" | awk -F': ' '{print $2}') 
       if [[ "$driver" == "vfio-pci" ]]; then
@@ -354,10 +385,10 @@ let
       #        start the VM         #
       #                             #
       ###############################
-      #!/run/current-system/sw/bin/bash
+      #!/usr/bin/env bash
       set -x
       set -e
-      dettach_safe
+      detach_safe
       exit_code_dgpu=$?
       if [ $exit_code_dgpu=$? -ne 0 ]; then
           notify-send "Windows Boot aborted" --icon=$HOME/nixo/resources/icons/error.png
@@ -381,7 +412,7 @@ let
   };
 
   fancy_wallpaper_switcher = pkgs.writeShellScriptBin "wallch" ''
-    #!/run/current-system/sw/bin/bash
+    #!/usr/bin/env bash
 
     # Configuration file
     CONFIG_FILE="$HOME/.config/swww-control.conf"
@@ -517,7 +548,7 @@ let
   '';
   
   nh-go = pkgs.writeScriptBin "nixo" ''
-    #!/run/current-system/sw/bin/bash
+    #!/usr/bin/env bash
     
     tlp_mode() {
       sudo ${pkgs.tlp}/bin/tlp "$1"
@@ -558,9 +589,9 @@ let
   '';
 
   way-net-go = pkgs.writeScriptBin "way_network" ''
-    #!/run/current-system/sw/bin/bash
+    #!/usr/bin/env bash
     # Change to your network interface
-    INTERFACE="wlp2s0"
+    INTERFACE="wlan0"
     
     # Get total bytes since boot/interface-up
     RX_TOTAL=$(cat /sys/class/net/$INTERFACE/statistics/rx_bytes)
@@ -587,7 +618,7 @@ let
   '';
 
   record-scripto = pkgs.writeScriptBin "record-script" ''
-    #!/run/current-system/sw/bin/bash
+    #!/usr/bin/env bash
 
     getdate() {
         date '+%Y-%m-%d_%H.%M.%S'
@@ -640,6 +671,17 @@ let
     '';
   };
 
+  way-neto = pkgs.stdenv.mkDerivation {
+    name = "way-neto";
+    src = ../../../resources/scripts/waynet.sh;
+    phases = [ "installPhase" ];
+    installPhase = ''
+      mkdir -p $out/bin
+      cp $src $out/bin/waynet
+      chmod +x $out/bin/waynet
+    '';
+  };
+
   odin4 = pkgs.stdenv.mkDerivation {
     name = "odin4";
     src = ../../../resources/bin/odin4;
@@ -688,7 +730,7 @@ let
   };
 
   power-go = pkgs.writeScriptBin "power-save" ''
-    #!/run/current-system/sw/bin/bash
+    #!/usr/bin/env bash
     if hyprctl getoption animations:enabled | grep -q 'int: 1'; then
       hyprctl --batch "\
         keyword animations:enabled 0;\
@@ -722,7 +764,7 @@ in
           {command = "${pkgs.kmod}/bin/rmmod nvidia_modeset nvidia_uvm nvidia";              options = [ "NOPASSWD" ];}
           {command = "${pkgs.kmod}/bin/modprobe -i vfio_pci vfio_pci_core vfio_iommu_type1"; options = [ "NOPASSWD" ];}
           {command = "${pkgs.libvirt}/bin/virsh nodedev-detach pci_0000_01_00_0";            options = [ "NOPASSWD" ];}
-            
+          
           {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_01_00_0";          options = [ "NOPASSWD" ];}
           {command = "${pkgs.kmod}/bin/rmmod vfio_pci vfio_pci_core vfio_iommu_type1";       options = [ "NOPASSWD" ];}
           {command = "${pkgs.kmod}/bin/modprobe -i nvidia_modeset nvidia_uvm nvidia";        options = [ "NOPASSWD" ];}
@@ -736,7 +778,7 @@ in
           {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_3";          options = [ "NOPASSWD" ];}
           {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_4";          options = [ "NOPASSWD" ];}
           {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_5";          options = [ "NOPASSWD" ];}
-
+          
           {command = "${pkgs.kmod}/bin/modprobe kvmfr static_size_mb=64";                    options = [ "NOPASSWD" ];}
         
         ]; 
@@ -749,7 +791,8 @@ in
         Battery_Related
         fancy_wallpaper_switcher
         nh-go
-        way-net-go
+      #  way-net-go
+        way-neto
         record-scripto
       #  waybar-cava
         gpu-info
