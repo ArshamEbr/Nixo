@@ -32,6 +32,11 @@
       url = "github:shomykohai/frostix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -161,7 +166,12 @@
               inherit user;
               frostix = frostixPkgs;
             };
-            home-manager.users.${user.name} = import ./arsham/home/home.nix;
+            home-manager.users.${user.name} = {
+              imports = [
+                ./arsham/home/home.nix
+                inputs.caelestia-shell.homeManagerModules.default
+              ];
+            };
           }
         ];
       };
