@@ -1,9 +1,3 @@
-/**
-  Configures system event notifications with sound alerts for hardware, power, and network changes.
-  Installs a shell script to play event-specific sounds, sets up dispatcher scripts for Wi-Fi events,
-  and defines udev rules for USB and power supply actions. Enables related system services for alerts.
-*/
-
 {
   pkgs,
   user,

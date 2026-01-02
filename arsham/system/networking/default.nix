@@ -36,12 +36,16 @@
     # proxy.default = "http://192.168.1.120:10808";
     # proxy.default = "http://192.168.202.53:10808";
     # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-    # wireless.enable = true;
+    
+    # interfaces.wlp2s0.useDHCP = lib.mkDefault true;
+    # wireless.enable = false;
     hostName = "${user.host}";
     useDHCP = lib.mkDefault true;
-    networkmanager.enable = true;
-    # interfaces.wlp2s0.useDHCP = lib.mkDefault true;
-
+    networkmanager = {
+      enable = true;
+    #  wifi.backend = "iwd";
+    };
+  
   #  wireguard = {
   #    enable = false;
   #    interfaces = {

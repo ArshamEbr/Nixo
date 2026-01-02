@@ -40,8 +40,6 @@
   '';
 
   home.packages = with pkgs; [
-    libsForQt5.polkit-kde-agent
-    libsForQt5.xwaylandvideobridge
     libsForQt5.qt5ct
     libsForQt5.qwt
     libsForQt5.qtutilities
@@ -50,7 +48,6 @@
     kdePackages.qt5compat
 
     qt5.qtlocation
-  #  qt5.qtpositioning
     qt5.qtconnectivity
     qt5.qtsensors
     qt5.qtmultimedia
@@ -60,8 +57,6 @@
     qt5.qttools
     qt5.qtspeech
     qt5.qtwebsockets
-    qt5.qtwebchannel
-    qt5.qtwebengine
     qt5.qtserialport
   ];
 }

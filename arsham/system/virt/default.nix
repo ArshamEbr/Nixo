@@ -48,15 +48,10 @@
   environment.systemPackages = with pkgs; [
     virtiofsd
     qemu
-    protonup-qt
-    wine64
-    wine
-    winetricks
-    looking-glass-client # KVM client
+    qemu-user
+  #  protonup-qt
+    looking-glass-client
     
-    # Game related
-    heroic
-    lutris
     antimicrox
   ];
 }

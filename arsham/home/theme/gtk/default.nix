@@ -62,7 +62,6 @@ in
       gtk4
       nwg-look
       # GTK Themes
-      gradience
       catppuccin-gtk
       yaru-theme
       gnome-themes-extra

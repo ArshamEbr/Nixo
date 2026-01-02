@@ -1,8 +1,3 @@
-/**
-  NixOS module that provides custom utilities and scripts for managing dGPU VFIO passthrough, battery settings, Windows VM, audio device reattachment, dynamic wallpapers, network monitoring, GPU info, and power-saving features. 
-  Installs related binaries and configures sudo rules for seamless hardware and VM management.
-*/
-
 { 
   pkgs, 
   user, 

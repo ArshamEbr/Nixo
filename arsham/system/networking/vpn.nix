@@ -5,21 +5,11 @@
 
 {
   programs = {
-    clash-verge = {
-      enable = true;
-      tunMode = true;
-    };
-    
-    nekoray = {
+    throne = {
       enable = true;
       tunMode = {
         enable = true;
       };
     };
   };
-#  services.mihomo = {
-#    enable = true;
-#    tunMode = true;
-#    configFile = "";
-#  };
 }

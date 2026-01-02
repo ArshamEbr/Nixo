@@ -17,47 +17,30 @@
     ./virt
   ];
   
-  # ============================================================================
-  # NIX CONFIGURATION
-  # ============================================================================
   nix = {
     optimise.automatic = true;
     settings = {
       accept-flake-config = true;
       builders-use-substitutes = true;
       auto-optimise-store = true;
-      experimental-features = [ 
-        "nix-command" 
-        "flakes" 
-      ];
-      
-      trusted-users = [
-        "root"
-        "@wheel"
-      ];
+      experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = [ "root" "@wheel" ];
     };
   };
   
-  # ============================================================================
-  # SYSTEM CONFIGURATION
-  # ============================================================================
   zramSwap.enable = true;
-  nixpkgs.config.allowUnfree = true;
   
   hardware = {
     enableAllFirmware = true;
     uinput.enable = true;
   };
   
-  # ============================================================================
-  # LOCALIZATION & TIME
-  # ============================================================================
   location.provider = "geoclue2";
   time.timeZone = "Asia/Tehran"; # TODO: Change to your location
   
   i18n = {
     defaultLocale = "en_US.UTF-8";
-    supportedLocales = [ "en_US.UTF-8/UTF-8" "fa_IR/UTF-8" ];  # TODO: Change to your location
+    supportedLocales = [ "en_US.UTF-8/UTF-8" "fa_IR/UTF-8" ]; # TODO: Change to your location
     extraLocaleSettings = {
       LC_ADDRESS = "en_US.UTF-8";
       LC_IDENTIFICATION = "en_US.UTF-8";
@@ -71,29 +54,23 @@
     };
   };
   
-  # ============================================================================
-  # SYSTEM SERVICES
-  # ============================================================================
   services = {
-    # Core system services
     dbus.enable = true;
-    acpid.enable = true;                    # ACPI daemon for power events
-    fstrim.enable = true;                   # SSD TRIM support
-    geoclue2.enable = true;                 # Location services
+    acpid.enable = true;
+    fstrim.enable = true;
+    geoclue2.enable = true;
+    tailscale.enable = true;
+    gnome.gnome-keyring.enable = true;
+    libinput.enable = true;
+    udisks2.enable = true;
+    vnstat.enable = true;
+    gvfs.enable = true;
     
-    # Desktop services
-    gnome.gnome-keyring.enable = true;      # Credential storage
-    libinput.enable = true;                 # Input device management
-    touchegg.enable = true;                 # Touchpad gestures
-    udisks2.enable = true;                  # Automatic disk mounting
-    gvfs.enable = true;                     # Virtual filesystem (for file managers)
-    
-    # Hardware management
     udev = {
       enable = true;
       packages = [ 
-        pkgs.libmtp                         # MTP device support (Android, etc.)
-        pkgs.libinput                       # Input device support
+        pkgs.libmtp
+        pkgs.libinput
       ];
       
       extraRules = ''
@@ -101,41 +78,24 @@
       '';
     };
     
-    # Printing
     printing = {
       enable = true;
       drivers = with pkgs; [ 
-        gutenprint                          # High-quality printer drivers
-        hplipWithPlugin                     # HP printer support
+        gutenprint
+        hplipWithPlugin
       ];
     };
   };
   
-  # ============================================================================
-  # SYSTEM PROGRAMS
-  # ============================================================================
   programs = {
-    # Desktop environment
-    hyprland.enable = true;                 # Wayland compositor
+    hyprland.enable = true;
+    ccache.enable = true;
+    adb.enable = true;
     
-    # Development tools
-    ccache.enable = true;                   # Compiler cache for faster builds
-    adb.enable = true;                      # Android Debug Bridge
-    
-    # Shell configuration
-    bash = {
-      shellAliases = {
-        hyprxd = "dbus-run-session Hyprland";
-      };
+    bash.shellAliases = {
+      hyprxd = "dbus-run-session Hyprland";
     };
     
-    # Gaming
-    steam = {
-      enable = true;
-    #  extest.enable = true;                # Uncomment for Steam Input support
-    };
-    
-    # Dynamic linking for non-NixOS binaries
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
@@ -153,36 +113,55 @@
         xorg.libXfixes
         xorg.libXdmcp
         fontconfig
+        file
+        cpio
+        gzip
+        xz
+        lzop
+        bzip2
+        lz4
+        perl
+        which
+        findutils
+        coreutils
       ];
     };
     
-    # NixOS Helper
     nh = {
       enable = true;
       flake = "/home/${user.name}/nixo";
       clean = {
-        enable = false;                     # Disabled automatic cleanup
+        enable = false;
         dates = "weekly";
-        extraArgs = "--keep 3";
+        extraArgs = "--keep 10";
       };
     };
   };
   
-  # ============================================================================
-  # SECURITY & PERMISSIONS
-  # ============================================================================
   security = {
-    rtkit.enable = true;                    # Real-time permissions for audio
-    polkit.enable = true;                   # Privilege escalation framework
+    rtkit.enable = true;
+    polkit = { 
+      enable = true;
+      extraConfig = ''
+        polkit.addRule(function(action, subject) {
+          if (action.id == "org.libvirt.unix.manage" &&
+              subject.isInGroup("wheel")) {
+            return polkit.Result.YES;
+          }
+      
+          if (subject.isInGroup("wheel")) {
+            return polkit.Result.AUTH_ADMIN_KEEP;
+          }
+        });
+      '';
+    };
     
-    # Sudo configuration
     sudo.configFile = ''
       root   ALL=(ALL:ALL) SETENV: ALL
       %wheel ALL=(ALL:ALL) SETENV: ALL
       ${user.name}  ALL=(ALL:ALL) SETENV: ALL
     '';
     
-    # Sunshine streaming server wrapper
     wrappers.sunshine = {
       owner = "root";
       group = "root";
@@ -191,9 +170,6 @@
     };
   };
   
-  # ============================================================================
-  # USER MANAGEMENT
-  # ============================================================================
   users = {
     groups = {
       mlocate = {};
@@ -206,222 +182,161 @@
       isNormalUser = true;
       description = "${user.name}";
       extraGroups = [ 
-        "networkmanager"                   # Network configuration
-        "scanner"                          # Scanner access
-        "lp"                               # Printer access
-        "wheel"                            # Sudo privileges
-        "input"                            # Input device access
-        "uinput"                           # User input device creation
-        "render"                           # GPU rendering
-        "video"                            # Video device access
-        "audio"                            # Audio device access
-        "docker"                           # Docker container management
-        "libvirt"                          # Virtualization
-        "libvirtd"                         # Virtualization daemon
-        "kvm"                              # Kernel Virtual Machine
-        "virsh"                            # Virtual machine shell
-        "dialout"                          # Serial port access
-        "adbusers"                         # Android Debug Bridge
+        "networkmanager"
+        "scanner"
+        "lp"
+        "wheel"
+        "input"
+        "uinput"
+        "render"
+        "video"
+        "audio"
+        "docker"
+        "libvirt"
+        "libvirtd"
+        "kvm"
+        "virsh"
+        "dialout"
+        "adbusers"
       ];
     };
   };
   
   system.stateVersion = "24.11";
   
-  # ============================================================================
-  # ENVIRONMENT & SYSTEM PACKAGES
-  # ============================================================================
   environment = {
     localBinInPath = true;
+    
     sessionVariables = {
-      NIXOS_OZONE_WL = "1";                # Enable Wayland for Chromium-based apps
-      MOZ_ENABLE_WAYLAND = "1";            # Enable Wayland for Firefox
+      NIXOS_OZONE_WL = "1";
+      MOZ_ENABLE_WAYLAND = "1";
     };
     
     systemPackages = 
       (with pkgs-stable; [
-        # Stable packages go here
+        # Add stable packages here if needed
       ])
       ++
       (with pkgs; [
-        # ========================================================================
-        # CORE SYSTEM UTILITIES
-        # ========================================================================
-        inotify-tools          # File system event monitoring
-        e2fsprogs              # ext2/3/4 filesystem utilities
-        util-linux             # Essential system utilities (mount, fdisk, etc.)
-        openssl                # Cryptography toolkit
-        kbd                    # Keyboard utilities
-        killall                # Process termination utility
-        sudo                   # Privilege escalation
+        # Core utilities
+        inotify-tools
+        e2fsprogs
+        util-linux
+        openssl
+        kbd
+        killall
+        sudo
+        expect
         
-        # System information
-        btop                  # Modern system monitor
-        nvtopPackages.full    # GPU monitoring
-        glxinfo               # OpenGL information
-        usbutils              # USB utilities (lsusb)
-        pciutils              # PCI utilities (lspci)
+        # System monitoring
+        btop
+        nvtopPackages.full
+        mesa-demos
+        usbutils
+        pciutils
+      #  rustdesk
         
-        # File system tools
-        mlocate                # File location database
-        nix-index              # Nix package search
+        # File tools
+        mlocate
+        nix-index
         
-        # ========================================================================
-        # EDITORS & BASIC TOOLS
-        # ========================================================================
-        vim                    # Text editor
-        nano                   # Simple text editor
-        bc                     # Calculator
-        tldr                   # Simplified man pages
-        pay-respects           # Modern 'thefuck' command corrector
-        imagemagick            # Image manipulation
+        # Editors & basic tools
+        vim
+        nano
+        bc
+        tldr
+        pay-respects
+        imagemagick
         
-        # ========================================================================
-        # DEVELOPMENT TOOLS & LIBRARIES
-        # ========================================================================
-        # Version control & build tools
-        git                    # Version control
-        nodejs_20              # JavaScript runtime
-        meson                  # Build system
-        cmake                  # Build system generator
-        ninja                  # Build system
-        gnumake                # GNU Make
-        pkg-config             # Library metadata tool
-        gcc14                  # GNU Compiler Collection
-        typescript             # TypeScript compiler
-        node2nix               # NPM to Nix converter
-        nil                    # Nix Language Server
-        sublime4               # Text editor
-        zulu23                 # OpenJDK distribution
+        # Development
+        git
+        nodejs_20
+        meson
+        cmake
+        ninja
+        gnumake
+        pkg-config
+        gcc14
+        typescript
+        node2nix
+        nil
+        sublime4
+        zulu
         
         # Development libraries
-        glib.dev               # Development files
-        glibc.dev              # C library development files
-        gobject-introspection.dev  # Object introspection
-        pango.dev              # Text rendering
-        harfbuzz.dev           # Text shaping
-        cairo.dev              # 2D graphics
-        gdk-pixbuf.dev         # Image loading
-        atk.dev                # Accessibility toolkit
+        glib.dev
+        glibc.dev
+        gobject-introspection.dev
+        pango.dev
+        harfbuzz.dev
+        cairo.dev
+        gdk-pixbuf.dev
+        atk.dev
         
-        # ========================================================================
-        # HARDWARE & DEVICE SUPPORT
-        # ========================================================================
-        # USB & Mobile devices
-        libftdi1               # FTDI USB device support
-        gvfs                   # Virtual file system
-        jmtpfs                 # MTP filesystem
-        android-udev-rules     # Android USB rules
-        libmtp                 # Media Transfer Protocol
+        # Hardware & device support
+        libftdi1
+        gvfs
+        jmtpfs
+        libcamera
+        libinput-gestures
         
-        # Camera support
-        libcamera              # Camera support library
+        # Boot & system management
+        efibootmgr
+        binutils
+        systemdUkify
+        proot
+        nixos-generators
         
-        # ========================================================================
-        # BOOT & SYSTEM MANAGEMENT
-        # ========================================================================
-        # EFI and boot management
-        efibootmgr             # EFI boot manager
-        binutils               # Binary utilities
-        systemdUkify           # Unified Kernel Image creation
+        # Wayland & desktop
+        xwayland
+        wayland-scanner
+        waypipe
+        xdg-desktop-portal-hyprland
+        xdg-desktop-portal-gtk
+        brightnessctl
+        ydotool
+        wtype
+        wl-clipboard
+        evtest
+        wev
+        wlsunset
+        fcitx5
+        wofi
+        libqalculate
         
-        # Virtualization & containers
-        proot                  # User-space chroot
-        nixos-generators       # NixOS image generators
+        # Multimedia & streaming
+        wf-recorder
+        ffmpeg-full
+        mkvtoolnix-cli
+        sunshine
+        moonlight-qt
+        remmina
+        wayvnc
+        vulkan-tools
+        libva
+        libva-utils
         
-        # ========================================================================
-        # WAYLAND & DESKTOP ENVIRONMENT
-        # ========================================================================
-        # Core Wayland components
-        xwayland               # X11 compatibility layer
-        wayland-scanner        # Wayland protocol scanner
-        waypipe                # Wayland network forwarding
+        # GTK libraries
+        gtk3.dev
+        libappindicator-gtk3.dev
+        libnotify.dev
+        gtk4.dev
+        gjs.dev
+        gtksourceview.dev
+        tk
         
-        # Desktop portals
-        xdg-desktop-portal-hyprland  # Hyprland desktop portal
-        xdg-desktop-portal-gtk       # GTK desktop portal
-        
-        # Input & interaction
-        brightnessctl          # Screen brightness control
-        ydotool                # Input automation for Wayland
-        wtype                  # Text input for Wayland
-        wl-clipboard           # Clipboard utilities
-        evtest                 # Input event testing
-        wev                    # Wayland event viewer
-        
-        # Display & color
-        wlsunset               # Blue light filter
-        fcitx5                 # Input method framework
-        
-        # Application launcher
-        wofi                   # Application launcher
-        libqalculate           # Calculator library
-        
-        # ========================================================================
-        # MULTIMEDIA & STREAMING
-        # ========================================================================
-        # Video recording & processing
-        wf-recorder            # Wayland screen recorder
-        ffmpeg-full            # Complete multimedia framework
-        mkvtoolnix-cli         # Matroska video tools
-        
-        # Remote desktop & streaming
-        sunshine               # Game streaming server
-        moonlight-qt           # Game streaming client
-        rustdesk-flutter       # Remote desktop client
-        remmina                # Remote desktop client
-        wayvnc                 # VNC server for Wayland
-        freerdp3Override       # RDP client
-        
-        # Graphics & video acceleration
-        vulkan-tools           # Vulkan utilities
-        libva                  # Video acceleration framework
-        libva-utils            # Video acceleration utilities
-        
-        # ========================================================================
-        # GTK & GUI LIBRARIES
-        # ========================================================================
-        # GTK3 components
-        gtk3.dev               # GTK3 development files
-        libappindicator-gtk3.dev  # System tray support
-        libnotify.dev          # Notification development files
-        
-        # GTK4 components
-        gtk4.dev               # GTK4 development files
-        
-        # Additional GTK components
-        gjs.dev                # GJS development files
-        gtksourceview.dev      # Development files
-        
-        # Tk toolkit
-        tk                     # Tcl/Tk GUI toolkit
-        
-        # ========================================================================
-        # SYSTEM INTEGRATION & SESSION
-        # ========================================================================
-        # Authentication & session
-        polkit                 # Privilege escalation framework
-        polkit_gnome           # GNOME polkit agent
-        kdePackages.polkit-kde-agent-1  # KDE polkit agent
-        dconf                  # Configuration database
-        gnome-keyring          # Credential storage
-        linux-pam              # Pluggable Authentication Modules
-        
-        # Clipboard & utilities
-        cliphist               # Clipboard history
-        zenity                 # Dialog boxes
-        
-        # File management
-        xfce.thunar            # File manager
-        
-        # X11 compatibility
-        xorg.xinit             # X11 initialization
-        xorg.xhost             # X11 access control
-        
-        # Commented out packages (consider if needed)
-        # android-tools         # Android development tools
-        # kdePackages.xwaylandvideobridge  # Video bridge for screen sharing
-        # kdePackages.kde-cli-tools        # KDE command line tools
+        # System integration
+        polkit
+        polkit_gnome
+        kdePackages.polkit-kde-agent-1
+        dconf
+        gnome-keyring
+        linux-pam
+        cliphist
+        zenity
+        xfce.thunar
+        xorg.xinit
+        xorg.xhost
       ]);
   };
 }

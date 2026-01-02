@@ -39,10 +39,10 @@
     { device = "/dev/disk/by-uuid/03082412-cbdd-4fe0-9dee-277408f93e2a"; } 
   ];
 
-  fileSystems."/tmp" = {
-    fsType = "tmpfs";
-    options = [ "mode=1777" "size=2G" ];
-  };
+#  fileSystems."/tmp" = {
+#    fsType = "tmpfs";
+#    options = [ "mode=1777" "size=4G" ];
+#  };
     
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

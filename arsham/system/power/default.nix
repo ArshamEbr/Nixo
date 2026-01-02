@@ -17,7 +17,7 @@ TLP parameters for CPU, GPU, disk, and device power optimization.
   services = {
     system76-scheduler.settings.cfsProfiles.enable = true;     # Better scheduling for CPU cycles
     power-profiles-daemon.enable = false;
-    thermald.enable = true;                                   # only if on Intel CPUs
+    thermald.enable = false;                                   # only if on Intel CPUs
     tlp = {
       enable = true;
       settings = { # TODO change these based on your system! run "sudo tlp-stat"   

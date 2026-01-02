@@ -15,13 +15,13 @@
         vpl-gpu-rt 
         intel-media-driver 
         intel-compute-runtime 
-        vaapiIntel
+        intel-vaapi-driver
         libvdpau-va-gl
       ];
     };
     
     nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.latest;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
       modesetting.enable = true;
       powerManagement.enable = true;
       open = false;

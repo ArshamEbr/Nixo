@@ -25,16 +25,16 @@
     };
     
     kernelParams = [
-      "quiet"                    # Suppress most boot messages
-      "initcall_debug=n"         # Disable initcall debugging
-      "systemd.show_status=0"    # Hide systemd status messages
-      "fastboot"                 # Skip certain boot checks for faster boot
-      "intel_iommu=on"           # Enable Intel IOMMU for device passthrough
-      "iommu=pt"                 # Enable passthrough mode for IOMMU
-      "vfio-pci.ids=10de:1c94"   # Bind specific PCI device to vfio-pci
-      "vfio-pci.enable_msi=1"    # Enable MSI for vfio-pci devices
-      "kvmfr_static_size_mb=64"  # Set static memory size for kvmfr
-      "i915.enable_psr=1"        # Enable Panel Self Refresh for Intel graphics
+      "quiet"
+      "initcall_debug=n"
+      "systemd.show_status=0"
+      "fastboot"
+      "intel_iommu=on"
+      "iommu=pt"
+      "vfio-pci.ids=10de:1c94"
+      "vfio-pci.enable_msi=1"
+      "kvmfr_static_size_mb=64"
+      "i915.enable_psr=1"
     ];
     
     initrd = {
@@ -64,8 +64,6 @@
       enable = true;
       theme = "proxzima"; # rog_2
       themePackages = with pkgs; [
-        plymouth-matrix-theme
-        plymouth-proxzima-theme
         adi1090x-plymouth-themes
       ];
     };

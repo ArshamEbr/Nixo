@@ -8,6 +8,7 @@
   
     bind = [
     #  "$Primary, A, exec, pkill anyrun || anyrun"
+    #  "$Primary, TAB, hyprexpo:expo, toggle"
       "$Primary, A, exec, pkill wofi || wofi"
       # "$Primary, A, exec, rofi -show drun"
       "$Primary$Alternate, Q, exec, pkill wlogout || wlogout -p layer-shell"
@@ -30,8 +31,9 @@
       "$Primary$Secondary, T, exec, kitty -e nmtui"
       "$Primary, E, exec, nautilus"
       "$Alternate, E, exec, thunar"
-      "$Alternate, B, exec, brave"
-      "$Primary, B, exec, zen"
+      "$Alternate, B, exec, firefox"
+    #  "$Primary, B, exec, zen"
+      "$Primary, B, exec, brave"
       "$Primary$Secondary, X, exec, subl"
       "$Primary, C, exec, code"
       ",XF86Calculator, exec, wofi-calc"
@@ -54,7 +56,6 @@
       "$Primary$Secondary$Tertiary,S,exec,grim -g \"$(slurp -d -c D1E5F4BB -b 1B232866 -s 00000000)\" 'tmp.png' && tesseract 'tmp.png' - | wl-copy && rm 'tmp.png'"
       # "$Secondary$Tertiary, B, exec, playerctl previous"
       # "$Secondary$Tertiary, P, exec, playerctl play-pause"
-      # "$Secondary$Tertiary, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh"
       "$Secondary$Tertiary, T, exec, waypaper"
       "$Secondary$Tertiary, left, movewindow, l"
       "$Secondary$Tertiary, right, movewindow, r"
