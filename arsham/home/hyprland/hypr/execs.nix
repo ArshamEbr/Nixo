@@ -56,7 +56,7 @@
       "swaync &"
       
       # Turn on battery conservation mode
-    #  "battery_toggle on"
+      "battery_toggle on"
     ];
   };
 }

@@ -1,68 +1,67 @@
-{ 
-  config,
-  lib,
-  pkgs,
-  ... 
-}:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.services.wallpaper-manager-system;
-
-  triggerScript = pkgs.writeShellScript "wallpaper-trigger" ''
-    # Trigger update for all graphical user sessions
-    for user_runtime in /run/user/*; do
-      uid=$(basename "$user_runtime")
-      if [[ -S "$user_runtime/wayland-0" ]] || [[ -S "$user_runtime/wayland-1" ]]; then
-        ${pkgs.systemd}/bin/systemctl --user -M "$uid@" start --no-block wallpaper-manager-update.service 2>/dev/null || true
-      fi
-    done
-  '';
-
-  libvirtHookScript = pkgs.writeShellScript "qemu-hook" ''
-    GUEST_NAME="$1"
-    OPERATION="$2"
-
-    # Trigger on VM start/stop for monitored VMs
-    case "$OPERATION" in
-      started|stopped|reconnect)
-        ${triggerScript}
-        ;;
-    esac
-  '';
-
+  
+  # Define the environment variables needed for Wayland access
+  waylandEnv = "WAYLAND_DISPLAY=wayland-1 XDG_RUNTIME_DIR=/run/user/1000";
 in {
   options.services.wallpaper-manager-system = {
-    enable = lib.mkEnableOption "system-level wallpaper manager triggers";
-    
-    enableUdevRules = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable udev rules for power supply changes";
+    enable = lib.mkEnableOption "system-level wallpaper manager hooks";
+
+    username = lib.mkOption {
+      type = lib.types.str;
+      description = "Username to run wallpaper-manager as";
     };
 
-    enableLibvirtHook = lib.mkOption {
+    vmName = lib.mkOption {
+      type = lib.types.str;
+      default = "win10";
+    };
+
+    wallpaperManagerPackage = lib.mkOption {
+      type = lib.types.package;
+      description = "The wallpaper-manager package from home-manager";
+    };
+
+    enableNotifications = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Enable libvirt hooks for VM state changes";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    # Udev rule for AC power changes
-    services.udev.extraRules = lib.mkIf cfg.enableUdevRules ''
-      # Trigger wallpaper update on AC adapter plug/unplug
-      SUBSYSTEM=="power_supply", ATTR{type}=="Mains", RUN+="${triggerScript}"
+    services.udev.extraRules = let
+      wallpaperCmd = "${lib.getExe cfg.wallpaperManagerPackage}";
+      runAsUser = cmd: "${pkgs.systemd}/bin/machinectl shell ${cfg.username}@ ${pkgs.bash}/bin/bash -c '${waylandEnv} ${cmd}'";
+    in ''
+      ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${runAsUser "${wallpaperCmd} power charging"}"
+      ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${runAsUser "${wallpaperCmd} power discharging"}"
+    '' + lib.optionalString cfg.enableNotifications ''
+      ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${runAsUser "notifx1 charging"}"
+      ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${runAsUser "notifx1 discharging"}"
     '';
 
-    # Libvirt hook for VM state changes
-    systemd.tmpfiles.rules = lib.mkIf cfg.enableLibvirtHook [
-      "d /var/lib/libvirt/hooks 0755 root root -"
-    ];
+    virtualisation.libvirtd.hooks.qemu."wallpaper-hook" = pkgs.writeShellScript "wallpaper-qemu-hook" ''
+      GUEST_NAME="$1"
+      OPERATION="$2"
 
-    system.activationScripts.libvirtWallpaperHook = lib.mkIf cfg.enableLibvirtHook ''
-      mkdir -p /var/lib/libvirt/hooks
-      ln -sf ${libvirtHookScript} /var/lib/libvirt/hooks/qemu
-      chmod +x /var/lib/libvirt/hooks/qemu
+      [[ "$GUEST_NAME" != "${cfg.vmName}" ]] && exit 0
+
+      run_as_user() {
+        ${pkgs.systemd}/bin/machinectl shell ${cfg.username}@ ${pkgs.bash}/bin/bash -c "${waylandEnv} $1" &
+      }
+
+      case "$OPERATION" in
+        started)
+          run_as_user "${lib.getExe cfg.wallpaperManagerPackage} vm started"
+          ;;
+        stopped|release)
+          run_as_user "${lib.getExe cfg.wallpaperManagerPackage} vm stopped"
+          ;;
+      esac
+
+      exit 0
     '';
   };
 }

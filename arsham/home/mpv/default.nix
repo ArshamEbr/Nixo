@@ -25,10 +25,10 @@
         "keep-open" = "yes";
         "term-playing-msg" = "▶ /$/{filename}/";
       };
-      video = {
-        "vo" = "gpu-next";
-        "hwdec" = "auto-safe";
-      };
+    #  video = {
+    #    "vo" = "gpu-next";
+    #    "hwdec" = "auto-safe";
+    #  };
     };
   };
   home.file.".config/mpv/scripts/visualizer.lua".source = ../../../resources/scripts/visualizer.lua;

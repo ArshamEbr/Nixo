@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   inputs,
   lib, 
   pkgs-stable, 
@@ -17,12 +18,26 @@
     ./theme
     ./udiskie
     ./vscode
+    ./scripts
   ];
   
   xdg.userDirs.enable = true;
   programs.home-manager.enable = true;
   fonts.fontconfig.enable = true;
-  services.polkit-gnome.enable = true;
+  services = {
+    polkit-gnome.enable = true;
+    wallpaper-manager = {
+      enable = false;
+      videoWallpaper = "${config.home.homeDirectory}/nixo/resources/wallpapers/mitsu.mp4";
+      staticWallpaper = "${config.home.homeDirectory}/nixo/resources/wallpapers/mitsu.png";
+      vmName = "Win10";
+      useLibvirt = true;
+      checkInterval = 5;
+      displayOutput = "*";
+      swwwTransition = "fade";
+      transitionDuration = 1;
+    };
+  };
   
   home = {
     username = "${user.name}";
@@ -178,12 +193,11 @@
         gnome-keyring
         gnome-control-center
         gnome-bluetooth
-        blueberry
-        
+
         # Wallpapers & backgrounds
         waypaper
         swaybg
-        swww
+        awww
         
         # Hyprland/Wayland tools
         hyprpicker
@@ -271,7 +285,7 @@
           inotify-simple
           
           # Audio
-          aubio
+        #  aubio-ledfx
           pyaudio
           speechrecognition
           

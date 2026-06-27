@@ -60,42 +60,30 @@ let
         return 1
       }
 
-      is_mpvpaper_running() {
-        pgrep -x mpvpaper &>/dev/null
-      }
-
-      is_swww_running() {
-        pgrep -x swww-daemon &>/dev/null
-      }
-
       start_mpvpaper() {
-        log "Stopping swww..."
-        pkill -x swww-daemon 2>/dev/null || true
-        sleep 0.5
+        log "Starting mpvpaper with $VIDEO_WALLPAPER"
+        mpvpaper -o "no-audio loop" "$DISPLAY_OUTPUT" "$VIDEO_WALLPAPER" &
+        disown
+        sleep 1
 
-        if ! is_mpvpaper_running; then
-          log "Starting mpvpaper with $VIDEO_WALLPAPER"
-          mpvpaper -o "no-audio loop" "$DISPLAY_OUTPUT" "$VIDEO_WALLPAPER" &
-          disown
-        fi
+        log "Killing swww-daemon..."
+        pkill swww-daemon || true
       }
 
       start_swww() {
-        log "Stopping mpvpaper..."
-        pkill -x mpvpaper 2>/dev/null || true
-        sleep 0.5
-
-        if ! is_swww_running; then
-          log "Starting swww-daemon"
-          swww-daemon &
-          disown
-          sleep 1
-        fi
+        log "Starting swww-daemon"
+        swww-daemon --format xrgb &
+        disown
+        sleep 1
 
         log "Setting static wallpaper: $STATIC_WALLPAPER"
         swww img "$STATIC_WALLPAPER" \
           --transition-type "${cfg.swwwTransition}" \
           --transition-duration "${toString cfg.transitionDuration}"
+        sleep 0.5
+
+        log "Killing mpvpaper..."
+        pkill mpvpaper || true
       }
 
       main() {
@@ -108,20 +96,14 @@ let
         log "Status: AC=$on_ac, VM_Running=$vm_running"
 
         if $vm_running; then
-          if ! is_swww_running || is_mpvpaper_running; then
-            log "VM running - switching to static wallpaper"
-            start_swww
-          fi
+          log "VM running - switching to static wallpaper"
+          start_swww
         elif $on_ac; then
-          if ! is_mpvpaper_running; then
-            log "On AC power, no VM - switching to live wallpaper"
-            start_mpvpaper
-          fi
+          log "On AC power, no VM - switching to live wallpaper"
+          start_mpvpaper
         else
-          if ! is_swww_running || is_mpvpaper_running; then
-            log "On battery - switching to static wallpaper"
-            start_swww
-          fi
+          log "On battery - switching to static wallpaper"
+          start_swww
         fi
       }
 

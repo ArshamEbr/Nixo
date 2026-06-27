@@ -1,7 +1,8 @@
 { 
   pkgs, 
   pkgs-stable,
-  user, 
+  user,
+  lib,
   ... 
 }:
 
@@ -53,13 +54,24 @@
       LC_TIME = "en_US.UTF-8";
     };
   };
+
+  systemd = {
+    services.tailscaled.wantedBy = lib.mkForce [ ];
+    timers.tailscaled-delayed = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = "15s";
+        Unit = "tailscaled.service";
+      };
+    };
+  };
   
   services = {
     dbus.enable = true;
     acpid.enable = true;
     fstrim.enable = true;
     geoclue2.enable = true;
-    tailscale.enable = true;
+  #  tailscale.enable = true;
     gnome.gnome-keyring.enable = true;
     libinput.enable = true;
     udisks2.enable = true;
@@ -71,10 +83,12 @@
       packages = [ 
         pkgs.libmtp
         pkgs.libinput
+        pkgs.stlink
+        pkgs.openocd
       ];
       
       extraRules = ''
-        SUBSYSTEM=="kvmfr", OWNER="${user.name}", GROUP="qemu-libvirtd", MODE="0660"
+        SUBSYSTEM=="kvmfr", OWNER="${user.name}", GROUP="qemu-libvirtd", MODE="0600"
       '';
     };
     
@@ -90,7 +104,6 @@
   programs = {
     hyprland.enable = true;
     ccache.enable = true;
-    adb.enable = true;
     
     bash.shellAliases = {
       hyprxd = "dbus-run-session Hyprland";
@@ -132,7 +145,7 @@
       flake = "/home/${user.name}/nixo";
       clean = {
         enable = false;
-        dates = "weekly";
+        dates = "monthly";
         extraArgs = "--keep 10";
       };
     };
@@ -140,15 +153,68 @@
   
   security = {
     rtkit.enable = true;
+    pki.certificates = [
+      ''
+      -----BEGIN CERTIFICATE-----
+      MIIBoTCCAUigAwIBAgIRAL/gkwmqPdtk4OqvwHTrW08wCgYIKoZIzj0EAwIwJjER
+      MA8GA1UEChMIWHJheSBJbmMxETAPBgNVBAMTCFhyYXkgSW5jMB4XDTI2MDQzMDAx
+      MDE1NFoXDTI2MDcyOTAyMDE1NFowJjERMA8GA1UEChMIWHJheSBJbmMxETAPBgNV
+      BAMTCFhyYXkgSW5jMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwZNX1zqOTVjx
+      7SpIfXryho4lg0hViDPzw5httjTaka5AeHrM2oMyrPFLHfr+fSwnYJDVfx7cj3Zm
+      bIadnOmw/aNXMFUwDgYDVR0PAQH/BAQDAgKkMBMGA1UdJQQMMAoGCCsGAQUFBwMB
+      MA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFAW3aq88jY9VWOwdnL6t7QNz1160
+      MAoGCCqGSM49BAMCA0cAMEQCIDdaiOQ7JAsqA3E3Ejy4X/ybptFVlL1Bj4j22jjc
+      fhqrAiApUeeVYYs4W40hHivR2DWTnstN7uLcyKSkJpyuz8XD7g==
+      -----END CERTIFICATE-----
+      ''
+    ];
     polkit = { 
       enable = true;
       extraConfig = ''
         polkit.addRule(function(action, subject) {
+      
+          if (
+            (subject.isInGroup("wheel") || subject.isInGroup("networkmanager")) &&
+            action.id == "org.freedesktop.NetworkManager.wifi.scan"
+          ) {
+            return polkit.Result.YES;
+          }
+          
+          if (
+            (subject.isInGroup("wheel") || subject.isInGroup("networkmanager")) &&
+            action.id == "org.freedesktop.NetworkManager.enable-disable-wifi"
+          ) {
+            return polkit.Result.YES;
+          }
+          
+          if ((subject.isInGroup("wheel") || subject.isInGroup("networkmanager")) &&
+              action.id == "org.freedesktop.NetworkManager.network-control") {
+            return polkit.Result.YES;
+          }
+          
+          if ((subject.isInGroup("wheel") || subject.isInGroup("networkmanager")) &&
+              action.id == "org.freedesktop.NetworkManager.enable-disable-network") {
+            return polkit.Result.YES;
+          }
+          
           if (action.id == "org.libvirt.unix.manage" &&
               subject.isInGroup("wheel")) {
             return polkit.Result.YES;
           }
-      
+          
+          if (subject.isInGroup("wheel") && (
+            action.id == "org.freedesktop.login1.power-off" ||
+            action.id == "org.freedesktop.login1.power-off-multiple-sessions" ||
+            action.id == "org.freedesktop.login1.reboot" ||
+            action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+            action.id == "org.freedesktop.login1.suspend" ||
+            action.id == "org.freedesktop.login1.suspend-multiple-sessions" ||
+            action.id == "org.freedesktop.login1.hibernate" ||
+            action.id == "org.freedesktop.login1.hibernate-multiple-sessions"
+          )) {
+            return polkit.Result.YES;
+          }
+          
           if (subject.isInGroup("wheel")) {
             return polkit.Result.AUTH_ADMIN_KEEP;
           }
@@ -234,7 +300,6 @@
         mesa-demos
         usbutils
         pciutils
-      #  rustdesk
         
         # File tools
         mlocate
@@ -258,7 +323,7 @@
         pkg-config
         gcc14
         typescript
-        node2nix
+      #  node2nix
         nil
         sublime4
         zulu
@@ -286,6 +351,7 @@
         systemdUkify
         proot
         nixos-generators
+        keepassxc
         
         # Wayland & desktop
         xwayland
@@ -315,6 +381,7 @@
         vulkan-tools
         libva
         libva-utils
+        v2rayn
         
         # GTK libraries
         gtk3.dev

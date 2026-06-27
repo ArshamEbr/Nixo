@@ -1,18 +1,10 @@
-/**
-Configures system power management settings in NixOS.
-
-Enables powertop auto-tuning and TLP for advanced power management,
-disables GNOME's power-profiles-daemon and thermald, and sets detailed
-TLP parameters for CPU, GPU, disk, and device power optimization.
-*/
-
 {
   pkgs,
   ... 
 }:
 
 {
-  powerManagement.powertop.enable = true;
+#  powerManagement.powertop.enable = true;
   
   services = {
     system76-scheduler.settings.cfsProfiles.enable = true;     # Better scheduling for CPU cycles
@@ -33,12 +25,12 @@ TLP parameters for CPU, GPU, disk, and device power optimization.
         CPU_MAX_PERF_ON_BAT = 90;    # Maximum CPU performance on battery
         
         # Intel GPU frequency settings (MHz)
-        INTEL_GPU_MIN_FREQ_ON_AC = "1250";   # Minimum GPU freq on AC
-        INTEL_GPU_MIN_FREQ_ON_BAT = "100";   # Minimum GPU freq on battery
+        INTEL_GPU_MIN_FREQ_ON_AC = "600";   # Minimum GPU freq on AC
+        INTEL_GPU_MIN_FREQ_ON_BAT = "600";   # Minimum GPU freq on battery
         INTEL_GPU_MAX_FREQ_ON_AC = "1350";   # Maximum GPU freq on AC
-        INTEL_GPU_MAX_FREQ_ON_BAT = "900";   # Maximum GPU freq on battery
+        INTEL_GPU_MAX_FREQ_ON_BAT = "700";   # Maximum GPU freq on battery
         INTEL_GPU_BOOST_FREQ_ON_AC = "1350"; # Boost GPU freq on AC
-        INTEL_GPU_BOOST_FREQ_ON_BAT = "1000";# Boost GPU freq on battery
+        INTEL_GPU_BOOST_FREQ_ON_BAT = "750";# Boost GPU freq on battery
         
         # CPU boost and dynamic boost
         CPU_BOOST_ON_AC = 1;         # Enable CPU turbo boost on AC
@@ -53,7 +45,7 @@ TLP parameters for CPU, GPU, disk, and device power optimization.
         CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power"; # Energy policy on battery
         
         # CPU frequency limits (kHz) - adjust for your hardware!
-        CPU_SCALING_MIN_FREQ_ON_AC = 2500000;  # Minimum CPU freq on AC (e.g., 2.5 GHz)
+        CPU_SCALING_MIN_FREQ_ON_AC = 400000;  # Minimum CPU freq on AC (e.g., 2.5 GHz)
         CPU_SCALING_MAX_FREQ_ON_AC = 4500000;  # Maximum CPU freq on AC (e.g., 4.5 GHz)
         CPU_SCALING_MIN_FREQ_ON_BAT = 400000;  # Minimum CPU freq on battery (e.g., 400 MHz)
         CPU_SCALING_MAX_FREQ_ON_BAT = 2500000; # Maximum CPU freq on battery (e.g., 2.5 GHz)
@@ -86,11 +78,11 @@ TLP parameters for CPU, GPU, disk, and device power optimization.
         PLATFORM_PROFILE_ON_BAT = "low-power";  # Platform profile on battery
         
         # Disk settings
-        DISK_IDLE_SECS_ON_AC = "60";              # Disk idle timeout on AC (seconds)
-        DISK_IDLE_SECS_ON_BAT = "2";              # Disk idle timeout on battery (seconds)
-        SATA_LINKPWR_ON_AC = "max_performance";   # SATA link power management on AC
-        SATA_LINKPWR_ON_BAT = "min_power";        # SATA link power management on battery
-        DISK_IOSCHED = "mq-deadline mq-deadline"; # Disk I/O scheduler
+        DISK_IDLE_SECS_ON_AC = "60";                # Disk idle timeout on AC (seconds)
+        DISK_IDLE_SECS_ON_BAT = "2";                # Disk idle timeout on battery (seconds)
+        SATA_LINKPWR_ON_AC = "med_power_with_dipm"; # SATA link power management on AC # max_performance
+        SATA_LINKPWR_ON_BAT = "min_power";          # SATA link power management on battery
+        DISK_IOSCHED = "mq-deadline mq-deadline";   # Disk I/O scheduler
         AHCI_RUNTIME_PM_ON_AC = "on";
         AHCI_RUNTIME_PM_ON_BAT = "auto";
         DISK_DEVICES = "ata-WDC_WDBNCE5000PNC_20294J442712"; # TODO change this using tlp diskid

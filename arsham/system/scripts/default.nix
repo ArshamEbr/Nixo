@@ -263,7 +263,7 @@ let
       ###############################
       #!/usr/bin/env bash
       VM1="Win10"
-      VM2="Win11_iAudio"
+      VM2="Win10_iAudio"
       MAX_WAIT=10
       state_win10=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate "$VM1" 2>/dev/null)
       state_audio=$(${pkgs.libvirt}/bin/virsh -c qemu:///system domstate "$VM2" 2>/dev/null)
@@ -402,7 +402,8 @@ let
           paplay ~/nixo/resources/sfx/error.mp3 & disown
           exit 1
       fi
-      ${pkgs.libvirt}/bin/virsh -c qemu:///system start Win11_iAudio
+      ${pkgs.libvirt}/bin/virsh -c qemu:///system start Win10_iAudio
+      sudo ${pkgs.coreutils}/bin/chown ${user.name}:qemu-libvirtd /dev/kvmfr0
       looking-glass-client -f /dev/kvmfr0 -F & disown
       notify-send "Full Windows VM is Booting UP!" --icon=$HOME/nixo/resources/icons/windows.png
       exit
@@ -746,6 +747,43 @@ let
     fi
   '';
 
+  wall-aware = pkgs.writeScriptBin "wall-aware" ''
+    #!/usr/bin/env bash
+    
+    VIDEO_PATH="/home/arsham/nixo/resources/wallpapers/mitsu.mp4"
+    IMAGE_PATH="/home/arsham/nixo/resources/wallpapers/mitsu.png"
+    
+    swww_to_mpvpaper() {
+      mpvpaper '*' "$VIDEO_PATH" -o "--loop-file=yes" &
+      sleep 1
+      pkill -x swww-daemon 2>/dev/null || true
+    }
+    
+    mpvpaper_to_swww() {
+      swww-daemon &
+      sleep 1
+      swww img "$IMAGE_PATH"
+      pkill -x mpvpaper 2>/dev/null || true
+    }
+    
+    case "$1" in
+      to_mpv)
+        swww_to_mpvpaper
+        ;;
+      to_swww)
+        mpvpaper_to_swww
+        ;;
+      *)
+        echo "Usage: $0 {to_mpv|to_swww}"
+        ;;
+    esac
+  '';
+
+  chownKvmfr = pkgs.writeShellScriptBin "chown-kvmfr0" ''
+    #!/usr/bin/env bash
+    ${pkgs.coreutils}/bin/chown ${user.name}:qemu-libvirtd /dev/kvmfr0
+  '';
+
 in
 
   {
@@ -780,22 +818,30 @@ in
           {command = "${pkgs.libvirt}/bin/virsh nodedev-reattach pci_0000_00_1f_5";          options = [ "NOPASSWD" ];}
           
           {command = "${pkgs.kmod}/bin/modprobe kvmfr static_size_mb=64";                    options = [ "NOPASSWD" ];}
+          
+          {command = "${pkgs.coreutils}/bin/chown ${user.name}\\:qemu-libvirtd /dev/kvmfr0"; options = [ "NOPASSWD" ];}
         
         ]; 
       }
     ];
+
+  #  imports = [
+  #    ./wallpaperService.nix
+  #  ];
 
     environment.systemPackages = with pkgs; [
         dGPU_VFIO
         Windows_VM
         Battery_Related
         fancy_wallpaper_switcher
+      #  wall-aware
         nh-go
       #  way-net-go
         way-neto
         record-scripto
       #  waybar-cava
         gpu-info
+        chownKvmfr
         power-go
         odin4
         mi-thermal-crypt

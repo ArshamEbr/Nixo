@@ -68,15 +68,15 @@
       decoration = {
         blur = {
           enabled = true;
-          brightness = 1.0;
-          contrast = 1.0;
+          brightness = 0.9; # 1.0
+          contrast = 3.9;   # 1.9
           ignore_opacity = "on";
           new_optimizations = true;
           noise = 0.01;
-          passes = 4;
+          passes = 3;       # 4
           popups = true;
           popups_ignorealpha = 0.6;
-          size = 6;
+          size = 5;         # 6
           special = false;
           xray = true;
         };
@@ -90,7 +90,7 @@
           render_power = 4;
         };
     
-        rounding = 18;
+        rounding = 16;
     
         dim_inactive = true;
         dim_special = 0;
@@ -139,7 +139,7 @@
     #  hyprspace
     #  hyprgrass
     #  hyprwinwrap
-      hyprscrolling
+    #  hyprscrolling
     #  hypr-darkwindow
     #  hypr-dynamic-cursors
     #  hyprexpo

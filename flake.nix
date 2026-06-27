@@ -135,7 +135,9 @@
                 "python-2.7.18.7"
                 "openssl-1.1.1w"
                 "archiver-3.5.1"
-                "ventoy-1.1.07"
+                "ventoy-1.1.12"
+                "nodejs-20.20.2"
+                "nodejs-slim-20.20.2"
               ];
             };
           }

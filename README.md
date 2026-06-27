@@ -30,6 +30,11 @@ RAM: 12 GB (8 GB + 4 GB)
 ## ⚡ TL;DR 
 A NixOS setup optimized for beauty, speed, and simplicity, with attention to both aesthetics and control.
 
+# Goodbye NixOS 
+You will always have a special place in my heart cuz of you
+i made great new friends, learnt alot about linux and actually understand it!
+now i'm switching to gentoo for now, i might come back but till then cya...
+
 ## 📚 Sources & Inspirations
 
 [Celes Renata](https://github.com/celesrenata/nix-flakes)

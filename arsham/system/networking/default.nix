@@ -13,7 +13,13 @@
   
   services = {
     blueman.enable = true;
-    openssh.enable = true;
+  #  cloudflare-warp.enable = true;
+    
+    openssh =  {
+      enable = true;
+      startWhenNeeded = true;
+    };
+
     avahi = {
       enable = true;
       nssmdns4 = true;

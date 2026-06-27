@@ -40,8 +40,8 @@
         "custom/logo" = {
           format = "󱄅";
           tooltip = true;
-          tooltip-format = "NixOS";
-          on-click = "anyrun";
+          tooltip-format = "NixOS >:)";
+          on-click = "wofi";
         };
 
         "hyprland/workspaces" = {
@@ -131,12 +131,13 @@
         };
 
         temperature = {
-          critical-threshold = 80;
-          format = " {temperatureC}°";
-          format-critical = "󰸁 {temperatureC}°";
-          hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
-          interval = 2;
-          on-click = "kitty -e btop";
+          "critical-threshold" = 80;
+          format = " {temperatureC}°C";
+          "format-critical" = " {temperatureC}°C";
+          "hwmon-path" = "/sys/class/hwmon/hwmon2/temp1_input";
+          interval = 3;
+          "on-click" = "foot -e btop";
+          tooltip = false;
         };
 
         "custom/gpuinfo" = {
@@ -214,7 +215,7 @@
         "custom/power" = {
           format = "⏻";
           tooltip = false;
-          on-click = "wlogout -b 5";
+          on-click = "wlogout -b 3";
         };
 
         tray = {

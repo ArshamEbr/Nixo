@@ -25,9 +25,9 @@
     };
     
     kernelParams = [
-      "quiet"
-      "initcall_debug=n"
-      "systemd.show_status=0"
+    #  "quiet"
+    #  "initcall_debug=n"
+    #  "systemd.show_status=0"
       "fastboot"
       "intel_iommu=on"
       "iommu=pt"
@@ -39,7 +39,7 @@
     
     initrd = {
       systemd.enable = true;
-      verbose = false;
+    #  verbose = false;
       compressor = "zstd";
       compressorArgs = [ 
         "-T0"
