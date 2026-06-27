@@ -153,21 +153,6 @@
   
   security = {
     rtkit.enable = true;
-    pki.certificates = [
-      ''
-      -----BEGIN CERTIFICATE-----
-      MIIBoTCCAUigAwIBAgIRAL/gkwmqPdtk4OqvwHTrW08wCgYIKoZIzj0EAwIwJjER
-      MA8GA1UEChMIWHJheSBJbmMxETAPBgNVBAMTCFhyYXkgSW5jMB4XDTI2MDQzMDAx
-      MDE1NFoXDTI2MDcyOTAyMDE1NFowJjERMA8GA1UEChMIWHJheSBJbmMxETAPBgNV
-      BAMTCFhyYXkgSW5jMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEwZNX1zqOTVjx
-      7SpIfXryho4lg0hViDPzw5httjTaka5AeHrM2oMyrPFLHfr+fSwnYJDVfx7cj3Zm
-      bIadnOmw/aNXMFUwDgYDVR0PAQH/BAQDAgKkMBMGA1UdJQQMMAoGCCsGAQUFBwMB
-      MA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFAW3aq88jY9VWOwdnL6t7QNz1160
-      MAoGCCqGSM49BAMCA0cAMEQCIDdaiOQ7JAsqA3E3Ejy4X/ybptFVlL1Bj4j22jjc
-      fhqrAiApUeeVYYs4W40hHivR2DWTnstN7uLcyKSkJpyuz8XD7g==
-      -----END CERTIFICATE-----
-      ''
-    ];
     polkit = { 
       enable = true;
       extraConfig = ''
